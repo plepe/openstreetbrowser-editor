@@ -1,1 +1,2 @@
 <?php
+$category_path = "categories/";
