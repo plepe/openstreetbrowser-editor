@@ -1,2 +1,26 @@
 <?php
 $category_path = "categories/";
+
+// List of available user interface languages
+$languages = array(
+  "ast", // Asturian
+  "ca", // Catalan
+  "cs", // Czech
+  "da", // Danish
+  "de", // German
+  "el", // Greek
+  "en", // English
+  "es", // Spanish
+  "et", // Estonian
+  "fr", // French
+  "hu", // Hungarian
+  "it", // Italian
+  "ja", // Japanese
+  "nl", // Dutch
+  "pl", // Polish
+  "pt-br", // Portugese (Brazil)
+  "ro", // Romanian
+  "ru", // Russian
+  "sr", // Serbian
+  "uk", // Ukrainian
+);

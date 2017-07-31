@@ -7,7 +7,27 @@ class TypeCategory {
   }
 
   function formDef () {
-    return array();
+    global $languages;
+
+    $langs = array_key_exists('name', $this->data) ? array_keys($this->data['name']) : array();
+    $langs = array_merge($langs, $languages);
+
+    $values = array();
+    foreach ($langs as $lang) {
+      $values[$lang] = array(
+        'type' => 'text',
+        'name' => lang("lang:{$lang}") . " ({$lang})",
+      );
+    }
+
+    return array(
+      'name' => array(
+        'type' => 'form_chooser',
+        'name' => 'Names',
+        'def' => $values,
+        'order' => false,
+      ),
+    );
   }
 
   function postLoad (&$data) {
