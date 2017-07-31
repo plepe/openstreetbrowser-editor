@@ -41,6 +41,18 @@ if (isset($_REQUEST['file']) && preg_match('/^[A-Za-z0-9_\-]+$/', $_REQUEST['fil
   $content .= $form->show();
   $content .= "<input type='submit' value='Ok'>\n";
   $content .= "</form>\n";
+} else {
+  $content  = "<ul>\n";
+  $d = opendir($category_path);
+  while ($f = readdir($d)) {
+    if (preg_match("/^([^\.].*)\.json$/", $f, $m)) {
+      $file = $m[1];
+
+      $content .= "  <li><a href='?file=" . urlencode($file) . "'>{$file}</a></li>\n";
+    }
+  }
+  $content .= "<ul>\n";
+
 }
 
 ?>
