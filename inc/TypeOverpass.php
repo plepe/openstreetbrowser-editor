@@ -161,6 +161,14 @@ class TypeOverpass extends TypeCategory {
     parent::postLoad($data);
 
     unset($data['type']);
+
+    if (is_string($data['query'])) {
+      $data['query'] = array($data['minZoom'] => $data['query']);
+    }
+
+    if (array_key_exists('minZoom', $data)) {
+      unset($data['minZoom']);
+    }
   }
 
   function preSave (&$data) {
