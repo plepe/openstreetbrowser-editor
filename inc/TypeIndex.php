@@ -22,11 +22,13 @@ class TypeIndex extends TypeCategory {
             'placeholder' => 'Separate file',
             'include_data' => 'not_null',
           ),
+          'name' => $form_def['name'],
         ),
       ),
       'include_data' => 'not_null',
     );
 
+    $x['def']['def']['name']['show_depend'] = array('check', 'type', array('is', 'index'));
     $form_def['subCategories'] = $x;
     $x['show_depend'] = array('check', 'type', array('is', 'index'));
     $form_def['subCategories']['def']['def']['subCategories'] = $x;

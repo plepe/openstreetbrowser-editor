@@ -11,6 +11,7 @@ class TypeCategory {
 
     $langs = array_key_exists('name', $this->data) ? array_keys($this->data['name']) : array();
     $langs = array_merge($langs, $languages);
+    ksort($langs);
 
     $values = array();
     foreach ($langs as $lang) {
