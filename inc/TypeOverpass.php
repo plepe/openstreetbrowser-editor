@@ -168,3 +168,5 @@ class TypeOverpass extends TypeCategory {
     $data = array_merge(array('type' => 'overpass'), $data);
   }
 }
+
+register_type('overpass', 'TypeOverpass');

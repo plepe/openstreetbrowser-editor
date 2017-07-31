@@ -13,3 +13,15 @@ class TypeCategory {
     $data = array_merge(array('type' => 'overpass'), $data);
   }
 }
+
+function register_type($id, $type) {
+  global $types;
+
+  $types[$id] = $type;
+}
+
+function get_type($id) {
+  global $types;
+
+  return array_key_exists($id, $types) ? $types[$id] : null;
+}

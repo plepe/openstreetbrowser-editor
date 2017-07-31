@@ -7,7 +7,18 @@ call_hooks("init");
 
 if (isset($_REQUEST['file']) && preg_match('/^[A-Za-z0-9_\-]+$/', $_REQUEST['file'])) {
   $file = "{$category_path}/{$_REQUEST['file']}.json";
-  $type = new TypeOverpass();
+
+  $data = json_decode(file_get_contents($file), true);
+
+  if (array_key_exists('type', $data)) {
+    if ($typeClass = get_type($data['type'])) {
+    } else {
+      $typeClass = 'TypeOverpass';
+    }
+  } else {
+    $typeClass = 'TypeOverpass';
+  }
+  $type = new $typeClass();
 
   $form_def = $type->formDef();
 
@@ -22,7 +33,6 @@ if (isset($_REQUEST['file']) && preg_match('/^[A-Za-z0-9_\-]+$/', $_REQUEST['fil
 
   if ($form->is_empty()) {
     // load data from file
-    $data = json_decode(file_get_contents($file), true);
     $type->postLoad($data);
     $form->set_data($data);
   }
