@@ -1,6 +1,8 @@
 <?php
-class TypeOverpass {
+class TypeOverpass extends TypeCategory {
   function formDef () {
+    $form_def = parent::formDef();
+
     $style_form_def = array(
       'type' => 'form_chooser',
       'order' => false,
@@ -83,7 +85,7 @@ class TypeOverpass {
       ),
     );
 
-    $form_def = array(
+    $form_def = array_merge($form_def, array(
       'query' => array(
         'type' => 'hash',
         'order' => false, // TODO: form could automatically order by key
@@ -145,7 +147,7 @@ class TypeOverpass {
         'name' => 'const',
         'desc' => 'Constants which can be accessed via <code>{{ const }}<code> in twig templates',
       ),
-    );
+    ));
 
     foreach (array('style', 'style:casing', 'style:highlight') as $k) {
       $form_def['feature']['def'][$k] = $style_form_def;
@@ -156,10 +158,13 @@ class TypeOverpass {
   }
 
   function postLoad (&$data) {
+    parent::postLoad($data);
+
     unset($data['type']);
   }
 
   function preSave (&$data) {
+    parent::preSave($data);
     $data = array_merge(array('type' => 'overpass'), $data);
   }
 }
