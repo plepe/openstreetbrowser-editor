@@ -36,6 +36,11 @@ if (isset($_REQUEST['file']) && preg_match('/^[A-Za-z0-9_\-]+$/', $_REQUEST['fil
     $type->postLoad($data);
     $form->set_data($data);
   }
+
+  $content  = "<form enctype='multipart/form-data' method='post'>\n";
+  $content .= $form->show();
+  $content .= "<input type='submit' value='Ok'>\n";
+  $content .= "</form>\n";
 }
 
 ?>
@@ -50,10 +55,7 @@ if (isset($_REQUEST['file']) && preg_match('/^[A-Za-z0-9_\-]+$/', $_REQUEST['fil
 <body>
 <?php
 // show form
-print "<form enctype='multipart/form-data' method='post'>\n";
-print $form->show();
-print "<input type='submit' value='Ok'>\n";
-print "</form>\n";
+print $content;
 ?>
 </body>
 </html>
