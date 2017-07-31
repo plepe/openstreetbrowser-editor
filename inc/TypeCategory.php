@@ -2,6 +2,10 @@
 $types = array();
 
 class TypeCategory {
+  function __construct ($data) {
+    $this->data = $data;
+  }
+
   function formDef () {
     return array();
   }
