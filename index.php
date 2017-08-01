@@ -37,7 +37,8 @@ if (isset($_REQUEST['file']) && preg_match('/^[A-Za-z0-9_\-]+$/', $_REQUEST['fil
     $form->set_data($data);
   }
 
-  $content  = "<form enctype='multipart/form-data' method='post'>\n";
+  $content  = "<a href='?'>Back</a>";
+  $content .= "<form enctype='multipart/form-data' method='post'>\n";
   $content .= $form->show();
   $content .= "<input type='submit' value='Ok'>\n";
   $content .= "</form>\n";
