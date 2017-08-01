@@ -43,19 +43,23 @@ if (isset($_REQUEST['file']) && preg_match('/^[A-Za-z0-9_\-]+$/', $_REQUEST['fil
   $content .= "<input type='submit' value='Ok'>\n";
   $content .= "</form>\n";
 } else {
-  $content  = "<ul>\n";
   $d = opendir($category_path);
+  $files = array();
   while ($f = readdir($d)) {
     if (preg_match("/^([^\.].*)\.json$/", $f, $m)) {
-      $file = $m[1];
-
-      $content .= "  <li><a href='?file=" . urlencode($file) . "'>{$file}</a></li>\n";
+      $files[] = $m[1];
     }
   }
-  $content .= "<ul>\n";
 
+  $content  = "<ul>\n";
+
+  natsort($files);
+  foreach ($files as $file) {
+    $content .= "  <li><a href='?file=" . urlencode($file) . "'>{$file}</a></li>\n";
+  }
+
+  $content .= "/<ul>\n";
 }
-
 ?>
 <!DOCTYPE HTML>
 <html>
