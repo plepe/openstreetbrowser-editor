@@ -47,11 +47,12 @@ class TypeOverpass extends TypeCategory {
         ),
         'fill' => array(
           'type' => 'textarea',
-          'name' => '',
+          'name' => 'fill',
         ),
         'fillColor' => array(
           'type' => 'textarea',
-          'name' => '#3388ff',
+          'name' => 'fillColor',
+          'default' => '#3388ff',
         ),
         'fillOpacity' => array(
           'type' => 'textarea',
