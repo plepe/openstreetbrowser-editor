@@ -124,6 +124,10 @@ class TypeOverpass extends TypeCategory {
             'type' => 'textarea',
             'name' => 'description',
           ),
+          'popupDescription' => array(
+            'type' => 'textarea',
+            'name' => 'popupDescription',
+          ),
           'body' => array(
             'type' => 'textarea',
             'name' => 'body',
