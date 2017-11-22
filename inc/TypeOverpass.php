@@ -157,6 +157,11 @@ class TypeOverpass extends TypeCategory {
         'min' => 1,
         'button:add_element' => 'Add query at different zoom level',
       ),
+      'info' => array(
+        'type' => 'textarea',
+        'name' => 'Info (e.g. map key)',
+        'desc' => 'You can use TwigJS markup in this field.',
+      ),
       'feature' => array(
         'type' => 'form_chooser',
         'order' => false,
@@ -189,6 +194,16 @@ class TypeOverpass extends TypeCategory {
           'markerSign' => array(
             'type' => 'textarea',
             'name' => 'markerSign',
+          ),
+          'markerSymbol' => array(
+            'type' => 'textarea',
+            'name' => 'markerSymbol',
+            'default' => '{{ markerPointer({})|raw }}',
+          ),
+          'listMarkerSymbol' => array(
+            'type' => 'textarea',
+            'name' => 'listMarkerSymbol',
+            'default' => '{{ markerCircle({})|raw }}',
           ),
           'priority' => array(
             'type' => 'textarea',
