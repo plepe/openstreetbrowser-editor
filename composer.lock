@@ -1,0 +1,58 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "hash": "5890e352b7e8255e1dcec291a4638e66",
+    "content-hash": "72181cd3b759b3a7a4e15ff5dddab853",
+    "packages": [
+        {
+            "name": "plepe/json-multiline-strings",
+            "version": "v0.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/plepe/json-multiline-strings.git",
+                "reference": "2b34ee9402235858c01fdd0ff61e4bcb5e303c28"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/plepe/json-multiline-strings/zipball/2b34ee9402235858c01fdd0ff61e4bcb5e303c28",
+                "reference": "2b34ee9402235858c01fdd0ff61e4bcb5e303c28",
+                "shasum": ""
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^2.8",
+                "phpunit/phpunit": "^6.4"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/json-multiline-strings.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Stephan Bösch-Plepelits",
+                    "email": "skunk@xover.mud.at",
+                    "homepage": "https://github.com/plepe"
+                }
+            ],
+            "description": "One shortcoming of JSON is the lack of multiline support. This module will split/join multiline strings to string arrays which is more readable.",
+            "homepage": "https://github.com/plepe/json-multiline-strings",
+            "time": "2017-11-09 09:38:50"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": []
+}

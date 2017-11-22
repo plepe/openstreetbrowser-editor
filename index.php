@@ -2,6 +2,7 @@
 Header("content-type: text/html; charset=utf-8");
 // create file .nocache to disable caching
 require "conf.php"; /* load configuration */
+require __DIR__ . '/vendor/autoload.php';
 include "modulekit/loader.php"; /* loads all php-includes */
 call_hooks("init");
 
@@ -9,6 +10,7 @@ if (isset($_REQUEST['file']) && preg_match('/^[A-Za-z0-9_\-]+$/', $_REQUEST['fil
   $file = "{$category_path}/{$_REQUEST['file']}.json";
 
   $data = json_decode(file_get_contents($file), true);
+  $data = jsonMultilineStringsJoin($data, array('exclude' => array(array('const'))));
 
   if (array_key_exists('type', $data)) {
     if ($typeClass = get_type($data['type'])) {
@@ -28,6 +30,7 @@ if (isset($_REQUEST['file']) && preg_match('/^[A-Za-z0-9_\-]+$/', $_REQUEST['fil
     // save data to file
     $data = $form->save_data();
     $type->preSave($data);
+    $data = jsonMultilineStringsSplit($data, array('exclude' => array(array('const'))));
     file_put_contents($file, json_readable_encode($data) . "\n");
   }
 

@@ -1,0 +1,5 @@
+{
+    "require": {
+        "plepe/json-multiline-strings": "^0.1.0"
+    }
+}
