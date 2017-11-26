@@ -84,6 +84,57 @@ class TypeOverpass extends TypeCategory {
           'name' => 'noClip',
           'default' => '1',
         ),
+        'text' => array(
+          'type' => 'textarea',
+          'name' => 'text',
+          'default' => '',
+          'desc' => 'Text along lines. See <a href="https://github.com/makinacorpus/Leaflet.TextPath">documentation</a> for details',
+        ),
+        'textRepeat' => array(
+          'type' => 'textarea',
+          'name' => 'textRepeat',
+          'default' => '1',
+        ),
+        'textOffset' => array(
+          'type' => 'textarea',
+          'name' => 'textOffset',
+          'default' => '0',
+        ),
+        'textBelow' => array(
+          'type' => 'textarea',
+          'name' => 'textBelow',
+          'default' => '',
+        ),
+        'textOrientation' => array(
+          'type' => 'textarea',
+          'name' => 'textOrientation',
+          'default' => 'Either a value in degrees or "flip" or "perpendicular"',
+        ),
+        'textLetterSpacing' => array(
+          'type' => 'textarea',
+          'name' => 'textLetterSpacing',
+          'default' => '',
+        ),
+        'textFontSize' => array(
+          'type' => 'textarea',
+          'name' => 'textFontSize',
+          'default' => '12',
+        ),
+        'textFontFamily' => array(
+          'type' => 'textarea',
+          'name' => 'textFontFamily',
+          'default' => 'Arial',
+        ),
+        'textFill' => array(
+          'type' => 'textarea',
+          'name' => 'textFill',
+          'default' => '#000000',
+        ),
+        'textFillOpacity' => array(
+          'type' => 'textarea',
+          'name' => 'textFillOpacity',
+          'default' => '#000000',
+        ),
       ),
     );
 
