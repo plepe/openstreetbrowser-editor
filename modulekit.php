@@ -3,6 +3,7 @@ $name = "OpenStreetBrowser-editor";
 $id = "openstreetbrowser-editor";
 $depend = array(
   "modulekit-form",        // use modulekit-form and all its requirements
+  "messages",
 );
 
 $include = array(

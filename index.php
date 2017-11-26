@@ -16,7 +16,11 @@ if (isset($_REQUEST['file']) && preg_match('/^[A-Za-z0-9_\-]*$/', $_REQUEST['fil
   }
   else {
     $file = "{$category_path}/{$_REQUEST['file']}.json";
-    $data = json_decode(file_get_contents($file), true);
+    $data = file_get_contents($file);
+    if ($data === false ) {
+      messages_add(error_get_last()['message'], MSG_ERROR);
+    }
+    $data = json_decode($data, true);
     $data = jsonMultilineStringsJoin($data, array('exclude' => array(array('const'))));
 
     if (array_key_exists('type', $data)) {
@@ -50,7 +54,10 @@ if (isset($_REQUEST['file']) && preg_match('/^[A-Za-z0-9_\-]*$/', $_REQUEST['fil
 
     $type->preSave($data);
     $data = jsonMultilineStringsSplit($data, array('exclude' => array(array('const'))));
-    file_put_contents($file, json_readable_encode($data) . "\n");
+    $data = json_readable_encode($data) . "\n";
+    if (file_put_contents($file, $data) === false) {
+      messages_add(error_get_last()['message'], MSG_ERROR);
+    }
   }
 
   if ($form->is_empty()) {
@@ -96,6 +103,7 @@ if (isset($_REQUEST['file']) && preg_match('/^[A-Za-z0-9_\-]*$/', $_REQUEST['fil
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
+<?php print messages_print(); ?>
 <?php
 // show form
 print $content;
