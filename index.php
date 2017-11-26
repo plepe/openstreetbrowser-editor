@@ -4,6 +4,7 @@ Header("content-type: text/html; charset=utf-8");
 require "conf.php"; /* load configuration */
 require __DIR__ . '/vendor/autoload.php';
 include "modulekit/loader.php"; /* loads all php-includes */
+session_start();
 call_hooks("init");
 
 if (isset($_REQUEST['file']) && preg_match('/^[A-Za-z0-9_\-]*$/', $_REQUEST['file'])) {
@@ -57,6 +58,10 @@ if (isset($_REQUEST['file']) && preg_match('/^[A-Za-z0-9_\-]*$/', $_REQUEST['fil
     $data = json_readable_encode($data) . "\n";
     if (file_put_contents($file, $data) === false) {
       messages_add(error_get_last()['message'], MSG_ERROR);
+    }
+    else {
+      messages_add("Saved.");
+      page_reload();
     }
   }
 
