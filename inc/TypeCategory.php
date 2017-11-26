@@ -27,6 +27,7 @@ class TypeCategory {
         'name' => 'Names',
         'def' => $values,
         'order' => false,
+        'include_data' => 'not_null',
       ),
     );
   }
@@ -35,7 +36,6 @@ class TypeCategory {
   }
 
   function preSave (&$data) {
-    $data = array_merge(array('type' => 'overpass'), $data);
   }
 }
 
