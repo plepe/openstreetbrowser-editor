@@ -233,6 +233,13 @@ class TypeOverpass extends TypeCategory {
     parent::preSave($data);
     $data = array_merge(array('type' => 'overpass'), $data);
   }
+
+  static function newData () {
+    return array(
+      'name' => array('en' => ''),
+      'query' => array('14' => ''),
+    );
+  }
 }
 
 register_type('overpass', 'TypeOverpass');

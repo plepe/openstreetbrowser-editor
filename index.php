@@ -6,29 +6,48 @@ require __DIR__ . '/vendor/autoload.php';
 include "modulekit/loader.php"; /* loads all php-includes */
 call_hooks("init");
 
-if (isset($_REQUEST['file']) && preg_match('/^[A-Za-z0-9_\-]+$/', $_REQUEST['file'])) {
-  $file = "{$category_path}/{$_REQUEST['file']}.json";
+if (isset($_REQUEST['file']) && preg_match('/^[A-Za-z0-9_\-]*$/', $_REQUEST['file'])) {
+  if ($_REQUEST['file'] === '') {
+    $typeClass = 'TypeOverpass';
+    if (isset($_REQUEST['type'])) {
+      $typeClass = get_type($_REQUEST['type']);
+    }
+    $data = $typeClass::newData();
+  }
+  else {
+    $file = "{$category_path}/{$_REQUEST['file']}.json";
+    $data = json_decode(file_get_contents($file), true);
+    $data = jsonMultilineStringsJoin($data, array('exclude' => array(array('const'))));
 
-  $data = json_decode(file_get_contents($file), true);
-  $data = jsonMultilineStringsJoin($data, array('exclude' => array(array('const'))));
-
-  if (array_key_exists('type', $data)) {
-    if ($typeClass = get_type($data['type'])) {
+    if (array_key_exists('type', $data)) {
+      if ($typeClass = get_type($data['type'])) {
+      } else {
+        $typeClass = 'TypeOverpass';
+      }
     } else {
       $typeClass = 'TypeOverpass';
     }
-  } else {
-    $typeClass = 'TypeOverpass';
   }
   $type = new $typeClass($data);
 
   $form_def = $type->formDef();
+
+  if ($_REQUEST['file'] === '') {
+    $data = array_merge(array('id' => ''), $data);
+    $form_def = array_merge(array('id' => array('type' => 'text', 'req' => true, 'name' => 'ID', 'check' => array('regexp', '^[A-Za-z0-9_\-]+$', 'Use only ASCII characters, digits, "_" or "-"'))), $form_def);
+  }
 
   $form = new form('data', $form_def, array('type' => 'form_chooser', 'order' => false));
 
   if($form->is_complete()) {
     // save data to file
     $data = $form->save_data();
+
+    if ($_REQUEST['file'] === '') {
+      $file = "{$category_path}/{$data['id']}.json";
+      unset($data['id']);
+    }
+
     $type->preSave($data);
     $data = jsonMultilineStringsSplit($data, array('exclude' => array(array('const'))));
     file_put_contents($file, json_readable_encode($data) . "\n");
@@ -54,14 +73,18 @@ if (isset($_REQUEST['file']) && preg_match('/^[A-Za-z0-9_\-]+$/', $_REQUEST['fil
     }
   }
 
-  $content  = "<ul>\n";
+  $content = "Create new category: ";
+  $content .= "<a href='?file=&type=index'>index</a>, ";
+  $content .= "<a href='?file=&type=overpass'>overpass</a>";
+
+  $content .= "<ul>\n";
 
   natsort($files);
   foreach ($files as $file) {
     $content .= "  <li><a href='?file=" . urlencode($file) . "'>{$file}</a></li>\n";
   }
 
-  $content .= "/<ul>\n";
+  $content .= "</ul>\n";
 }
 ?>
 <!DOCTYPE HTML>

@@ -7,6 +7,7 @@ class TypeIndex extends TypeCategory {
       'type' => 'array',
       'name' => 'subCategories',
       'index_type' => 'array',
+      'default' => 1,
       'def' => array(
         'type' => 'form',
         'def' => array(
@@ -47,6 +48,13 @@ class TypeIndex extends TypeCategory {
   function preSave (&$data) {
     parent::preSave($data);
     $data = array_merge(array('type' => 'index'), $data);
+  }
+
+  static function newData () {
+    return array(
+      'name' => array('en' => ''),
+      'subCategories' => array(array()),
+    );
   }
 }
 
