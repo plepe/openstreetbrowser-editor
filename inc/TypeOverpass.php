@@ -147,26 +147,27 @@ class TypeOverpass extends TypeCategory {
         'key_def' => array(
           'type' => 'integer',
           'name' => 'minZoom',
-          'desc' => 'When several queries are defined, the queries are used from minZoom level to (exclusive) the next higher zoom level',
+          'desc' => 'When several queries are defined, the queries are used from minZoom level to the next higher zoom level-1',
         ),
         'def' => array(
           'type' => 'textarea',
           'name' => 'Query',
-          'desc' => 'Overpass QL query without "out" statement, e.g. "(node[amenity=bar];way[amenity=bar];)"',
+          'desc' => 'Overpass QL query without "out" statement, e.g.:<br/><code>(node[amenity=bar];way[amenity=bar];)</code>',
         ),
         'min' => 1,
-        'button:add_element' => 'Add query',
+        'button:add_element' => 'Add query at different zoom level',
       ),
       'feature' => array(
         'type' => 'form_chooser',
         'order' => false,
         'name' => 'Feature evaluation',
-        'desc' => 'All sub values will be evaluated via the TwigJS language',
+        'desc' => 'This codes will be evaluated for each map feature. You can set different styles, texts, etc. All sub values will be evaluated via the <a href="https://github.com/twigjs/twig.js">TwigJS language</a>.',
         'result_keep_order' => true,
         'def'  => array(
           'pre' => array(
             'type' => 'textarea',
             'name' => 'pre',
+            'desc' => 'This code will be executed before any other code. You might want to set variables, e.g.: <code>{% set foo = tags.amenity %}</code>',
           ),
           'title' => array(
             'type' => 'textarea',

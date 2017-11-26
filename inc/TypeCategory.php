@@ -28,6 +28,7 @@ class TypeCategory {
         'def' => $values,
         'order' => false,
         'include_data' => 'not_null',
+        'button:add_element' => 'Add translated name',
       ),
     );
   }
