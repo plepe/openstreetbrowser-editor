@@ -47,9 +47,11 @@ if (isset($_REQUEST['file']) && preg_match('/^[A-Za-z0-9_\-]*$/', $_REQUEST['fil
   if($form->is_complete()) {
     // save data to file
     $data = $form->save_data();
+    $new_url = null;
 
     if ($_REQUEST['file'] === '') {
       $file = "{$category_path}/{$data['id']}.json";
+      $new_url = array('file' => $data['id']);
       unset($data['id']);
     }
 
@@ -61,7 +63,7 @@ if (isset($_REQUEST['file']) && preg_match('/^[A-Za-z0-9_\-]*$/', $_REQUEST['fil
     }
     else {
       messages_add("Saved.");
-      page_reload();
+      page_reload($new_url);
     }
   }
 
