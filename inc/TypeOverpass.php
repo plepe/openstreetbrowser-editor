@@ -6,6 +6,7 @@ class TypeOverpass extends TypeCategory {
     $style_form_def = array(
       'type' => 'form_chooser',
       'order' => false,
+      'result_keep_order' => true,
       'def' => array(
         'stroke' => array(
           'type' => 'textarea',
@@ -110,6 +111,7 @@ class TypeOverpass extends TypeCategory {
         'order' => false,
         'name' => 'Feature evaluation',
         'desc' => 'All sub values will be evaluated via the TwigJS language',
+        'result_keep_order' => true,
         'def'  => array(
           'pre' => array(
             'type' => 'textarea',

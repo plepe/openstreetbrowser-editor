@@ -6,6 +6,7 @@ class TypeIndex extends TypeCategory {
     $x = array(
       'type' => 'array',
       'name' => 'subCategories',
+      'index_type' => 'array',
       'def' => array(
         'type' => 'form',
         'def' => array(
