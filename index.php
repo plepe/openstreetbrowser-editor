@@ -74,12 +74,14 @@ if (isset($_REQUEST['file']) && preg_match('/^[A-Za-z0-9_\-]*$/', $_REQUEST['fil
     $form->set_data($data);
   }
 
-  $content  = "<a href='?'>Back</a>";
   $content .= "<form enctype='multipart/form-data' method='post'>\n";
+  $content .= "<div id='form'>\n";
   $content .= $form->show();
+  $content .= "</div>";
   $content .= "<div id='actions'>\n";
   $content .= "<input type='submit' value='Save'>\n";
   $content .= "<input id='preview' type='button' value='Preview'>\n";
+  $content .= "<a href='?'>Back to Index</a>";
   $content .= "</div>";
   $content .= "</form>\n";
 } else {
