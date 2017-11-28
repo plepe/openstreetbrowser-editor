@@ -3,7 +3,7 @@
   top: 0;
   left: 0;
   bottom: 0;
-  right: 400px;
+  right: 250px;
   border-right: 1px solid black;
   overflow: auto;
   padding-bottom: 25px;
@@ -20,6 +20,14 @@
   position: absolute;
   top: 50%;
   right: 0;
-  width: 400px;
+  width: 250px;
   bottom: 0;
+}
+#list {
+  position: absolute;
+  top: 0;
+  bottom: 50%;
+  width: 250px;
+  right: 0;
+  overflow: auto;
 }

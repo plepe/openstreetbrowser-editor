@@ -3,6 +3,7 @@ var OverpassLayer = require('overpass-layer')
 global.map = null
 global.overpassFrontend = new OverpassFrontend('//overpass-api.de/api/interpreter')
 var currentLayer
+var currentList
 
 window.onload = function () {
   var initState = {}
@@ -23,6 +24,7 @@ window.onload = function () {
 function onload2 (initState) {
   currentLayer = new OverpassLayer(data)
   currentLayer.addTo(map)
+  currentList = new OverpassLayer.List(document.getElementById('list'), currentLayer)
 }
 
 function updateMap () {
@@ -31,4 +33,5 @@ function updateMap () {
   currentLayer.remove()
   currentLayer = new OverpassLayer(data)
   currentLayer.addTo(map)
+  currentList = new OverpassLayer.List(document.getElementById('list'), currentLayer)
 }
