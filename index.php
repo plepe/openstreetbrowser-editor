@@ -33,6 +33,7 @@ if (isset($_REQUEST['file']) && preg_match('/^[A-Za-z0-9_\-]*$/', $_REQUEST['fil
       $typeClass = 'TypeOverpass';
     }
   }
+  html_export_var(array('data' => $data));
   $type = new $typeClass($data);
 
   $form_def = $type->formDef();
@@ -108,12 +109,24 @@ if (isset($_REQUEST['file']) && preg_match('/^[A-Za-z0-9_\-]*$/', $_REQUEST['fil
 <?php print modulekit_include_css(); /* prints all css-includes */ ?>
 <?php print_add_html_headers(); ?>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="node_modules/leaflet/dist/leaflet.css" />
+<link rel="stylesheet" href="node_modules/font-awesome/css/font-awesome.min.css" />
+<script src="node_modules/leaflet/dist/leaflet.js"></script>
+<script src="node_modules/leaflet-textpath/leaflet.textpath.js"></script>
 </head>
 <body>
+<div id='content'>
 <?php print messages_print(); ?>
 <?php
 // show form
 print $content;
 ?>
+</div>
+
+<div id='list'>
+</div>
+<div id='map'>
+</div>
 </body>
 </html>
