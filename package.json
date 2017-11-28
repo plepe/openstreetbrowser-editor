@@ -1,0 +1,8 @@
+{
+  "name": "openstreetbrowser-editor",
+  "version": "0.1.0",
+  "description": "Editor for OpenStreetBrowser categories",
+  "repository": "https://github.com/plepe/openstreetbrowser-editor",
+  "author": "Stephan Bösch-Plepelits <skunk@xover.mud.at>",
+  "license": "GPL-3.0"
+}
