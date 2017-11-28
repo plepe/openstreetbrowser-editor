@@ -2,6 +2,7 @@ var OverpassFrontend = require('overpass-frontend')
 var OverpassLayer = require('overpass-layer')
 global.map = null
 global.overpassFrontend = new OverpassFrontend('//overpass-api.de/api/interpreter')
+var currentLayer
 
 window.onload = function () {
   var initState = {}
@@ -12,9 +13,22 @@ window.onload = function () {
   map.setView({ lat: 48.2, lng: 16.4 }, 16)
   call_hooks('init')
   call_hooks_callback('init_callback', initState, onload2.bind(this, initState))
+
+  var previewButton = document.getElementById('preview')
+  if (previewButton) {
+    previewButton.onclick = updateMap
+  }
 }
 
 function onload2 (initState) {
-  var layer = new OverpassLayer(data)
-  layer.addTo(map)
+  currentLayer = new OverpassLayer(data)
+  currentLayer.addTo(map)
+}
+
+function updateMap () {
+  var data = form_data.get_data()
+
+  currentLayer.remove()
+  currentLayer = new OverpassLayer(data)
+  currentLayer.addTo(map)
 }

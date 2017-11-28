@@ -77,7 +77,10 @@ if (isset($_REQUEST['file']) && preg_match('/^[A-Za-z0-9_\-]*$/', $_REQUEST['fil
   $content  = "<a href='?'>Back</a>";
   $content .= "<form enctype='multipart/form-data' method='post'>\n";
   $content .= $form->show();
-  $content .= "<input type='submit' value='Ok'>\n";
+  $content .= "<div id='actions'>\n";
+  $content .= "<input type='submit' value='Save'>\n";
+  $content .= "<input id='preview' type='button' value='Preview'>\n";
+  $content .= "</div>";
   $content .= "</form>\n";
 } else {
   $d = opendir($category_path);

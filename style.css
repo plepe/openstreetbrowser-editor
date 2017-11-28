@@ -6,6 +6,15 @@
   right: 400px;
   border-right: 1px solid black;
   overflow: auto;
+  padding-bottom: 25px;
+}
+#content #actions {
+  position: fixed;
+  bottom: 0;
+  height: 25px;
+  left: 0;
+  right: 0;
+  background: white;
 }
 #map {
   position: absolute;
