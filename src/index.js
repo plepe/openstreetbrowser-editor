@@ -1,7 +1,10 @@
 var OverpassFrontend = require('overpass-frontend')
-var OverpassLayer = require('overpass-layer')
+var OpenStreetBrowser = require('openstreetbrowser')
+global.options = {}
+global.config = {}
 global.map = null
 global.overpassFrontend = new OverpassFrontend('//overpass-api.de/api/interpreter')
+global.currentPath = null
 var currentLayer
 var currentList
 
@@ -22,16 +25,21 @@ window.onload = function () {
 }
 
 function onload2 (initState) {
-  currentLayer = new OverpassLayer(data)
-  currentLayer.addTo(map)
-  currentList = new OverpassLayer.List(document.getElementById('list'), currentLayer)
+  initCategory(data, function (err) { console.log('done', err) })
 }
 
 function updateMap () {
+  currentLayer.close()
   var data = form_data.get_data()
+  initCategory(data, function (err) { console.log('done', err) })
+}
 
-  currentLayer.remove()
-  currentLayer = new OverpassLayer(data)
-  currentLayer.addTo(map)
-  currentList = new OverpassLayer.List(document.getElementById('list'), currentLayer)
+function initCategory (data, callback) {
+  currentLayer = new OpenStreetBrowser.CategoryOverpass(id, data)
+  currentLayer.load(function () {
+    currentLayer.setMap(map)
+    currentLayer.open()
+    currentLayer.setParentDom(document.getElementById('list'))
+    callback(null)
+  })
 }

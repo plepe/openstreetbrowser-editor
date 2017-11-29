@@ -6,15 +6,16 @@
   "author": "Stephan Bösch-Plepelits <skunk@xover.mud.at>",
   "license": "GPL-3.0",
   "scripts": {
-    "build": "browserify src/index.js -o dist/app.js",
-    "watch": "watchify --debug src/index.js -o dist/app.js -v",
+    "build": "browserify -g browserify-css src/index.js -o dist/app.js",
+    "watch": "watchify --debug -g browserify-css src/index.js -o dist/app.js -v",
     "prepublish": "npm run build"
   },
   "dependencies": {
-    "overpass-layer": "^0.1.0"
+    "openstreetbrowser": "https://github.com/plepe/openstreetbrowser"
   },
   "devDependencies": {
     "browserify": "^14.5.0",
+    "browserify-css": "^0.14.0",
     "font-awesome": "^4.7.0",
     "leaflet": "^1.2.0",
     "leaflet-textpath": "^1.1.0",

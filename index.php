@@ -33,7 +33,7 @@ if (isset($_REQUEST['file']) && preg_match('/^[A-Za-z0-9_\-]*$/', $_REQUEST['fil
       $typeClass = 'TypeOverpass';
     }
   }
-  html_export_var(array('data' => $data));
+  html_export_var(array('id' => $file, 'data' => $data));
   $type = new $typeClass($data);
 
   $form_def = $type->formDef();
