@@ -3,7 +3,7 @@
   top: 0;
   left: 0;
   bottom: 0px;
-  right: 250px;
+  right: 350px;
   border-right: 1px solid black;
 }
 #content #form {
@@ -25,14 +25,14 @@
   position: absolute;
   top: 50%;
   right: 0;
-  width: 250px;
+  width: 350px;
   bottom: 0;
 }
 #list {
   position: absolute;
   top: 0;
   bottom: 50%;
-  width: 250px;
+  width: 350px;
   right: 0;
   overflow: auto;
 }
