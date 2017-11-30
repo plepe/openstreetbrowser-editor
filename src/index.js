@@ -39,7 +39,11 @@ function initCategory (data, callback) {
   currentLayer.load(function () {
     currentLayer.setMap(map)
     currentLayer.open()
-    currentLayer.setParentDom(document.getElementById('list'))
+
+    var dom = document.getElementById('list')
+    dom.innerHTML = ''
+    currentLayer.setParentDom(dom)
+
     callback(null)
   })
 }
