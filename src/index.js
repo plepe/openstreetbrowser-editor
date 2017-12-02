@@ -1,7 +1,6 @@
 var OverpassFrontend = require('overpass-frontend')
 var OpenStreetBrowser = require('openstreetbrowser')
 global.options = {}
-global.config = {}
 global.map = null
 global.overpassFrontend = new OverpassFrontend('//overpass-api.de/api/interpreter')
 global.currentPath = null
@@ -14,7 +13,7 @@ window.onload = function () {
   L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
   }).addTo(map);
-  map.setView({ lat: 48.2, lng: 16.4 }, 16)
+  map.setView({ lat: config.defaultView.lat, lng: config.defaultView.lon }, config.defaultView.zoom)
   call_hooks('init')
   call_hooks_callback('init_callback', initState, onload2.bind(this, initState))
 

@@ -7,6 +7,10 @@ include "modulekit/loader.php"; /* loads all php-includes */
 session_start();
 call_hooks("init");
 
+html_export_var(array(
+  'config' => $config,
+));
+
 if (isset($_REQUEST['file']) && preg_match('/^[A-Za-z0-9_\-]*$/', $_REQUEST['file'])) {
   if ($_REQUEST['file'] === '') {
     $typeClass = 'TypeOverpass';
