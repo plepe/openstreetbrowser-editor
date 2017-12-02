@@ -1,0 +1,25 @@
+{
+  "name": "openstreetbrowser-editor",
+  "version": "0.1.0",
+  "description": "Editor for OpenStreetBrowser categories",
+  "repository": "https://github.com/plepe/openstreetbrowser-editor",
+  "author": "Stephan Bösch-Plepelits <skunk@xover.mud.at>",
+  "license": "GPL-3.0",
+  "scripts": {
+    "build": "browserify -g browserify-css src/index.js -o dist/app.js",
+    "watch": "watchify --debug -g browserify-css src/index.js -o dist/app.js -v",
+    "prepublish": "npm run build"
+  },
+  "dependencies": {
+    "leaflet-polylineoffset": "^1.1.0",
+    "openstreetbrowser": "https://github.com/plepe/openstreetbrowser"
+  },
+  "devDependencies": {
+    "browserify": "^14.5.0",
+    "browserify-css": "^0.14.0",
+    "font-awesome": "^4.7.0",
+    "leaflet": "^1.2.0",
+    "leaflet-textpath": "https://github.com/makinacorpus/Leaflet.TextPath#leaflet0.8-dev",
+    "watchify": "^3.9.0"
+  }
+}

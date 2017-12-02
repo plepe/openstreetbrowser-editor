@@ -13,7 +13,8 @@ $include = array(
     'inc/*.php' // automatically include all files in inc-directory
   ),
   'js' => array(
-    'inc/*.js' // automatically include all files in inc-directory
+    'inc/*.js', // automatically include all files in inc-directory
+    'dist/app.js',
   ),
   'css' => array(
     'style.css' // include style.css
