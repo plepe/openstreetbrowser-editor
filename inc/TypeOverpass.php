@@ -228,7 +228,7 @@ class TypeOverpass extends TypeCategory {
       ),
     ));
 
-    foreach (array('style', 'style:casing', 'style:highlight') as $k) {
+    foreach (array('style', 'style:casing', 'style:highlight', 'style:left', 'style:right') as $k) {
       $form_def['feature']['def'][$k] = $style_form_def;
       $form_def['feature']['def'][$k]['name'] = $k;
     }
