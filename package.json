@@ -11,6 +11,7 @@
     "prepublish": "npm run build"
   },
   "dependencies": {
+    "leaflet-polylineoffset": "^1.1.0",
     "openstreetbrowser": "https://github.com/plepe/openstreetbrowser"
   },
   "devDependencies": {

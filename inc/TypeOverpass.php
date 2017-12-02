@@ -23,6 +23,11 @@ class TypeOverpass extends TypeCategory {
           'name' => 'color',
           'default' => '#3388ff',
         ),
+        'offset' => array(
+          'type' => 'textarea',
+          'name' => 'offset',
+          'default' => '0',
+        ),
         'opacity' => array(
           'type' => 'textarea',
           'name' => 'opacity',

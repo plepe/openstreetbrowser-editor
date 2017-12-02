@@ -119,6 +119,7 @@ if (isset($_REQUEST['file']) && preg_match('/^[A-Za-z0-9_\-]*$/', $_REQUEST['fil
 <link rel="stylesheet" href="node_modules/font-awesome/css/font-awesome.min.css" />
 <script src="node_modules/leaflet/dist/leaflet.js"></script>
 <script src="node_modules/leaflet-textpath/leaflet.textpath.js"></script>
+<script src="node_modules/leaflet-polylineoffset/leaflet.polylineoffset.js"></script>
 </head>
 <body>
 <div id='content'>
