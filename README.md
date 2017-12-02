@@ -8,6 +8,7 @@ cd openstreetbrowser-editor
 git submodule init
 git submodule update
 composer install
+npm install
 cp conf.php-dist conf.php
 nano conf.php
 ```
