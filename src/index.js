@@ -1,6 +1,7 @@
 var OverpassFrontend = require('overpass-frontend')
 var OpenStreetBrowser = require('openstreetbrowser')
 var jsonMultilineStrings = require('json-multiline-strings')
+var CategoryOverpass = require('./CategoryOverpass')
 
 global.options = {}
 global.overpassFrontend = new OverpassFrontend('//overpass-api.de/api/interpreter')
@@ -34,6 +35,10 @@ Editor.prototype.load = function () {
 Editor.prototype.load2 = function (initState) {
   this.textarea.style.display = 'none'
 
+  this.formDiv = document.createElement('div')
+  this.textarea.parentNode.insertBefore(this.formDiv, this.textarea)
+  this.formDiv.setAttribute('style', 'height: 300px; overflow: auto;')
+
   this.previewDiv = document.createElement('div')
   this.textarea.parentNode.insertBefore(this.previewDiv, this.textarea)
   this.previewDiv.setAttribute('style', 'height: 300px; position: relative;')
@@ -46,6 +51,21 @@ Editor.prototype.load2 = function (initState) {
   this.mapDiv.setAttribute('style', 'position: absolute; top: 0; left: 251px; bottom: 0; right: 0;')
   this.previewDiv.appendChild(this.mapDiv)
 
+  this.form = new form('data', CategoryOverpass.formDef())
+  this.form.show(this.formDiv)
+  this.form.set_data(this.data)
+
+  this.form.onchange = function () {
+    this.data = this.form.get_data()
+
+    var data = JSON.parse(JSON.stringify(this.data))
+    data = JSON.stringify(jsonMultilineStrings.split(data, { exclude: [ [ 'const' ] ] }), null, '    ')
+    this.textarea.value = data
+console.log('here', data)
+
+    this.initCategory()
+  }.bind(this)
+
   this.map = L.map(this.mapDiv)
   global.map = this.map // TODO: remove this
 
@@ -54,6 +74,14 @@ Editor.prototype.load2 = function (initState) {
   }).addTo(this.map)
 
   this.map.setView({ lat: 40, lng: 16 }, 14)
+
+  this.initCategory()
+}
+
+Editor.prototype.initCategory = function () {
+  if (this.layer) {
+    this.layer.close()
+  }
 
   this.layer = new OpenStreetBrowser.CategoryOverpass('edit', this.data)
   this.layer.load(function () {
