@@ -1,8 +1,10 @@
 var OverpassFrontend = require('overpass-frontend')
 var OpenStreetBrowser = require('openstreetbrowser')
+
 global.options = {}
 global.map = null
 global.overpassFrontend = new OverpassFrontend('//overpass-api.de/api/interpreter')
+/*
 global.currentPath = null
 var currentLayer
 var currentList
@@ -45,4 +47,44 @@ function initCategory (data, callback) {
 
     callback(null)
   })
+}
+*/
+
+function Editor (textarea) {
+  if (textarea.length) {
+    textarea = textarea[0]
+  } else {
+    return
+  }
+
+  this.textarea = textarea
+
+  try {
+    this.data = JSON.parse(this.textarea.value)
+  }
+  catch (err) {
+    this.data = undefined
+  }
+}
+
+Editor.prototype.isCategory = function () {
+  return (this.data && 'type' in this.data && [ 'index', 'overpass' ].indexOf(this.data.type) !== -1)
+}
+
+Editor.prototype.load = function () {
+  var div = document.createElement('div')
+  this.textarea.parentNode.insertBefore(div, this.textarea)
+  div.innerHTML = 'foo'
+  // this.map = L.map('map')
+}
+
+window.OpenStreetBrowserEditor = {
+  set: function (textarea) {
+    var editor = new Editor(textarea)
+
+    if (editor.isCategory()) {
+      editor.load()
+      return true
+    }
+  }
 }
