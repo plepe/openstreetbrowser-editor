@@ -51,12 +51,6 @@ function initCategory (data, callback) {
 */
 
 function Editor (textarea) {
-  if (textarea.length) {
-    textarea = textarea[0]
-  } else {
-    return
-  }
-
   this.textarea = textarea
 
   try {
@@ -78,12 +72,24 @@ Editor.prototype.load = function () {
   // this.map = L.map('map')
 }
 
+Editor.prototype.reload = function () {
+}
+
 window.OpenStreetBrowserEditor = {
   set: function (textarea) {
-    var editor = new Editor(textarea)
+    if (textarea.length) {
+      textarea = textarea[0]
+    }
 
-    if (editor.isCategory()) {
-      editor.load()
+    if (textarea.editor) {
+      textarea.editor.reload()
+      return true
+    }
+
+    textarea.editor = new Editor(textarea)
+
+    if (textarea.editor.isCategory()) {
+      textarea.editor.load()
       return true
     }
   }
