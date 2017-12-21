@@ -32,13 +32,21 @@ Editor.prototype.load = function () {
 }
 
 Editor.prototype.load2 = function (initState) {
-  var div = document.createElement('div')
-  this.textarea.parentNode.insertBefore(div, this.textarea)
   this.textarea.style.display = 'none'
 
-  div.setAttribute('style', 'height: 300px;')
+  this.previewDiv = document.createElement('div')
+  this.textarea.parentNode.insertBefore(this.previewDiv, this.textarea)
+  this.previewDiv.setAttribute('style', 'height: 300px; position: relative;')
 
-  this.map = L.map(div)
+  this.listDiv = document.createElement('div')
+  this.listDiv.setAttribute('style', 'position: absolute; top: 0; left: 0; width: 250px; bottom: 0; border-right: 1px solid black;')
+  this.previewDiv.appendChild(this.listDiv)
+
+  this.mapDiv = document.createElement('div')
+  this.mapDiv.setAttribute('style', 'position: absolute; top: 0; left: 251px; bottom: 0; right: 0;')
+  this.previewDiv.appendChild(this.mapDiv)
+
+  this.map = L.map(this.mapDiv)
   global.map = this.map // TODO: remove this
 
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -52,9 +60,7 @@ Editor.prototype.load2 = function (initState) {
     this.layer.setMap(this.map)
     this.layer.open()
 
-//    var dom = document.getElementById('list')
-//    dom.innerHTML = ''
-//    this.layer.setParentDom(dom)
+    this.layer.setParentDom(this.listDiv)
   }.bind(this))
 }
 
