@@ -51,7 +51,10 @@ Editor.prototype.load2 = function (initState) {
   this.mapDiv.setAttribute('style', 'position: absolute; top: 0; left: 251px; bottom: 0; right: 0;')
   this.previewDiv.appendChild(this.mapDiv)
 
-  this.form = new form('data', CategoryOverpass.formDef())
+  this.form = new form('data', CategoryOverpass.formDef(), {
+    type: 'form_chooser',
+    order: false
+  })
   this.form.show(this.formDiv)
   this.form.set_data(this.data)
 
