@@ -61,7 +61,7 @@ if (isset($_REQUEST['file']) && preg_match('/^[A-Za-z0-9_\-]*$/', $_REQUEST['fil
   $content .= "<form enctype='multipart/form-data' method='post'>\n";
   $content .= "<div id='form'>\n";
   $content .= "<input type='text' name='id' value=\"" . htmlspecialchars($_REQUEST['file']) . "\">";
-  $content .= "<textarea name='data'>";
+  $content .= "<textarea id='editor' name='data'>";
   $content .= htmlspecialchars($data);
   $content .= "</textarea>";
   $content .= "</div>";
@@ -107,6 +107,11 @@ if (isset($_REQUEST['file']) && preg_match('/^[A-Za-z0-9_\-]*$/', $_REQUEST['fil
 <script src="node_modules/leaflet/dist/leaflet.js"></script>
 <script src="node_modules/leaflet-textpath/leaflet.textpath.js"></script>
 <script src="node_modules/leaflet-polylineoffset/leaflet.polylineoffset.js"></script>
+<script>
+window.onload = function () {
+  OpenStreetBrowserEditor.set(document.getElementById('editor'))
+}
+</script>
 </head>
 <body>
 <div id='content'>
