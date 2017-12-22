@@ -25,45 +25,31 @@ if (isset($_REQUEST['file']) && preg_match('/^[A-Za-z0-9_\-]*$/', $_REQUEST['fil
     if ($data === false ) {
       messages_add(error_get_last()['message'], MSG_ERROR);
     }
-    $data = json_decode($data, true);
-    $data = jsonMultilineStringsJoin($data, array('exclude' => array(array('const'))));
 
-    if (array_key_exists('type', $data)) {
-      if ($typeClass = get_type($data['type'])) {
-      } else {
-        $typeClass = 'TypeOverpass';
-      }
-    } else {
-      $typeClass = 'TypeOverpass';
-    }
   }
-  html_export_var(array('id' => $file, 'data' => $data));
-  $type = new $typeClass($data);
-
-  $form_def = $type->formDef();
 
   if ($_REQUEST['file'] === '') {
     $data = array_merge(array('id' => ''), $data);
     $form_def = array_merge(array('id' => array('type' => 'text', 'req' => true, 'name' => 'ID', 'check' => array('regexp', '^[A-Za-z0-9_\-]+$', 'Use only ASCII characters, digits, "_" or "-"'))), $form_def);
   }
 
-  $form = new form('data', $form_def, array('type' => 'form_chooser', 'order' => false));
+  if ($_REQUEST['data']) {
+    $data = trim(str_replace("\r\n", "\n", $_REQUEST['data'])) . "\n";
+    $error = false;
 
-  if($form->is_complete()) {
+    if (!preg_match('/^[A-Za-z0-9_\-]*$/', $_REQUEST['id'])) {
+      $error = true;
+      messages_add("Invalid ID", MSG_ERROR);
+    }
     // save data to file
-    $data = $form->save_data();
-    $new_url = null;
-
-    if ($_REQUEST['file'] === '') {
-      $file = "{$category_path}/{$data['id']}.json";
-      $new_url = array('file' => $data['id']);
-      unset($data['id']);
+    elseif ($_REQUEST['id'] !== $_REQUEST['file']) {
+      $file = "{$category_path}/{$_REQUEST['id']}.json";
+      $new_url = array('file' => $_REQUEST['id']);
     }
 
-    $type->preSave($data);
-    $data = jsonMultilineStringsSplit($data, array('exclude' => array(array('const'))));
-    $data = json_readable_encode($data) . "\n";
-    if (file_put_contents($file, $data) === false) {
+    if ($error) {
+    }
+    elseif (file_put_contents($file, $data) === false) {
       messages_add(error_get_last()['message'], MSG_ERROR);
     }
     else {
@@ -72,15 +58,12 @@ if (isset($_REQUEST['file']) && preg_match('/^[A-Za-z0-9_\-]*$/', $_REQUEST['fil
     }
   }
 
-  if ($form->is_empty()) {
-    // load data from file
-    $type->postLoad($data);
-    $form->set_data($data);
-  }
-
   $content .= "<form enctype='multipart/form-data' method='post'>\n";
   $content .= "<div id='form'>\n";
-  $content .= $form->show();
+  $content .= "<input type='text' name='id' value=\"" . htmlspecialchars($_REQUEST['file']) . "\">";
+  $content .= "<textarea name='data'>";
+  $content .= htmlspecialchars($data);
+  $content .= "</textarea>";
   $content .= "</div>";
   $content .= "<div id='actions'>\n";
   $content .= "<input type='submit' value='Save'>\n";
