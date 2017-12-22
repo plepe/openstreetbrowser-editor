@@ -1,5 +1,8 @@
 function formDef () {
   return {
+      "type": {
+          "type": "hidden",
+      },
       "name": {
 	  "type": "form_chooser",
 	  "name": "Names",
