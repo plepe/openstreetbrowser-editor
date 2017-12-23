@@ -64,7 +64,6 @@ Editor.prototype.load2 = function (initState) {
     var data = JSON.parse(JSON.stringify(this.data))
     data = JSON.stringify(jsonMultilineStrings.split(data, { exclude: [ [ 'const' ] ] }), null, '    ')
     this.textarea.value = data
-console.log('here', data)
 
     this.initCategory()
   }.bind(this)
@@ -84,6 +83,7 @@ console.log('here', data)
 Editor.prototype.initCategory = function () {
   if (this.layer) {
     this.layer.close()
+    this.listDiv.innerHTML = ''
   }
 
   this.layer = new OpenStreetBrowser.CategoryOverpass('edit', this.data)
