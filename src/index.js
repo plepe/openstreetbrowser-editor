@@ -35,20 +35,24 @@ Editor.prototype.load = function () {
 Editor.prototype.load2 = function (initState) {
   this.textarea.style.display = 'none'
 
+  this.parentDiv = document.createElement('div')
+  this.parentDiv.setAttribute('style', 'position: relative; border: 1px solid black;')
+  this.textarea.parentNode.insertBefore(this.parentDiv, this.textarea)
+
   this.formDiv = document.createElement('div')
-  this.textarea.parentNode.insertBefore(this.formDiv, this.textarea)
-  this.formDiv.setAttribute('style', 'height: 300px; overflow: auto;')
+  this.formDiv.setAttribute('style', 'padding-bottom: 301px;')
+  this.parentDiv.appendChild(this.formDiv)
 
   this.previewDiv = document.createElement('div')
-  this.textarea.parentNode.insertBefore(this.previewDiv, this.textarea)
-  this.previewDiv.setAttribute('style', 'height: 300px; position: relative;')
+  this.parentDiv.appendChild(this.previewDiv)
+  this.previewDiv.setAttribute('style', 'background-color:#ddd; position: fixed; left: 0; width: 300px; bottom: 0%; height: 300px; border-top: 1px solid black;')
 
   this.listDiv = document.createElement('div')
-  this.listDiv.setAttribute('style', 'position: absolute; top: 0; left: 0; width: 250px; bottom: 0; border-right: 1px solid black;')
+  this.listDiv.setAttribute('style', 'position: absolute; top: 0; left: 0; width: 350px; height: 300px; border-right: 1px solid black; overflow: auto;')
   this.previewDiv.appendChild(this.listDiv)
 
   this.mapDiv = document.createElement('div')
-  this.mapDiv.setAttribute('style', 'position: absolute; top: 0; left: 251px; bottom: 0; right: 0;')
+  this.mapDiv.setAttribute('style', 'position: absolute; top: 0; left: 351px; bottom: 0; right: 0;')
   this.previewDiv.appendChild(this.mapDiv)
 
   this.form = new form('data', CategoryOverpass.formDef(), {
@@ -78,7 +82,32 @@ Editor.prototype.load2 = function (initState) {
   this.map.setView({ lat: 40, lng: 16 }, 14)
 
   this.initCategory()
+
+  this.resize()
+
+  window.addEventListener('scroll', this.resize.bind(this))
+  window.addEventListener('resize', this.resize.bind(this))
 }
+
+Editor.prototype.resize = function () {
+  var p = this.formDiv.getBoundingClientRect()
+  console.log(p, p.top + p.height, window.innerHeight, p.top + p.height - window.innerHeight)
+
+  if (p.top + p.height - window.innerHeight < 0) {
+    this.previewDiv.style.position = 'absolute'
+    this.previewDiv.style.left = '0'
+    this.previewDiv.style.right = '0'
+    this.previewDiv.style.width = 'auto'
+  } else {
+    this.previewDiv.style.position = 'fixed'
+    this.previewDiv.style.left = p.left + 'px'
+    this.previewDiv.style.width = p.width + 'px'
+  }
+
+
+  this.map.invalidateSize()
+}
+
 
 Editor.prototype.initCategory = function () {
   if (this.layer) {

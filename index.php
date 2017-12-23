@@ -59,15 +59,12 @@ if (isset($_REQUEST['file']) && preg_match('/^[A-Za-z0-9_\-]*$/', $_REQUEST['fil
   }
 
   $content .= "<form enctype='multipart/form-data' method='post'>\n";
-  $content .= "<div id='form'>\n";
-  $content .= "<input type='text' name='id' value=\"" . htmlspecialchars($_REQUEST['file']) . "\">";
   $content .= "<textarea id='editor' name='data'>";
   $content .= htmlspecialchars($data);
   $content .= "</textarea>";
-  $content .= "</div>";
   $content .= "<div id='actions'>\n";
+  $content .= "Filename: <input type='text' name='id' value=\"" . htmlspecialchars($_REQUEST['file']) . "\"><br/>";
   $content .= "<input type='submit' value='Save'>\n";
-  $content .= "<input id='preview' type='button' value='Preview'>\n";
   $content .= "<a href='?'>Back to Index</a>";
   $content .= "</div>";
   $content .= "</form>\n";
@@ -122,9 +119,5 @@ print $content;
 ?>
 </div>
 
-<div id='list'>
-</div>
-<div id='map'>
-</div>
 </body>
 </html>
