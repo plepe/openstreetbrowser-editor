@@ -26,13 +26,6 @@ Editor.prototype.isCategory = function () {
 
 Editor.prototype.load = function () {
   this.data = jsonMultilineStrings.join(this.data, { exclude: [ [ 'const' ] ] })
-
-  initState = {}
-  call_hooks('init')
-  call_hooks_callback('init_callback', initState, this.load2.bind(this, initState))
-}
-
-Editor.prototype.load2 = function (initState) {
   this.textarea.style.display = 'none'
 
   this.parentDiv = document.createElement('div')
