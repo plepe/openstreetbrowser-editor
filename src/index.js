@@ -146,9 +146,13 @@ window.OpenStreetBrowserEditor = {
       textarea = textarea[0]
     }
 
-    if (textarea.editor) {
-      textarea.editor.reload()
-      return true
+    if (typeof textarea.editor !== 'undefined') {
+      if (textarea.editor === null) {
+	return false
+      } else {
+	textarea.editor.reload()
+	return true
+      }
     }
 
     textarea.editor = new Editor(textarea)
@@ -160,6 +164,8 @@ window.OpenStreetBrowserEditor = {
 	textarea.editor.load()
       })
       return true
+    } else {
+      textarea.editor = null
     }
   }
 }
