@@ -24,6 +24,48 @@ Editor.prototype.isCategory = function () {
   return (this.data && 'type' in this.data && [ 'index', 'overpass' ].indexOf(this.data.type) !== -1)
 }
 
+Editor.prototype.chooseType = function (callback) {
+  this.textarea.style.display = 'none'
+
+  this.parentDiv = document.createElement('div')
+  this.parentDiv.setAttribute('style', 'position: relative; border: 1px solid black;')
+  this.textarea.parentNode.insertBefore(this.parentDiv, this.textarea)
+
+  this.parentDiv.appendChild(document.createTextNode(lang('editor:choose')))
+
+  var ul = document.createElement('ul')
+  this.parentDiv.appendChild(ul)
+
+  var li = document.createElement('li')
+  ul.appendChild(li)
+
+  var a = document.createElement('a')
+  a.href = '#'
+  a.onclick = function () {
+    this.parentDiv.parentNode.removeChild(this.parentDiv)
+    callback(null)
+    return false
+  }.bind(this)
+  a.appendChild(document.createTextNode(lang('editor:default')))
+  li.appendChild(a)
+
+  var types = [ 'index', 'overpass' ]
+  for (var i in types) {
+    var li = document.createElement('li')
+    ul.appendChild(li)
+
+    var a = document.createElement('a')
+    a.href = '#'
+    a.onclick = function (type) {
+      this.parentDiv.parentNode.removeChild(this.parentDiv)
+      callback(type)
+      return false
+    }.bind(this, types[i])
+    a.appendChild(document.createTextNode(lang('editor:' + types[i])))
+    li.appendChild(a)
+  }
+}
+
 Editor.prototype.load = function () {
   this.data = jsonMultilineStrings.join(this.data, { exclude: [ [ 'const' ] ] })
   this.textarea.style.display = 'none'
@@ -149,6 +191,23 @@ window.OpenStreetBrowserEditor = {
     }
 
     textarea.editor = new Editor(textarea)
+
+    if (textarea.value === '') {
+      var initState = {}
+      call_hooks('init', initState)
+      call_hooks_callback('init_callback', initState, function (initState) {
+	textarea.editor.chooseType(function (type) {
+	  if (type === null) {
+	    setCodeMirror([textarea])
+	  } else {
+	    // textarea.editor.setCategory(type)
+	    textarea.editor.load()
+	  }
+	})
+      })
+
+      return true
+    }
 
     if (textarea.editor.isCategory()) {
       var initState = {}
