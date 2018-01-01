@@ -45,10 +45,10 @@ Editor.prototype.load2 = function (initState) {
 
   this.previewDiv = document.createElement('div')
   this.parentDiv.appendChild(this.previewDiv)
-  this.previewDiv.setAttribute('style', 'background-color:#ddd; position: fixed; left: 0; width: 300px; bottom: 0%; height: 300px; border-top: 1px solid black;')
+  this.previewDiv.setAttribute('style', 'background-color:#ddd; position: fixed; left: 0; width: 300px; bottom: 0%; height: 300px; border-top: 1px solid grey;')
 
   this.listDiv = document.createElement('div')
-  this.listDiv.setAttribute('style', 'position: absolute; top: 0; left: 0; width: 350px; height: 300px; border-right: 1px solid black; overflow: auto;')
+  this.listDiv.setAttribute('style', 'position: absolute; top: 0; left: 0; width: 350px; height: 300px; border-right: 1px solid grey; border-bottom: 1px solid black; overflow: auto;')
   this.previewDiv.appendChild(this.listDiv)
 
   this.mapDiv = document.createElement('div')
