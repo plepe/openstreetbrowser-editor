@@ -154,9 +154,11 @@ window.OpenStreetBrowserEditor = {
     textarea.editor = new Editor(textarea)
 
     if (textarea.editor.isCategory()) {
-      window.setTimeout(function () {
+      var initState = {}
+      call_hooks('init', initState)
+      call_hooks_callback('init_callback', initState, function (initState) {
 	textarea.editor.load()
-      }, 0)
+      })
       return true
     }
   }
