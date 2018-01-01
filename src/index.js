@@ -91,17 +91,30 @@ Editor.prototype.load2 = function (initState) {
 
 Editor.prototype.resize = function () {
   var p = this.formDiv.getBoundingClientRect()
-  console.log(p, p.top + p.height, window.innerHeight, p.top + p.height - window.innerHeight)
+  var height = Math.min(300, window.innerHeight / 2)
 
-  if (p.top + p.height - window.innerHeight < 0) {
+  this.formDiv.style.paddingBottom = (height + 1) + 'px'
+  this.listDiv.style.height = height + 'px'
+    this.previewDiv.style.height = height + 'px'
+
+  if (window.innerHeight - p.top < height) {
+    this.previewDiv.style.display = 'none'
+  } else if (p.top + p.height - window.innerHeight < 0) {
+    this.previewDiv.style.display = 'block'
     this.previewDiv.style.position = 'absolute'
     this.previewDiv.style.left = '0'
     this.previewDiv.style.right = '0'
     this.previewDiv.style.width = 'auto'
   } else {
+    this.previewDiv.style.display = 'block'
     this.previewDiv.style.position = 'fixed'
     this.previewDiv.style.left = p.left + 'px'
     this.previewDiv.style.width = p.width + 'px'
+    if (window.innerHeight - p.top < height * 2) {
+      this.previewDiv.style.bottom = (window.innerHeight - p.top - height * 2) + 'px'
+    } else {
+      this.previewDiv.style.bottom = '0'
+    }
   }
 
 
