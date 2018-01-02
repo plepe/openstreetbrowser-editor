@@ -877,7 +877,18 @@ function formDef () {
   };
 }
 
-module.exports = {
-  formDef: formDef
+function newData () {
+  return {
+    "name": {
+      "en": ""
+    },
+    "query": {
+      "16": ""
+    }
+  }
 }
 
+module.exports = {
+  formDef: formDef,
+  newData: newData
+}

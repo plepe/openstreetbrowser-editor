@@ -201,6 +201,7 @@ window.OpenStreetBrowserEditor = {
 	    setCodeMirror([textarea])
 	  } else {
 	    // textarea.editor.setCategory(type)
+	    textarea.editor.data = CategoryOverpass.newData()
 	    textarea.editor.load()
 	  }
 	})
