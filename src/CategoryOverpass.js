@@ -1,3 +1,5 @@
+var jsonMultilineStrings = require('json-multiline-strings')
+
 function formDef () {
   return {
       "type": {
@@ -888,7 +890,17 @@ function newData () {
   }
 }
 
+function postLoad (data) {
+  return jsonMultilineStrings.join(data, { exclude: [ [ 'const' ] ] })
+}
+
+function preSave (data) {
+  return jsonMultilineStrings.split(data, { exclude: [ [ 'const' ] ] })
+}
+
 module.exports = {
   formDef: formDef,
-  newData: newData
+  newData: newData,
+  postLoad: postLoad,
+  preSave: preSave
 }

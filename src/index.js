@@ -1,6 +1,5 @@
 var OverpassFrontend = require('overpass-frontend')
 var OpenStreetBrowser = require('openstreetbrowser')
-var jsonMultilineStrings = require('json-multiline-strings')
 var CategoryOverpass = require('./CategoryOverpass')
 
 global.options = {}
@@ -67,7 +66,7 @@ Editor.prototype.chooseType = function (callback) {
 }
 
 Editor.prototype.load = function () {
-  this.data = jsonMultilineStrings.join(this.data, { exclude: [ [ 'const' ] ] })
+  this.data = CategoryOverpass.postLoad(this.data)
   this.textarea.style.display = 'none'
 
   this.parentDiv = document.createElement('div')
@@ -101,7 +100,7 @@ Editor.prototype.load = function () {
     this.data = this.form.get_data()
 
     var data = JSON.parse(JSON.stringify(this.data))
-    data = JSON.stringify(jsonMultilineStrings.split(data, { exclude: [ [ 'const' ] ] }), null, '    ')
+    data = JSON.stringify(CategoryOverpass.preSave(data), null, '    ')
     this.textarea.value = data
 
     this.initCategory()
