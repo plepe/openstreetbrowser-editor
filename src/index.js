@@ -2,6 +2,7 @@ var OverpassFrontend = require('overpass-frontend')
 var OpenStreetBrowser = require('openstreetbrowser')
 
 var categoryTypes = {
+  index: require('./CategoryIndex'),
   overpass: require('./CategoryOverpass')
 }
 
