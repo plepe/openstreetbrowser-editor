@@ -1,6 +1,9 @@
 var OverpassFrontend = require('overpass-frontend')
 var OpenStreetBrowser = require('openstreetbrowser')
-var CategoryOverpass = require('./CategoryOverpass')
+
+var categoryTypes = {
+  overpass: require('./CategoryOverpass')
+}
 
 global.options = {}
 global.overpassFrontend = new OverpassFrontend('//overpass-api.de/api/interpreter')
@@ -20,7 +23,20 @@ function Editor (textarea) {
 }
 
 Editor.prototype.isCategory = function () {
-  return (this.data && 'type' in this.data && [ 'index', 'overpass' ].indexOf(this.data.type) !== -1)
+  if (!this.data || !'type' in this.data) {
+    return false
+  }
+
+  if (this.data.type in categoryTypes) {
+    this.categoryType = categoryTypes[this.data.type]
+    return true
+  }
+
+  return false
+}
+
+Editor.prototype.setCategoryType = function (typeId) {
+  this.categoryType = categoryTypes[typeId]
 }
 
 Editor.prototype.chooseType = function (callback) {
@@ -48,8 +64,7 @@ Editor.prototype.chooseType = function (callback) {
   a.appendChild(document.createTextNode(lang('editor:default')))
   li.appendChild(a)
 
-  var types = [ 'index', 'overpass' ]
-  for (var i in types) {
+  for (var k in categoryTypes) {
     var li = document.createElement('li')
     ul.appendChild(li)
 
@@ -59,14 +74,14 @@ Editor.prototype.chooseType = function (callback) {
       this.parentDiv.parentNode.removeChild(this.parentDiv)
       callback(type)
       return false
-    }.bind(this, types[i])
-    a.appendChild(document.createTextNode(lang('editor:' + types[i])))
+    }.bind(this, k)
+    a.appendChild(document.createTextNode(lang('editor:' + k)))
     li.appendChild(a)
   }
 }
 
 Editor.prototype.load = function () {
-  this.data = CategoryOverpass.postLoad(this.data)
+  this.data = this.categoryType.postLoad(this.data)
   this.textarea.style.display = 'none'
 
   this.parentDiv = document.createElement('div')
@@ -89,7 +104,7 @@ Editor.prototype.load = function () {
   this.mapDiv.setAttribute('style', 'position: absolute; top: 0; left: 351px; bottom: 0; right: 0;')
   this.previewDiv.appendChild(this.mapDiv)
 
-  this.form = new form('data', CategoryOverpass.formDef(), {
+  this.form = new form('data', this.categoryType.formDef(), {
     type: 'form_chooser',
     order: false
   })
@@ -100,7 +115,7 @@ Editor.prototype.load = function () {
     this.data = this.form.get_data()
 
     var data = JSON.parse(JSON.stringify(this.data))
-    data = JSON.stringify(CategoryOverpass.preSave(data), null, '    ')
+    data = JSON.stringify(this.categoryType.preSave(data), null, '    ')
     this.textarea.value = data
 
     this.initCategory()
@@ -162,7 +177,12 @@ Editor.prototype.initCategory = function () {
     this.listDiv.innerHTML = ''
   }
 
-  this.layer = new OpenStreetBrowser.CategoryOverpass('edit', this.data)
+  if (this.categoryType === categoryTypes['index']) {
+    this.layer = new OpenStreetBrowser.CategoryIndex('edit', this.data)
+  } else {
+    this.layer = new OpenStreetBrowser.CategoryOverpass('edit', this.data)
+  }
+
   this.layer.load(function () {
     this.layer.setMap(this.map)
     this.layer.open()
@@ -195,12 +215,12 @@ window.OpenStreetBrowserEditor = {
       var initState = {}
       call_hooks('init', initState)
       call_hooks_callback('init_callback', initState, function (initState) {
-	textarea.editor.chooseType(function (type) {
-	  if (type === null) {
+	textarea.editor.chooseType(function (typeId) {
+	  if (typeId === null) {
 	    setCodeMirror([textarea])
 	  } else {
-	    // textarea.editor.setCategory(type)
-	    textarea.editor.data = CategoryOverpass.newData()
+	    textarea.editor.setCategoryType(typeId)
+	    textarea.editor.data = textarea.editor.categoryType.newData()
 	    textarea.editor.load()
 	  }
 	})
