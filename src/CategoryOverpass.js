@@ -2,9 +2,6 @@ var jsonMultilineStrings = require('json-multiline-strings')
 
 function formDef () {
   return {
-      "type": {
-          "type": "hidden",
-      },
       "name": {
 	  "type": "form_chooser",
 	  "name": "Names",
@@ -895,7 +892,15 @@ function postLoad (data) {
 }
 
 function preSave (data) {
-  return jsonMultilineStrings.split(data, { exclude: [ [ 'const' ] ] })
+  var ret = {
+    "type": "overpass"
+  }
+
+  for (var k in data) {
+    ret[k] = data[k]
+  }
+
+  return jsonMultilineStrings.split(ret, { exclude: [ [ 'const' ] ] })
 }
 
 module.exports = {
