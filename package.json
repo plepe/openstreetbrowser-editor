@@ -6,8 +6,9 @@
   "author": "Stephan Bösch-Plepelits <skunk@xover.mud.at>",
   "license": "GPL-3.0",
   "scripts": {
-    "build": "browserify -g browserify-css src/index.js -o dist/app.js",
-    "watch": "watchify --debug -g browserify-css src/index.js -o dist/app.js -v",
+    "build": "npm run build-lang ; browserify -g browserify-css src/index.js -o dist/app.js",
+    "build-lang": "lib/modulekit/lang/bin/build_dist",
+    "watch": "npm run build-lang ; watchify --debug -g browserify-css src/index.js -o dist/app.js -v",
     "prepublish": "npm run build"
   },
   "dependencies": {
