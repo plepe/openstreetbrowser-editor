@@ -108,7 +108,7 @@ Editor.prototype.load = function () {
     this.previewDiv.appendChild(this.mapDiv)
   }
 
-  this.form = new form('data', this.categoryType.formDef(), {
+  this.form = new form('data', this.categoryType.formDef(this.data), {
     type: 'form_chooser',
     order: false
   })

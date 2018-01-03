@@ -1,4 +1,4 @@
-function formDef () {
+function formDef (data) {
   var ret = {
     "name": {
       "type": "form_chooser",

@@ -1,8 +1,8 @@
 var jsonMultilineStrings = require('json-multiline-strings')
 var CategoryBase = require('./CategoryBase')
 
-function formDef () {
-  var ret = CategoryBase.formDef()
+function formDef (data) {
+  var ret = CategoryBase.formDef(data)
 
   var x = {
     "type": "array",
