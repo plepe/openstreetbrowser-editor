@@ -270,9 +270,14 @@ function preSave (data) {
   return jsonMultilineStrings.split(ret, { exclude: [ [ 'const' ] ] })
 }
 
+function hasMap () {
+  return true
+}
+
 module.exports = {
   formDef: formDef,
   newData: newData,
   postLoad: postLoad,
-  preSave: preSave
+  preSave: preSave,
+  hasMap: hasMap
 }

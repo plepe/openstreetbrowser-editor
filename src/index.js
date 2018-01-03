@@ -90,20 +90,23 @@ Editor.prototype.load = function () {
   this.textarea.parentNode.insertBefore(this.parentDiv, this.textarea)
 
   this.formDiv = document.createElement('div')
-  this.formDiv.setAttribute('style', 'padding-bottom: 301px;')
   this.parentDiv.appendChild(this.formDiv)
 
-  this.previewDiv = document.createElement('div')
-  this.parentDiv.appendChild(this.previewDiv)
-  this.previewDiv.setAttribute('style', 'background-color:#ddd; position: fixed; left: 0; width: 300px; bottom: 0%; height: 300px; border-top: 1px solid grey;')
+  if (this.categoryType.hasMap()) {
+    this.formDiv.setAttribute('style', 'padding-bottom: 301px;')
 
-  this.listDiv = document.createElement('div')
-  this.listDiv.setAttribute('style', 'position: absolute; top: 0; left: 0; width: 350px; height: 300px; border-right: 1px solid grey; border-bottom: 1px solid black; overflow: auto;')
-  this.previewDiv.appendChild(this.listDiv)
+    this.previewDiv = document.createElement('div')
+    this.parentDiv.appendChild(this.previewDiv)
+    this.previewDiv.setAttribute('style', 'background-color:#ddd; position: fixed; left: 0; width: 300px; bottom: 0%; height: 300px; border-top: 1px solid grey;')
 
-  this.mapDiv = document.createElement('div')
-  this.mapDiv.setAttribute('style', 'position: absolute; top: 0; left: 351px; bottom: 0; right: 0;')
-  this.previewDiv.appendChild(this.mapDiv)
+    this.listDiv = document.createElement('div')
+    this.listDiv.setAttribute('style', 'position: absolute; top: 0; left: 0; width: 350px; height: 300px; border-right: 1px solid grey; border-bottom: 1px solid black; overflow: auto;')
+    this.previewDiv.appendChild(this.listDiv)
+
+    this.mapDiv = document.createElement('div')
+    this.mapDiv.setAttribute('style', 'position: absolute; top: 0; left: 351px; bottom: 0; right: 0;')
+    this.previewDiv.appendChild(this.mapDiv)
+  }
 
   this.form = new form('data', this.categoryType.formDef(), {
     type: 'form_chooser',
@@ -122,14 +125,16 @@ Editor.prototype.load = function () {
     this.initCategory()
   }.bind(this)
 
-  this.map = L.map(this.mapDiv)
-  global.map = this.map // TODO: remove this
+  if (this.categoryType.hasMap()) {
+    this.map = L.map(this.mapDiv)
+    global.map = this.map // TODO: remove this
 
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-  }).addTo(this.map)
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(this.map)
 
-  this.map.setView({ lat: 40, lng: 16 }, 14)
+    this.map.setView({ lat: 40, lng: 16 }, 14)
+  }
 
   this.initCategory()
 
@@ -140,12 +145,16 @@ Editor.prototype.load = function () {
 }
 
 Editor.prototype.resize = function () {
+  if (!this.categoryType.hasMap()) {
+    return
+  }
+
   var p = this.formDiv.getBoundingClientRect()
   var height = Math.min(300, window.innerHeight / 2)
 
   this.formDiv.style.paddingBottom = (height + 1) + 'px'
   this.listDiv.style.height = height + 'px'
-    this.previewDiv.style.height = height + 'px'
+  this.previewDiv.style.height = height + 'px'
 
   if (window.innerHeight - p.top < height) {
     this.previewDiv.style.display = 'none'
@@ -185,7 +194,10 @@ Editor.prototype.initCategory = function () {
   }
 
   this.layer.load(function () {
-    this.layer.setMap(this.map)
+    if (this.categoryType.hasMap()) {
+      this.layer.setMap(this.map)
+    }
+
     this.layer.open()
 
     this.layer.setParentDom(this.listDiv)

@@ -65,9 +65,14 @@ function preSave (data) {
   return ret
 }
 
+function hasMap () {
+  return false
+}
+
 module.exports = {
   formDef: formDef,
   newData: newData,
   postLoad: postLoad,
-  preSave: preSave
+  preSave: preSave,
+  hasMap: hasMap
 }
