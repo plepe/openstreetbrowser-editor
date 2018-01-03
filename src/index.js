@@ -8,7 +8,6 @@ var categoryTypes = {
 
 global.options = {}
 global.overpassFrontend = new OverpassFrontend('//overpass-api.de/api/interpreter')
-global.ui_lang = 'en'
 global.config = {}
 global.currentPath = null
 
