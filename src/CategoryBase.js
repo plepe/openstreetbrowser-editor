@@ -10,11 +10,19 @@ function formDef (data) {
     }
   }
 
-  for (var k in languages) {
-    var l = languages[k]
-    ret.name.def[l] = {
+  for (var k in language_list) {
+    ret.name.def[k] = {
       "type": "text",
-      "name": lang('lang:' + l) + ' (' + lang('lang_native:' + l) + ')'
+      "name": lang('lang:' + k) + ' (' + lang('lang_native:' + k) + ')'
+    }
+  }
+
+  for (var k in data.name) {
+    if (!(k in language_list)) {
+      ret.name.def[k] = {
+	"type": "text",
+	"name": 'Language "' + k + '"'
+      }
     }
   }
 
