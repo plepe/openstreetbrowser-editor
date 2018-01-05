@@ -27,7 +27,13 @@ $repoIdHTML = htmlspecialchars($_REQUEST['repoId']);
 if (!isset($repo)) {
   $content .= "<ul>\n";
   foreach ($repositories as $repoId => $repoData) {
-    $content .= '<li><a href="?repoId=' . htmlspecialchars($repoId) . '">Repository "'. htmlspecialchars($repoId) . "\"</a></li>\n";
+    $r = getRepo($repoId, $repoData);
+    $content .= '<li><a href="?repoId=' . htmlspecialchars($repoId) . '">Repository "'. htmlspecialchars($repoId) . "\"</a>";
+    if (!method_exists($r, 'file_put_contents')) {
+      $content .= " (not editable!)";
+    }
+
+    $content .= "</li>\n";
   }
   $content .= "</ul>";
 }
