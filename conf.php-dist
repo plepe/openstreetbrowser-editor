@@ -1,5 +1,15 @@
 <?php
-$category_path = "categories/";
+$config['repositories'] = array(
+  'default' => array(
+    'path' => "../openstreetbrowser-categories-main/",
+    'type' => 'dir',
+  ),
+  'skunk' => array(
+    'title' => "Repo of user 'Skunk'",
+    'path' => "../osm-skunk/",
+    'type' => 'git', // not editable!
+  ),
+);
 
 $config['defaultView'] = array('lat' => 48.2, 'lon' => 16.34, 'zoom' => 14);
 

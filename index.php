@@ -4,6 +4,10 @@ Header("content-type: text/html; charset=utf-8");
 require "conf.php"; /* load configuration */
 require __DIR__ . '/vendor/autoload.php';
 include "modulekit/loader.php"; /* loads all php-includes */
+include "node_modules/openstreetbrowser/src/repositories.php";
+include "node_modules/openstreetbrowser/src/RepositoryBase.php";
+include "node_modules/openstreetbrowser/src/RepositoryDir.php";
+include "node_modules/openstreetbrowser/src/RepositoryGit.php";
 session_start();
 call_hooks("init");
 
@@ -11,7 +15,23 @@ html_export_var(array(
   'config' => $config,
 ));
 
-if (isset($_REQUEST['file']) && preg_match('/^[A-Za-z0-9_\-]*$/', $_REQUEST['file'])) {
+$repositories = getRepositories();
+if (sizeof($repositories) === 1) {
+  $_REQUEST['repoId'] = array_keys($repositories)[0];
+}
+if (array_key_exists($_REQUEST['repoId'], $repositories)) {
+  $repo = getRepo($_REQUEST['repoId'], $repositories[$_REQUEST['repoId']]);
+}
+$repoIdHTML = htmlspecialchars($_REQUEST['repoId']);
+
+if (!isset($repo)) {
+  $content .= "<ul>\n";
+  foreach ($repositories as $repoId => $repoData) {
+    $content .= '<li><a href="?repoId=' . htmlspecialchars($repoId) . '">Repository "'. htmlspecialchars($repoId) . "\"</a></li>\n";
+  }
+  $content .= "</ul>";
+}
+else if (isset($_REQUEST['file']) && preg_match('/^[A-Za-z0-9_\-]*$/', $_REQUEST['file'])) {
   if ($_REQUEST['file'] === '') {
     $typeClass = 'TypeOverpass';
     if (isset($_REQUEST['type'])) {
@@ -20,8 +40,8 @@ if (isset($_REQUEST['file']) && preg_match('/^[A-Za-z0-9_\-]*$/', $_REQUEST['fil
     $data = $typeClass::newData();
   }
   else {
-    $file = "{$category_path}/{$_REQUEST['file']}.json";
-    $data = file_get_contents($file);
+    $file = "{$_REQUEST['file']}.json";
+    $data = $repo->file_get_contents($file);
     if ($data === false ) {
       messages_add(error_get_last()['message'], MSG_ERROR);
     }
@@ -43,13 +63,13 @@ if (isset($_REQUEST['file']) && preg_match('/^[A-Za-z0-9_\-]*$/', $_REQUEST['fil
     }
     // save data to file
     elseif ($_REQUEST['id'] !== $_REQUEST['file']) {
-      $file = "{$category_path}/{$_REQUEST['id']}.json";
+      $file = "{$_REQUEST['id']}.json";
       $new_url = array('file' => $_REQUEST['id']);
     }
 
     if ($error) {
     }
-    elseif (file_put_contents($file, $data) === false) {
+    elseif ($repo->file_put_contents($file, $data) === false) {
       messages_add(error_get_last()['message'], MSG_ERROR);
     }
     else {
@@ -65,27 +85,27 @@ if (isset($_REQUEST['file']) && preg_match('/^[A-Za-z0-9_\-]*$/', $_REQUEST['fil
   $content .= "<div id='actions'>\n";
   $content .= "Filename: <input type='text' name='id' value=\"" . htmlspecialchars($_REQUEST['file']) . "\"><br/>";
   $content .= "<input type='submit' value='Save'>\n";
-  $content .= "<a href='?'>Back to Index</a>";
+  $content .= "<a href=\"?repoId={$repoIdHTML}\">Back to Repository</a>";
   $content .= "</div>";
   $content .= "</form>\n";
 } else {
-  $d = opendir($category_path);
   $files = array();
-  while ($f = readdir($d)) {
+  foreach ($repo->scandir() as $f) {
     if (preg_match("/^([^\.].*)\.json$/", $f, $m)) {
       $files[] = $m[1];
     }
   }
 
-  $content = "Create new category: ";
-  $content .= "<a href='?file=&type=index'>index</a>, ";
-  $content .= "<a href='?file=&type=overpass'>overpass</a>";
+  $content = "<a href=\".\">Back to Index</a> ";
+  $content .= "Create new category: ";
+  $content .= "<a href='?repoId={$repoIdHTML}&amp;file=&amp;type=index'>index</a>, ";
+  $content .= "<a href='?repoId={$repoIdHTML}&amp;file=&amp;type=overpass'>overpass</a>";
 
   $content .= "<ul>\n";
 
   natsort($files);
   foreach ($files as $file) {
-    $content .= "  <li><a href='?file=" . urlencode($file) . "'>{$file}</a></li>\n";
+    $content .= "  <li><a href='?repoId={$repoIdHTML}&amp;file=" . urlencode($file) . "'>{$file}</a></li>\n";
   }
 
   $content .= "</ul>\n";
