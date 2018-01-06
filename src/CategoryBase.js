@@ -13,7 +13,8 @@ function formDef (data) {
   for (var k in language_list) {
     ret.name.def[k] = {
       "type": "text",
-      "name": lang('lang:' + k) + ' (' + lang('lang_native:' + k) + ')'
+      "name": lang('lang:' + k) + ' (' + lang('lang_native:' + k) + ')',
+      "include_data": "not_null",
     }
   }
 
@@ -21,7 +22,8 @@ function formDef (data) {
     if (!(k in language_list)) {
       ret.name.def[k] = {
 	"type": "text",
-	"name": 'Language "' + k + '"'
+	"name": 'Language "' + k + '"',
+        "include_data": "not_null",
       }
     }
   }

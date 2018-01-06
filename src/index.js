@@ -108,7 +108,7 @@ Editor.prototype.load = function () {
   }
 
   this.form = new form('data', this.categoryType.formDef(this.data), {
-    type: 'form_chooser',
+    type: 'form',
     order: false
   })
   this.form.show(this.formDiv)

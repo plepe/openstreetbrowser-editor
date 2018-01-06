@@ -169,6 +169,7 @@ function formDef (data) {
     "name": "Feature evaluation",
     "desc": "This codes will be evaluated for each map feature. You can set different styles, texts, etc. All sub values will be evaluated via the <a href=\"https://github.com/twigjs/twig.js\">TwigJS language</a>.",
     "result_keep_order": true,
+    "include_data": "not_null",
     "button:add_element": "Add feature code",
     "def": {
       "pre": {
@@ -231,13 +232,15 @@ function formDef (data) {
   ret["info"] = {
     "type": "textarea",
     "name": "Info (e.g. map key)",
-    "desc": "You can use TwigJS markup in this field."
+    "desc": "You can use TwigJS markup in this field.",
+    "include_data": "not_null"
   }
 
   ret["const"] = {
     "type": "json",
     "name": "const",
-    "desc": "Constants which can be accessed via <code>{{ const }}<code> in twig templates"
+    "desc": "Constants which can be accessed via <code>{{ const }}<code> in twig templates",
+    "include_data": "not_null"
   }
 
   return ret
