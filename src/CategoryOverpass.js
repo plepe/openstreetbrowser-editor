@@ -167,7 +167,7 @@ function formDef (data) {
     "type": "form_chooser",
     "order": false,
     "name": "Feature evaluation",
-    "desc": "This codes will be evaluated for each map feature. You can set different styles, texts, etc. All sub values will be evaluated via the <a href=\"https://github.com/twigjs/twig.js\">TwigJS language</a>.",
+    "desc": "This codes will be evaluated for each map feature. You can set different styles, texts, etc. All sub values will be evaluated via <a href=\"https://github.com/plepe/OpenStreetBrowser/blob/master/doc/TwigJS.md\">TwigJS markup</a>.",
     "result_keep_order": true,
     "include_data": "not_null",
     "button:add_element": "Add feature code",
@@ -232,7 +232,7 @@ function formDef (data) {
   ret["info"] = {
     "type": "textarea",
     "name": "Info (e.g. map key)",
-    "desc": "You can use TwigJS markup in this field.",
+    "desc": "You can use <a href=\"https://github.com/plepe/OpenStreetBrowser/blob/master/doc/TwigJS.md\">TwigJS markup</a> in this field.",
     "include_data": "not_null"
   }
 
