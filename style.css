@@ -4,3 +4,16 @@ textarea {
   box-sizing: border-box;
   height: 300px;
 }
+ul.menu {
+  padding-left: 0;
+}
+ul.menu li {
+  display: inline-block;
+  list-style: none;
+}
+ul.menu li:before {
+  content: ' | ';
+}
+ul.menu li:first-of-type:before {
+  content: '';
+}

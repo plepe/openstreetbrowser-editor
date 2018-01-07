@@ -102,8 +102,10 @@ else if (isset($_REQUEST['file']) && preg_match('/^[A-Za-z0-9_\-]*$/', $_REQUEST
     }
   }
 
-  $content = "<a href=\".\">Back to Index</a> ";
-  $content .= "<a href='?repoId={$repoIdHTML}&amp;file='>Create new category</a>";
+  $content  = "<ul class='menu'>\n";
+  $content .= "<li><a href=\".\">Back to Index</a></li>\n";
+  $content .= "<li><a href='?repoId={$repoIdHTML}&amp;file='>Create new category</a></li>";
+  $content .= "</ul>\n";
 
   $content .= "<ul>\n";
 
