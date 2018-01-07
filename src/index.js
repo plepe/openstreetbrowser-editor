@@ -183,7 +183,9 @@ Editor.prototype.resize = function () {
 Editor.prototype.initCategory = function () {
   if (this.layer) {
     this.layer.close()
-    this.listDiv.innerHTML = ''
+    if (this.listDiv) {
+      this.listDiv.innerHTML = ''
+    }
   }
 
   if (this.categoryType === categoryTypes['index']) {
@@ -199,7 +201,9 @@ Editor.prototype.initCategory = function () {
 
     this.layer.open()
 
-    this.layer.setParentDom(this.listDiv)
+    if (this.listDiv) {
+      this.layer.setParentDom(this.listDiv)
+    }
   }.bind(this))
 }
 
