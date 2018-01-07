@@ -233,7 +233,11 @@ window.OpenStreetBrowserEditor = {
       call_hooks_callback('init_callback', initState, function (initState) {
 	textarea.editor.chooseType(function (typeId) {
 	  if (typeId === null) {
-	    setCodeMirror([textarea])
+            if (typeof setCodeMirror !== 'undefined') {
+              setCodeMirror([textarea])
+            } else {
+              textarea.style.display = 'block'
+            }
 	  } else {
 	    textarea.editor.setCategoryType(typeId)
 	    textarea.editor.data = textarea.editor.categoryType.newData()
