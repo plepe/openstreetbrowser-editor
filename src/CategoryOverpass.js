@@ -17,7 +17,7 @@ function formDef (data) {
     "def": {
       "type": "textarea",
       "name": "Query",
-      "desc": "Overpass QL query without \"out\" statement, e.g.:<br/><code>(node[amenity=bar];way[amenity=bar];)</code>"
+      "desc": "<a href='https://wiki.openstreetmap.org/wiki/Overpass_API/Overpass_QL'>Overpass QL</a> query without \"out\" statement, e.g.:<br/><code>(node[amenity=bar];way[amenity=bar];)</code>"
     },
     "min": 1,
     "button:add_element": "Add query at different zoom level"
@@ -31,113 +31,136 @@ function formDef (data) {
       "stroke": {
 	"type": "textarea",
 	"name": "stroke",
+        "desc": "(boolean) Whether to draw stroke along the path. Set it to empty string or values '0', 'false' to disable borders on polygons or circles.",
 	"default": "1"
       },
       "weight": {
 	"type": "textarea",
 	"name": "weight",
+        "desc": "(number) Stroke width in pixels",
 	"default": "3"
       },
       "color": {
 	"type": "textarea",
 	"name": "color",
+        "desc": "(color) Stroke color, e.g. '#3388ff' or 'red'",
 	"default": "#3388ff"
       },
       "offset": {
 	"type": "textarea",
 	"name": "offset",
+        "desc": "(number) Offset polylines to left (negative value) or right (positive value) in pixels.",
 	"default": "0"
       },
       "opacity": {
 	"type": "textarea",
 	"name": "opacity",
+        "desc": "(number) Stroke opacity: 0..transparent, 1..fully opaque.",
 	"default": "1"
       },
       "lineCap": {
 	"type": "textarea",
 	"name": "lineCap",
+        "desc": "(string) A string that defines shape to be used at the end of the stroke: 'butt', 'round' or 'square'.",
 	"default": "round"
       },
       "lineJoin": {
 	"type": "textarea",
 	"name": "lineJoin",
+        "desc": "(string) A string that defines shape to be used at the corners of the stroke: 'miter', 'round', 'bevel'.",
 	"default": "round"
       },
       "dashArray": {
 	"type": "textarea",
-	"name": "dashArray"
+	"name": "dashArray",
+        "desc": "(string) A string that defines the stroke dash pattern. It's a list of comma and/or white space separated numbers that specify the lengths of alternating dashes and gaps, e.g. '2,2' or '10,5,5,10'.",
       },
       "dashOffset": {
 	"type": "textarea",
-	"name": "dashOffset"
+	"name": "dashOffset",
+        "desc": "(number) Defines the distance into the dash pattern to start the dash."
       },
       "fill": {
 	"type": "textarea",
-	"name": "fill"
+	"name": "fill",
+        "desc": "(boolean) Whether to fill the path with color. Set it to empty string or values '0', 'false' to disable filling on polygons or circles.",
       },
       "fillColor": {
 	"type": "textarea",
 	"name": "fillColor",
+        "desc": "(color) Fill color. Defaults to the value of the color option.",
 	"default": "#3388ff"
       },
       "fillOpacity": {
 	"type": "textarea",
 	"name": "fillOpacity",
+        "desc": "Fill opacity: 0..transparent, 1..fully opaque.",
 	"default": "0.2"
       },
       "fillRule": {
 	"type": "textarea",
-	"name": "fillRule"
+	"name": "fillRule",
+        "desc": "(string) A string that defines how the inside of a shape is determined: 'evenodd', 'nonzero'.",
+        "default": "evenodd"
       },
       "smoothFactor": {
 	"type": "textarea",
 	"name": "smoothFactor",
+        "desc": "(number) How much to simplify the polyline on each zoom level.",
 	"default": "1.0"
       },
       "nodeFeature": {
 	"type": "textarea",
 	"name": "nodeFeature",
+        "desc": "(string) What feature type to use for nodes: 'Marker', 'Circle' or 'CircleMarker'.",
 	"default": "CircleMarker"
       },
       "radius": {
 	"type": "textarea",
 	"name": "radius",
+        "desc": "(number) Radius of the circle. For features of type 'Circle' in meters, for type 'CircleMarker' in pixels.",
 	"default": "10"
       },
       "noClip": {
 	"type": "textarea",
 	"name": "noClip",
-	"default": "1"
+        "desc": "(boolean) Disable polyline clipping.",
+	"default": "0"
       },
       "text": {
 	"type": "textarea",
 	"name": "text",
-	"default": "",
-	"desc": "Text along lines. See <a href=\"https://github.com/makinacorpus/Leaflet.TextPath\">documentation</a> for details"
+	"desc": "(string) Text along lines. See <a href=\"https://github.com/makinacorpus/Leaflet.TextPath\">documentation</a> for details",
+	"default": ""
       },
       "textRepeat": {
 	"type": "textarea",
 	"name": "textRepeat",
+        "desc": "(boolean) Specifies if the text should be repeated along the polyline.",
 	"default": "1"
       },
       "textOffset": {
 	"type": "textarea",
 	"name": "textOffset",
+        "desc": "(number) Set an offset to position text relative to the polyline.",
 	"default": "0"
       },
       "textBelow": {
 	"type": "textarea",
 	"name": "textBelow",
+        "desc": "(boolean) Show text below the path.",
 	"default": ""
       },
       "textOrientation": {
 	"type": "textarea",
 	"name": "textOrientation",
-	"default": "Either a value in degrees or \"flip\" or \"perpendicular\""
+	"desc": "(number/string) Rotate text. Either a value in degrees or \"flip\" or \"perpendicular\"",
+        "default": "0",
       },
       "textLetterSpacing": {
 	"type": "textarea",
 	"name": "textLetterSpacing",
+        "desc": "(number/number with unit) controls spacing between text characters",
 	"default": ""
       },
       "textFontSize": {
@@ -153,12 +176,14 @@ function formDef (data) {
       "textFill": {
 	"type": "textarea",
 	"name": "textFill",
+        "desc": "(color) Text color.",
 	"default": "#000000"
       },
       "textFillOpacity": {
 	"type": "textarea",
 	"name": "textFillOpacity",
-	"default": "#000000"
+        "desc": "(number) Font opacity: 0..transparent, 1..fully opaque.",
+	"default": "1"
       }
     },
   }
@@ -180,41 +205,51 @@ function formDef (data) {
       "title": {
 	"type": "textarea",
 	"name": "title",
+        "desc": "(string) Title to use in the popup and the list",
 	"default": "{{ localizedTag(tags, 'name') |default(localizedTag(tags, 'operator')) | default(localizedTag(tags, 'ref')) | default(trans('unnamed')) }}"
       },
       "description": {
 	"type": "textarea",
-	"name": "description"
+	"name": "description",
+        "desc": "(string) Description which will be shown in the list next to the title and in the popup (if no <tt>popupDescription</tt> is set).",
       },
       "popupDescription": {
 	"type": "textarea",
-	"name": "popupDescription"
+	"name": "popupDescription",
+        "desc": "(string) Description which will be shown in the popup."
       },
       "body": {
 	"type": "textarea",
-	"name": "body"
+	"name": "body",
+        "desc": "(string) Longer text which will be shown in the popup and in the detailed view."
       },
       "markerSign": {
 	"type": "textarea",
-	"name": "markerSign"
+	"name": "markerSign",
+        "desc": "(string) Text (e.g. an icon character) which will be shown in the marker (if there is any)."
       },
       "markerSymbol": {
 	"type": "textarea",
 	"name": "markerSymbol",
+        "desc": "(string) An SVG which will be shown as marker on the centroid of the map feature. The SVG may have anchorX and anchorY attributes, otherwise it will be centered. You can use the markerXYZ functions to create an SVG, e.g. <tt>{{ markerPointer({})|raw }}</tt>.",
 	"default": "{{ markerPointer({})|raw }}"
       },
       "listMarkerSymbol": {
 	"type": "textarea",
 	"name": "listMarkerSymbol",
+        "desc": "(string) A symbol which will be shown in the list. Either a SVG similar to 'markerSymbol' or the strings 'line' or 'polygon' (show a line or a rectangle with the definition from the styles).",
 	"default": "{{ markerCircle({})|raw }}"
       },
       "priority": {
 	"type": "textarea",
-	"name": "priority"
+	"name": "priority",
+        "desc": "(number) Order of map features in the list. Map features with lower value will be shown first."
       },
       "styles": {
 	"type": "textarea",
-	"name": "styles"
+	"name": "styles",
+        "desc": "(string) Comma-separated list of style-ids which should be shown for this particular map features. Defaults to all styles (except 'hover').",
+        "default": "default"
       }
     }
   }
