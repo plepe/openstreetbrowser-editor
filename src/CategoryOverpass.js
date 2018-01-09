@@ -34,9 +34,9 @@ function formDef (data) {
         "desc": "(boolean) Whether to draw stroke along the path. Set it to empty string or values '0', 'false' to disable borders on polygons or circles.",
 	"default": "1"
       },
-      "weight": {
+      "width": {
 	"type": "textarea",
-	"name": "weight",
+	"name": "width",
         "desc": "(number) Stroke width in pixels",
 	"default": "3"
       },
