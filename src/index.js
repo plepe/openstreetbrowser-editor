@@ -8,8 +8,11 @@ var categoryTypes = {
 
 global.options = {}
 global.overpassFrontend = new OverpassFrontend('//overpass-api.de/api/interpreter')
-global.config = {}
 global.currentPath = null
+
+if (!global.config) {
+  global.config = {}
+}
 
 function Editor (textarea) {
   this.textarea = textarea

@@ -11,6 +11,10 @@ include "node_modules/openstreetbrowser/src/RepositoryGit.php";
 session_start();
 call_hooks("init");
 
+if (!isset($config)) {
+  $config = array();
+}
+
 html_export_var(array(
   'config' => $config,
 ));
