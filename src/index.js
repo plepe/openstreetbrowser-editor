@@ -135,7 +135,11 @@ Editor.prototype.load = function () {
       attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(this.map)
 
-    this.map.setView({ lat: 40, lng: 16 }, 14)
+    if (global.config && global.config.defaultView) {
+      this.map.setView({ lat: config.defaultView.lat, lng: config.defaultView.lon }, config.defaultView.zoom)
+    } else {
+      this.map.setView({ lat: 48.208, lng: 16.375 }, 16)
+    }
   }
 
   this.initCategory()
