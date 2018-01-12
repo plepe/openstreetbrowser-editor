@@ -1,38 +1,19 @@
-#content {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0px;
-  right: 350px;
-  border-right: 1px solid black;
+textarea {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  height: 300px;
 }
-#content #form {
-  position: absolute;
-  overflow: auto;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 26px;
+ul.menu {
+  padding-left: 0;
 }
-#content #actions {
-  position: absolute;
-  bottom: 0;
-  height: 25px;
-  left: 0;
-  right: 0;
+ul.menu li {
+  display: inline-block;
+  list-style: none;
 }
-#map {
-  position: absolute;
-  top: 50%;
-  right: 0;
-  width: 350px;
-  bottom: 0;
+ul.menu li:before {
+  content: ' | ';
 }
-#list {
-  position: absolute;
-  top: 0;
-  bottom: 50%;
-  width: 350px;
-  right: 0;
-  overflow: auto;
+ul.menu li:first-of-type:before {
+  content: '';
 }

@@ -4,14 +4,44 @@ Header("content-type: text/html; charset=utf-8");
 require "conf.php"; /* load configuration */
 require __DIR__ . '/vendor/autoload.php';
 include "modulekit/loader.php"; /* loads all php-includes */
+include "node_modules/openstreetbrowser/src/repositories.php";
+include "node_modules/openstreetbrowser/src/RepositoryBase.php";
+include "node_modules/openstreetbrowser/src/RepositoryDir.php";
+include "node_modules/openstreetbrowser/src/RepositoryGit.php";
 session_start();
 call_hooks("init");
+
+if (!isset($config)) {
+  $config = array();
+}
 
 html_export_var(array(
   'config' => $config,
 ));
 
-if (isset($_REQUEST['file']) && preg_match('/^[A-Za-z0-9_\-]*$/', $_REQUEST['file'])) {
+$repositories = getRepositories();
+if (sizeof($repositories) === 1) {
+  $_REQUEST['repoId'] = array_keys($repositories)[0];
+}
+if (array_key_exists($_REQUEST['repoId'], $repositories)) {
+  $repo = getRepo($_REQUEST['repoId'], $repositories[$_REQUEST['repoId']]);
+}
+$repoIdHTML = htmlspecialchars($_REQUEST['repoId']);
+
+if (!isset($repo)) {
+  $content .= "<ul>\n";
+  foreach ($repositories as $repoId => $repoData) {
+    $r = getRepo($repoId, $repoData);
+    $content .= '<li><a href="?repoId=' . htmlspecialchars($repoId) . '">Repository "'. htmlspecialchars($repoId) . "\"</a>";
+    if (!method_exists($r, 'file_put_contents')) {
+      $content .= " (not editable!)";
+    }
+
+    $content .= "</li>\n";
+  }
+  $content .= "</ul>";
+}
+else if (isset($_REQUEST['file']) && preg_match('/^[A-Za-z0-9_\-]*$/', $_REQUEST['file'])) {
   if ($_REQUEST['file'] === '') {
     $typeClass = 'TypeOverpass';
     if (isset($_REQUEST['type'])) {
@@ -20,50 +50,36 @@ if (isset($_REQUEST['file']) && preg_match('/^[A-Za-z0-9_\-]*$/', $_REQUEST['fil
     $data = $typeClass::newData();
   }
   else {
-    $file = "{$category_path}/{$_REQUEST['file']}.json";
-    $data = file_get_contents($file);
+    $file = "{$_REQUEST['file']}.json";
+    $data = $repo->file_get_contents($file);
     if ($data === false ) {
       messages_add(error_get_last()['message'], MSG_ERROR);
     }
-    $data = json_decode($data, true);
-    $data = jsonMultilineStringsJoin($data, array('exclude' => array(array('const'))));
 
-    if (array_key_exists('type', $data)) {
-      if ($typeClass = get_type($data['type'])) {
-      } else {
-        $typeClass = 'TypeOverpass';
-      }
-    } else {
-      $typeClass = 'TypeOverpass';
-    }
   }
-  html_export_var(array('id' => $file, 'data' => $data));
-  $type = new $typeClass($data);
-
-  $form_def = $type->formDef();
 
   if ($_REQUEST['file'] === '') {
     $data = array_merge(array('id' => ''), $data);
     $form_def = array_merge(array('id' => array('type' => 'text', 'req' => true, 'name' => 'ID', 'check' => array('regexp', '^[A-Za-z0-9_\-]+$', 'Use only ASCII characters, digits, "_" or "-"'))), $form_def);
   }
 
-  $form = new form('data', $form_def, array('type' => 'form_chooser', 'order' => false));
+  if ($_REQUEST['data']) {
+    $data = trim(str_replace("\r\n", "\n", $_REQUEST['data'])) . "\n";
+    $error = false;
 
-  if($form->is_complete()) {
+    if (!preg_match('/^[A-Za-z0-9_\-]*$/', $_REQUEST['id'])) {
+      $error = true;
+      messages_add("Invalid ID", MSG_ERROR);
+    }
     // save data to file
-    $data = $form->save_data();
-    $new_url = null;
-
-    if ($_REQUEST['file'] === '') {
-      $file = "{$category_path}/{$data['id']}.json";
-      $new_url = array('file' => $data['id']);
-      unset($data['id']);
+    elseif ($_REQUEST['id'] !== $_REQUEST['file']) {
+      $file = "{$_REQUEST['id']}.json";
+      $new_url = array('file' => $_REQUEST['id']);
     }
 
-    $type->preSave($data);
-    $data = jsonMultilineStringsSplit($data, array('exclude' => array(array('const'))));
-    $data = json_readable_encode($data) . "\n";
-    if (file_put_contents($file, $data) === false) {
+    if ($error) {
+    }
+    elseif ($repo->file_put_contents($file, $data) === false) {
       messages_add(error_get_last()['message'], MSG_ERROR);
     }
     else {
@@ -72,40 +88,34 @@ if (isset($_REQUEST['file']) && preg_match('/^[A-Za-z0-9_\-]*$/', $_REQUEST['fil
     }
   }
 
-  if ($form->is_empty()) {
-    // load data from file
-    $type->postLoad($data);
-    $form->set_data($data);
-  }
-
   $content .= "<form enctype='multipart/form-data' method='post'>\n";
-  $content .= "<div id='form'>\n";
-  $content .= $form->show();
-  $content .= "</div>";
+  $content .= "<textarea id='editor' name='data'>";
+  $content .= htmlspecialchars($data);
+  $content .= "</textarea>";
   $content .= "<div id='actions'>\n";
+  $content .= "Filename: <input type='text' name='id' value=\"" . htmlspecialchars($_REQUEST['file']) . "\"><br/>";
   $content .= "<input type='submit' value='Save'>\n";
-  $content .= "<input id='preview' type='button' value='Preview'>\n";
-  $content .= "<a href='?'>Back to Index</a>";
+  $content .= "<a href=\"?repoId={$repoIdHTML}\">Back to Repository</a>";
   $content .= "</div>";
   $content .= "</form>\n";
 } else {
-  $d = opendir($category_path);
   $files = array();
-  while ($f = readdir($d)) {
+  foreach ($repo->scandir() as $f) {
     if (preg_match("/^([^\.].*)\.json$/", $f, $m)) {
       $files[] = $m[1];
     }
   }
 
-  $content = "Create new category: ";
-  $content .= "<a href='?file=&type=index'>index</a>, ";
-  $content .= "<a href='?file=&type=overpass'>overpass</a>";
+  $content  = "<ul class='menu'>\n";
+  $content .= "<li><a href=\".\">Back to Index</a></li>\n";
+  $content .= "<li><a href='?repoId={$repoIdHTML}&amp;file='>Create new category</a></li>";
+  $content .= "</ul>\n";
 
   $content .= "<ul>\n";
 
   natsort($files);
   foreach ($files as $file) {
-    $content .= "  <li><a href='?file=" . urlencode($file) . "'>{$file}</a></li>\n";
+    $content .= "  <li><a href='?repoId={$repoIdHTML}&amp;file=" . urlencode($file) . "'>{$file}</a></li>\n";
   }
 
   $content .= "</ul>\n";
@@ -124,6 +134,11 @@ if (isset($_REQUEST['file']) && preg_match('/^[A-Za-z0-9_\-]*$/', $_REQUEST['fil
 <script src="node_modules/leaflet/dist/leaflet.js"></script>
 <script src="node_modules/leaflet-textpath/leaflet.textpath.js"></script>
 <script src="node_modules/leaflet-polylineoffset/leaflet.polylineoffset.js"></script>
+<script>
+window.onload = function () {
+  OpenStreetBrowserEditor.set(document.getElementById('editor'))
+}
+</script>
 </head>
 <body>
 <div id='content'>
@@ -134,9 +149,5 @@ print $content;
 ?>
 </div>
 
-<div id='list'>
-</div>
-<div id='map'>
-</div>
 </body>
 </html>
