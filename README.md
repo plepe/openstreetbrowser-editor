@@ -8,7 +8,7 @@ Prepare installation (based on a plain Ubuntu 16.04 server installation):
 curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
 sudo apt install git apache2 libapache2-mod-php composer nodejs
 cd /var/www/html
-sudo chown USER: . # replace USER by your username
+sudo chown USERNAME: . # replace USERNAME by your username
 ```
 
 Actual installation routine:
@@ -27,5 +27,7 @@ Make a categories directory writeable by the web server (Ubuntu). This uses file
 ```sh
 setfacl -R -m user:www-data:rwX node_modules/openstreetbrowser-categories-main/
 setfacl -R -dm user:www-data:rwX node_modules/openstreetbrowser-categories-main/
-setfacl -R -dm user:MY-USERNAME:rwX node_modules/openstreetbrowser-categories-main/
+setfacl -R -dm user:USERNAME:rwX node_modules/openstreetbrowser-categories-main/
 ```
+
+Browse to http://localhost/openstreetbrowser-editor -> Voila :-)
