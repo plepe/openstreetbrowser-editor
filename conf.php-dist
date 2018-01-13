@@ -1,5 +1,4 @@
 <?php
-<?php
 // Repositories from which to read the categories.
 // repositoryUrl and categoryUrl are twig templates, which take the following input values:
 // {{ repositoryId }}    id of the repository
@@ -9,29 +8,29 @@ $repositories = array(
     'path' => 'node_modules/openstreetbrowser-categories-main',
     'type' => 'dir',
     // public URL of repository
-    'repositoryUrl' => 'https://github.com/example/categories',
+    'repositoryUrl' => 'https://www.openstreetbrowser.org/dev/OpenStreetBrowser/main',
     // public URL of source of a category in repository
-    'categoryUrl' => 'https://github.com/example/categories/tree/master/{{ categoryId }}.json',
+    'categoryUrl' => 'https://www.openstreetbrowser.org/dev/OpenStreetBrowser/main/tree/master/{{ categoryId }}.json',
   ),
 );
 
 // Repositories which should be included from gitea
-$repositoriesGitea = array(
-  'path' => "/home/gitea/gitea-repositories",
-  'url' => "https://www.openstreetbrowser.org/dev",
-);
+#$repositoriesGitea = array(
+#  'path' => "/home/gitea/gitea-repositories",
+#  'url' => "https://www.openstreetbrowser.org/dev",
+#);
 
 $config['defaultView'] = array('lat' => 48.208, 'lon' => 16.375, 'zoom' => 16);
 
 // List of available user interface languages
 $languages = array(
+  "en", // English
   "ast", // Asturian
   "ca", // Catalan
   "cs", // Czech
   "da", // Danish
   "de", // German
   "el", // Greek
-  "en", // English
   "es", // Spanish
   "et", // Estonian
   "fr", // French
