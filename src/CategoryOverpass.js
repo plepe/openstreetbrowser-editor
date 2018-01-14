@@ -250,6 +250,12 @@ function formDef (data) {
 	"name": "styles",
         "desc": "(string) Comma-separated list of style-ids which should be shown for this particular map features. Defaults to all styles (except 'hover').",
         "default": "default"
+      },
+      "preferredZoom": {
+        "type": "textarea",
+        "name": "preferredZoom",
+        "desc": "At which max. zoom level will the map zoom when showing details",
+        "default": "16"
       }
     }
   }
