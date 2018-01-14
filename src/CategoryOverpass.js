@@ -257,12 +257,20 @@ function formDef (data) {
   ret["feature"]["def"]["style"] = JSON.parse(JSON.stringify(styleDef))
   ret["feature"]["def"]["style"]["name"] = "style"
 
-  var l = [ "casing", "highlight", "left", "right" ]
+  var l = [ "casing", "highlight", "left", "right", "hover", "selected" ]
   for (var i in l) {
     var k = l[i]
     ret["feature"]["def"]["style:" + k] = JSON.parse(JSON.stringify(styleDef))
     ret["feature"]["def"]["style:" + k]["name"] = "style:" + k
   }
+
+  ret["feature"]["def"]["style:hover"]["desc"] = "Will be shown when hovering over object in list."
+  ret["feature"]["def"]["style:hover"]["color"] = "black"
+  ret["feature"]["def"]["style:hover"]["radius"] = "12"
+
+  ret["feature"]["def"]["style:selected"]["desc"] = "Will be shown when popup is shown and/or details."
+  ret["feature"]["def"]["style:hover"]["color"] = "#3f3f3f"
+  ret["feature"]["def"]["style:hover"]["radius"] = "12"
 
   ret["info"] = {
     "type": "textarea",
