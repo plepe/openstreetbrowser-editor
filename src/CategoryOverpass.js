@@ -234,6 +234,12 @@ function formDef (data) {
         "desc": "(string) An SVG which will be shown as marker on the centroid of the map feature. The SVG may have anchorX and anchorY attributes, otherwise it will be centered. You can use the markerXYZ functions to create an SVG, e.g. <tt>{{ markerPointer({})|raw }}</tt>.",
 	"default": "{{ markerPointer({})|raw }}"
       },
+      "listExclude": {
+	"type": "textarea",
+	"name": "listExclude",
+        "desc": "(boolean) If true, object will not be shown in the list.",
+	"default": "false"
+      },
       "listMarkerSymbol": {
 	"type": "textarea",
 	"name": "listMarkerSymbol",
