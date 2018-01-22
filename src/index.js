@@ -195,10 +195,15 @@ Editor.prototype.initCategory = function () {
     }
   }
 
+  var options = {
+    id: 'edit',
+    repositoryId: repoId
+  }
+
   if (this.categoryType === categoryTypes['index']) {
-    this.layer = new OpenStreetBrowser.CategoryIndex('edit', this.data)
+    this.layer = new OpenStreetBrowser.CategoryIndex(options, this.data)
   } else {
-    this.layer = new OpenStreetBrowser.CategoryOverpass('edit', this.data)
+    this.layer = new OpenStreetBrowser.CategoryOverpass(options, this.data)
   }
 
   this.layer.load(function () {
