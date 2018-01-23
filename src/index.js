@@ -195,6 +195,19 @@ Editor.prototype.initCategory = function () {
     }
   }
 
+  if (typeof repoId === 'undefined') {
+    let link = location.href.split(/\//)
+
+    // Gitea edit link, e.g. http://openstreetbrowser.org/dev/user/repo/_edit/master/file.json -> 'user/repo'
+    let linkp = link.indexOf('_edit')
+
+    if (linkp === -1) {
+      repoId = null
+    } else {
+      repoId = link.slice(linkp - 2, linkp).join('/')
+    }
+  }
+
   var options = {
     id: 'edit',
     repositoryId: repoId
