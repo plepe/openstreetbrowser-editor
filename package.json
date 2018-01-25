@@ -12,6 +12,7 @@
     "prepublish": "npm run build"
   },
   "dependencies": {
+    "@mapbox/maki": "^4.0.0",
     "leaflet-polylineoffset": "^1.1.0",
     "openstreetbrowser": "https://github.com/plepe/openstreetbrowser"
   },
