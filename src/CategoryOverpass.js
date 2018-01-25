@@ -226,7 +226,7 @@ function formDef (data) {
       "markerSign": {
 	"type": "textarea",
 	"name": "markerSign",
-        "desc": "(string) Text (e.g. an icon character) or Icon (provide path inside repository, e.g. 'img/image.svg') which will be shown in the marker (if there is any)."
+        "desc": "(string) HTML Text which will be shown in the marker (if there is a marker). You may use <a href='https://github.com/plepe/OpenStreetBrowser/blob/master/doc/Icons.md'>included icons</a>.",
       },
       "markerSymbol": {
 	"type": "textarea",
