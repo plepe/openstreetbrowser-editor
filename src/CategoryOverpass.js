@@ -236,7 +236,7 @@ function formDef (data) {
       "markerSymbol": {
 	"type": "textarea",
 	"name": "markerSymbol",
-        "desc": "(string) An SVG which will be shown as marker on the centroid of the map feature. The SVG may have anchorX and anchorY attributes, otherwise it will be centered. You can use the markerXYZ functions to create an SVG, e.g. <tt>{{ markerPointer({})|raw }}</tt>.",
+        "desc": "(string) An DIV or SVG which will be shown as marker on the centroid of the map feature. The element should have <tt>width</tt>, <tt>height</tt> attributes. Specify <tt>anchorX</tt> and <tt>anchorY</tt> attributes for positioning, otherwise it will be centered. Specify <tt>signAnchorX</tt> and <tt>signAnchorY</tt> to specify where the sign should be located (centered around this point), default: at anchor. Specify <tt>popupAnchorX</tt> and <tt>popupAnchorY</tt> to specify where the popup should open, default: at anchor.<br/>You can use the markerXYZ functions to create an SVG, e.g. <tt>{{ markerPointer({})|raw }}</tt>.",
 	"default": "{{ markerPointer({})|raw }}"
       },
       "listMarkerSymbol": {
