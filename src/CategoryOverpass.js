@@ -228,23 +228,28 @@ function formDef (data) {
 	"name": "markerSign",
         "desc": "(string) HTML Text which will be shown in the marker (if there is a marker). You may use <a href='https://github.com/plepe/OpenStreetBrowser/blob/master/doc/Icons.md'>included icons</a>.",
       },
+      "listMarkerSign": {
+	"type": "textarea",
+	"name": "listMarkerSign",
+        "desc": "(string) HTML Text which will be shown in the marker in the list. You may use <a href='https://github.com/plepe/OpenStreetBrowser/blob/master/doc/Icons.md'>included icons</a>.",
+      },
       "markerSymbol": {
 	"type": "textarea",
 	"name": "markerSymbol",
         "desc": "(string) An SVG which will be shown as marker on the centroid of the map feature. The SVG may have anchorX and anchorY attributes, otherwise it will be centered. You can use the markerXYZ functions to create an SVG, e.g. <tt>{{ markerPointer({})|raw }}</tt>.",
 	"default": "{{ markerPointer({})|raw }}"
       },
-      "listExclude": {
-	"type": "textarea",
-	"name": "listExclude",
-        "desc": "(boolean) If true, object will not be shown in the list.",
-	"default": "false"
-      },
       "listMarkerSymbol": {
 	"type": "textarea",
 	"name": "listMarkerSymbol",
         "desc": "(string) A symbol which will be shown in the list. Either a SVG similar to 'markerSymbol' or the strings 'line' or 'polygon' (show a line or a rectangle with the definition from the styles).",
 	"default": "{{ markerCircle({})|raw }}"
+      },
+      "listExclude": {
+	"type": "textarea",
+	"name": "listExclude",
+        "desc": "(boolean) If true, object will not be shown in the list.",
+	"default": "false"
       },
       "priority": {
 	"type": "textarea",
