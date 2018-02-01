@@ -158,6 +158,10 @@ Editor.prototype.loadForm = function (err, formDef) {
 
     this.initCategory()
   }.bind(this)
+
+  if ('setForm' in this.categoryType) {
+    this.categoryType.setForm(this.form)
+  }
 }
 
 Editor.prototype.resize = function () {

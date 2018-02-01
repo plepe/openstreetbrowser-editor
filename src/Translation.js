@@ -101,10 +101,31 @@ function newData (callback) {
   callback({})
 }
 
+function setForm (form) {
+  loadTemplate(null, function (err, data) {
+    for (var k in form.element.elements) {
+      var row = form.element.elements[k].tr
+
+      var td = document.createElement('td')
+      if (k in data) {
+        if (typeof data[k] === 'string') {
+          td.appendChild(document.createTextNode(data[k]))
+        } else if ('message' in data[k]) {
+          td.appendChild(document.createTextNode(data[k].message || ''))
+        }
+      }
+      row.appendChild(td)
+    }
+
+    form.resize()
+  })
+}
+
 module.exports = {
   formDef: formDef,
   newData: newData,
   postLoad: postLoad,
   preSave: preSave,
-  hasMap: x => false
+  hasMap: x => false,
+  setForm: setForm
 }
