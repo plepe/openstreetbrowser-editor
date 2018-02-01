@@ -1,4 +1,4 @@
-function formDef (data) {
+function formDef (data, callback) {
   var ret = {}
 
   for (var k in data) {
@@ -21,10 +21,10 @@ function formDef (data) {
      }
   }
 
-  return ret
+  callback(null, ret)
 }
 
-function postLoad (data) {
+function postLoad (data, callback) {
   for (var k in data) {
     if (data[k] === null) {
       data[k] = {}
@@ -33,7 +33,7 @@ function postLoad (data) {
     }
   }
 
-  return data
+  callback(null, data)
 }
 
 function preSave (data) {

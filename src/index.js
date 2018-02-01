@@ -85,7 +85,12 @@ Editor.prototype.chooseType = function (callback) {
 }
 
 Editor.prototype.load = function () {
-  this.data = this.categoryType.postLoad(this.data)
+  this.categoryType.postLoad(this.data, this.load2.bind(this))
+}
+
+Editor.prototype.load2 = function (err, data) {
+  this.data = data
+
   this.textarea.style.display = 'none'
 
   this.parentDiv = document.createElement('div')
@@ -111,22 +116,7 @@ Editor.prototype.load = function () {
     this.previewDiv.appendChild(this.mapDiv)
   }
 
-  this.form = new form('data', this.categoryType.formDef(this.data), {
-    type: 'form',
-    order: false
-  })
-  this.form.show(this.formDiv)
-  this.form.set_data(this.data)
-
-  this.form.onchange = function () {
-    this.data = this.form.get_data()
-
-    var data = JSON.parse(JSON.stringify(this.data))
-    data = JSON.stringify(this.categoryType.preSave(data), null, '    ')
-    this.textarea.value = data
-
-    this.initCategory()
-  }.bind(this)
+  this.categoryType.formDef(this.data, this.loadForm.bind(this))
 
   if (this.categoryType.hasMap()) {
     this.map = L.map(this.mapDiv)
@@ -149,6 +139,25 @@ Editor.prototype.load = function () {
 
   window.addEventListener('scroll', this.resize.bind(this))
   window.addEventListener('resize', this.resize.bind(this))
+}
+
+Editor.prototype.loadForm = function (err, formDef) {
+  this.form = new form('data', formDef, {
+    type: 'form',
+    order: false
+  })
+  this.form.show(this.formDiv)
+  this.form.set_data(this.data)
+
+  this.form.onchange = function () {
+    this.data = this.form.get_data()
+
+    var data = JSON.parse(JSON.stringify(this.data))
+    data = JSON.stringify(this.categoryType.preSave(data), null, '    ')
+    this.textarea.value = data
+
+    this.initCategory()
+  }.bind(this)
 }
 
 Editor.prototype.resize = function () {
@@ -266,7 +275,9 @@ window.OpenStreetBrowserEditor = {
             }
 	  } else {
 	    textarea.editor.setCategoryType(typeId)
-	    textarea.editor.data = textarea.editor.categoryType.newData()
+            textarea.editor.categoryType.newData(function (err, data) {
+              textarea.editor.data = data
+            }.bind(this))
 	    textarea.editor.load()
 	  }
 	})

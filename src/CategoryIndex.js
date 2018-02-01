@@ -1,7 +1,7 @@
 var jsonMultilineStrings = require('json-multiline-strings')
 var CategoryBase = require('./CategoryBase')
 
-function formDef (data) {
+function formDef (data, callback) {
   var ret = CategoryBase.formDef(data)
 
   var x = {
@@ -38,19 +38,19 @@ function formDef (data) {
   ret.subCategories.def.def.subCategories = x
   ret.subCategories.def.def.subCategories.def.def.subCategories = JSON.parse(JSON.stringify(x))
 
-  return ret
+  callback(null, ret)
 }
 
-function newData () {
-  return {
+function newData (callback) {
+  callback(null, {
     "name": {
       "en": ""
     }
-  }
+  })
 }
 
-function postLoad (data) {
-  return data
+function postLoad (data, callback) {
+  callback(null, data)
 }
 
 function preSave (data) {

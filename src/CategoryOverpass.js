@@ -1,7 +1,7 @@
 var jsonMultilineStrings = require('json-multiline-strings')
 var CategoryBase = require('./CategoryBase')
 
-function formDef (data) {
+function formDef (data, callback) {
   var ret = CategoryBase.formDef(data)
 
   ret["query"] = {
@@ -303,22 +303,23 @@ function formDef (data) {
     "include_data": "not_null"
   }
 
-  return ret
+  callback(null, ret)
 }
 
-function newData () {
-  return {
+function newData (callback) {
+  callback(null, {
     "name": {
       "en": ""
     },
     "query": {
       "16": ""
     }
-  }
+  })
 }
 
-function postLoad (data) {
-  return jsonMultilineStrings.join(data, { exclude: [ [ 'const' ] ] })
+function postLoad (data, callback) {
+  var result = jsonMultilineStrings.join(data, { exclude: [ [ 'const' ] ] })
+  callback(null, result)
 }
 
 function preSave (data) {
