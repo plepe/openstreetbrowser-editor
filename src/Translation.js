@@ -21,7 +21,7 @@ function element (k, template) {
     order: false,
     removeable: false,
     name: k,
-    desc: template.desc || null,
+    desc: template.description || null,
     result_keep_order: true,
     'default': { message: '' },
     include_data: true,
