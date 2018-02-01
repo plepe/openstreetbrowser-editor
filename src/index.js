@@ -142,7 +142,7 @@ Editor.prototype.load2 = function (err, data) {
 }
 
 Editor.prototype.loadForm = function (err, formDef) {
-  this.form = new form('data', formDef, {
+  this.form = new form(null, formDef, {
     type: 'form',
     order: false
   })
