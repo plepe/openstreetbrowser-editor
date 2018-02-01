@@ -15,6 +15,8 @@ if (!isset($config)) {
   $config = array();
 }
 
+$content = '';
+
 $repositories = getRepositories();
 if (sizeof($repositories) === 1) {
   $_REQUEST['repoId'] = array_keys($repositories)[0];
@@ -44,11 +46,7 @@ if (!isset($repo)) {
 }
 else if (isset($_REQUEST['file']) && preg_match('/^[A-Za-z0-9_\-]*$/', $_REQUEST['file'])) {
   if ($_REQUEST['file'] === '') {
-    $typeClass = 'TypeOverpass';
-    if (isset($_REQUEST['type'])) {
-      $typeClass = get_type($_REQUEST['type']);
-    }
-    $data = $typeClass::newData();
+    $data = '';
   }
   else {
     $file = "{$_REQUEST['file']}.json";
@@ -56,15 +54,9 @@ else if (isset($_REQUEST['file']) && preg_match('/^[A-Za-z0-9_\-]*$/', $_REQUEST
     if ($data === false ) {
       messages_add(error_get_last()['message'], MSG_ERROR);
     }
-
   }
 
-  if ($_REQUEST['file'] === '') {
-    $data = array_merge(array('id' => ''), $data);
-    $form_def = array_merge(array('id' => array('type' => 'text', 'req' => true, 'name' => 'ID', 'check' => array('regexp', '^[A-Za-z0-9_\-]+$', 'Use only ASCII characters, digits, "_" or "-"'))), $form_def);
-  }
-
-  if ($_REQUEST['data']) {
+  if (isset($_REQUEST['data'])) {
     $data = trim(str_replace("\r\n", "\n", $_REQUEST['data'])) . "\n";
     $error = false;
 
