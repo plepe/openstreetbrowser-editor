@@ -69,7 +69,16 @@ function postLoad (data, callback) {
 
 function preSave (data) {
   for (var k in data) {
-    var keys = Object.keys(data[k])
+
+    var keys = []
+    for (var m in data[k]) {
+      if (!data[k][m]) {
+        delete data[k][m]
+      } else {
+        keys.push(m)
+      }
+    }
+
     if (keys.length === 0) {
       data[k] = null
     } else if (keys.length === 1 && keys[0] === 'message') {
