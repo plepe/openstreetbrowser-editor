@@ -3,7 +3,8 @@ var OpenStreetBrowser = require('openstreetbrowser')
 
 var categoryTypes = {
   index: require('./CategoryIndex'),
-  overpass: require('./CategoryOverpass')
+  overpass: require('./CategoryOverpass'),
+  translation: require('./Translation')
 }
 
 global.options = {}
