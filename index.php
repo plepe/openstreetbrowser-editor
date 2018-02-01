@@ -21,14 +21,16 @@ $repositories = getRepositories();
 if (sizeof($repositories) === 1) {
   $_REQUEST['repoId'] = array_keys($repositories)[0];
 }
-if (array_key_exists($_REQUEST['repoId'], $repositories)) {
-  $repo = getRepo($_REQUEST['repoId'], $repositories[$_REQUEST['repoId']]);
+if (isset($_REQUEST['repoId'])) {
+  if (array_key_exists($_REQUEST['repoId'], $repositories)) {
+    $repo = getRepo($_REQUEST['repoId'], $repositories[$_REQUEST['repoId']]);
+  }
+  $repoIdHTML = htmlspecialchars($_REQUEST['repoId']);
 }
-$repoIdHTML = htmlspecialchars($_REQUEST['repoId']);
 
 html_export_var(array(
   'config' => $config,
-  'repoId' => $_REQUEST['repoId'],
+  'repoId' => $_REQUEST['repoId'] ?? null,
 ));
 
 if (!isset($repo)) {
