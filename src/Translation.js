@@ -1,24 +1,51 @@
+function loadTemplate (file, callback) {
+  function reqListener () {
+    if (req.status === 200) {
+      callback(null, JSON.parse(this.responseText))
+    }
+  }
+
+  var req = new XMLHttpRequest()
+  req.addEventListener('load', reqListener)
+  req.open('GET', 'asset.php?repo=lang&file=en.json')
+  req.send()
+}
+
 function formDef (data, callback) {
+  loadTemplate(null, _formDef2.bind(this, data, callback))
+}
+
+function element (k, template) {
+  return {
+    type: 'form_chooser',
+    order: false,
+    removeable: false,
+    name: k,
+    def: {
+      message: {
+        type: 'text',
+        name: 'message'
+      },
+      '!=1': {
+        type: 'text',
+        name: '!=1',
+        desc: 'Plural and 0'
+      }
+    }
+  }
+}
+
+function _formDef2 (data, callback, err, template) {
   var ret = {}
 
+  for (var k in template) {
+     ret[k] = element(k, template[k])
+  }
+
   for (var k in data) {
-     ret[k] = {
-       type: 'form_chooser',
-       order: false,
-       removeable: false,
-       name: k,
-       def: {
-         message: {
-           type: 'text',
-           name: 'message'
-         },
-         '!=1': {
-           type: 'text',
-           name: '!=1',
-           desc: 'Plural and 0'
-         }
-       }
-     }
+    if (!(k in ret)) {
+      ret[k] = element(k, data[k])
+    }
   }
 
   callback(null, ret)
