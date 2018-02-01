@@ -2,5 +2,6 @@
     "editor:choose": "Wähle Bearbeitungstyp",
     "editor:default": "Quelltext",
     "editor:index": "Erstelle OpenStreetBrowser Index",
-    "editor:overpass": "Erstelle OpenStreetBrowser OpenStreetMap Kategorie"
+    "editor:overpass": "Erstelle OpenStreetBrowser OpenStreetMap Kategorie",
+    "editor:translation": "Erstelle Übersetzung"
 }

@@ -89,9 +89,13 @@ function preSave (data) {
   return data
 }
 
+function newData (callback) {
+  callback({})
+}
+
 module.exports = {
   formDef: formDef,
-//  newData: newData,
+  newData: newData,
   postLoad: postLoad,
   preSave: preSave,
   hasMap: x => false
