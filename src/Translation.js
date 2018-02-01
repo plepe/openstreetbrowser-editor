@@ -52,7 +52,15 @@ function _formDef2 (data, callback, err, template) {
     }
   }
 
-  callback(null, ret)
+  var ret2 = {}
+  var keys = Object.keys(ret)
+  keys.sort()
+
+  for (var i = 0; i < keys.length; i++) {
+    ret2[keys[i]] = ret[keys[i]]
+  }
+
+  callback(null, ret2)
 }
 
 function postLoad (data, callback) {
