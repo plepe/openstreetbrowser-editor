@@ -32,7 +32,7 @@ Editor.prototype.isCategory = function () {
   }
 
   if (this.data.type in categoryTypes) {
-    this.categoryType = categoryTypes[this.data.type]
+    this.categoryType = new categoryTypes[this.data.type]()
     return true
   }
 
