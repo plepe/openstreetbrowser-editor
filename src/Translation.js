@@ -125,6 +125,10 @@ class Translation {
   hasMap () {
     return false
   }
+
+  getLayer () {
+    return null
+  }
 }
 
 module.exports = Translation

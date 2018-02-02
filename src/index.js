@@ -1,5 +1,4 @@
 var OverpassFrontend = require('overpass-frontend')
-var OpenStreetBrowser = require('openstreetbrowser')
 
 var categoryTypes = {
   index: require('./CategoryIndex'),
@@ -227,10 +226,10 @@ Editor.prototype.initCategory = function () {
     repositoryId: repoId
   }
 
-  if (this.categoryType === categoryTypes['index']) {
-    this.layer = new OpenStreetBrowser.CategoryIndex(options, this.data)
-  } else {
-    this.layer = new OpenStreetBrowser.CategoryOverpass(options, this.data)
+  this.layer = this.categoryType.getLayer(options, this.data)
+
+  if (!this.layer) {
+    return
   }
 
   this.layer.load(function () {

@@ -1,5 +1,6 @@
 var jsonMultilineStrings = require('json-multiline-strings')
 var CategoryBase = require('./CategoryBase')
+var OpenStreetBrowser = require('openstreetbrowser')
 
 class CategoryIndex extends CategoryBase {
   formDef (data, callback) {
@@ -68,6 +69,10 @@ class CategoryIndex extends CategoryBase {
 
   hasMap () {
     return false
+  }
+
+  getLayer (options, data) {
+    return new OpenStreetBrowser.CategoryIndex(options, data)
   }
 }
 
