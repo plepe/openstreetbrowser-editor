@@ -251,6 +251,10 @@ Editor.prototype.reload = function () {
 
 window.OpenStreetBrowserEditor = {
   set: function (textarea) {
+    if (!textarea) {
+      return false
+    }
+
     if (textarea.length) {
       textarea = textarea[0]
     }
