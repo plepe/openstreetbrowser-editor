@@ -16,13 +16,27 @@ class Translation {
     this.loadTemplate(null, this._formDef2.bind(this, data, callback))
   }
 
+  getString (k, langStr) {
+    if (!langStr) {
+      return k
+    }
+
+    if (typeof langStr === 'string') {
+      return langStr
+    } else if ('message' in langStr) {
+      return langStr.message
+    }
+
+    return k
+  }
+
   element (k, template) {
     return {
       type: 'form_chooser',
       order: false,
       removeable: false,
-      name: k,
-      desc: template.description || null,
+      name: this.getString(k, template),
+      desc: k + '<br>' + (template.description || ''),
       result_keep_order: true,
       'default': { message: '' },
       include_data: true,
@@ -100,26 +114,6 @@ class Translation {
 
   newData (callback) {
     callback({})
-  }
-
-  setForm (form) {
-    this.loadTemplate(null, function (err, data) {
-      for (var k in form.element.elements) {
-        var row = form.element.elements[k].tr
-
-        var td = document.createElement('td')
-        if (k in data) {
-          if (typeof data[k] === 'string') {
-            td.appendChild(document.createTextNode(data[k]))
-          } else if ('message' in data[k]) {
-            td.appendChild(document.createTextNode(data[k].message || ''))
-          }
-        }
-        row.appendChild(td)
-      }
-
-      form.resize()
-    })
   }
 
   hasMap () {
