@@ -25,17 +25,18 @@ function Editor (textarea) {
   }
 }
 
-Editor.prototype.isCategory = function () {
+Editor.prototype.getCategoryType = function () {
+  return this.categoryType = new categoryTypes.translation()
+
   if (!this.data || !'type' in this.data) {
-    return false
+    return null
   }
 
   if (this.data.type in categoryTypes) {
-    this.categoryType = new categoryTypes[this.data.type]()
-    return true
+    return this.categoryType = new categoryTypes[this.data.type]()
   }
 
-  return false
+  return null
 }
 
 Editor.prototype.setCategoryType = function (typeId) {
@@ -293,7 +294,7 @@ window.OpenStreetBrowserEditor = {
       return true
     }
 
-    if (textarea.editor.isCategory()) {
+    if (textarea.editor.getCategoryType()) {
       var initState = {}
       call_hooks('init', initState)
       call_hooks_callback('init_callback', initState, function (initState) {
