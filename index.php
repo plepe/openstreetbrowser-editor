@@ -46,12 +46,12 @@ if (!isset($repo)) {
   }
   $content .= "</ul>";
 }
-else if (isset($_REQUEST['file']) && preg_match('/^[A-Za-z0-9_\-]*$/', $_REQUEST['file'])) {
+else if (isset($_REQUEST['file']) && preg_match('/^[A-Za-z0-9_\-]*\.json$/', $_REQUEST['file'])) {
   if ($_REQUEST['file'] === '') {
     $data = '';
   }
   else {
-    $file = "{$_REQUEST['file']}.json";
+    $file = "{$_REQUEST['file']}";
     $data = $repo->file_get_contents($file);
     if ($data === false ) {
       messages_add(error_get_last()['message'], MSG_ERROR);
@@ -68,7 +68,7 @@ else if (isset($_REQUEST['file']) && preg_match('/^[A-Za-z0-9_\-]*$/', $_REQUEST
     }
     // save data to file
     elseif ($_REQUEST['id'] !== $_REQUEST['file']) {
-      $file = "{$_REQUEST['id']}.json";
+      $file = "{$_REQUEST['id']}";
       $new_url = array('file' => $_REQUEST['id']);
     }
 
@@ -97,7 +97,7 @@ else if (isset($_REQUEST['file']) && preg_match('/^[A-Za-z0-9_\-]*$/', $_REQUEST
   $files = array();
   foreach ($repo->scandir() as $f) {
     if (preg_match("/^([^\.].*)\.json$/", $f, $m)) {
-      $files[] = $m[1];
+      $files[] = $f;
     }
   }
 
