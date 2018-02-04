@@ -91,6 +91,19 @@ class Translation {
           type: 'text',
           name: '!=1',
           desc: 'Plural and 0'
+        },
+        gender: {
+          type: 'select',
+          name: 'gender',
+          values: [ 'male', 'female', 'neutral' ]
+        },
+        note: {
+          type: 'textarea',
+          name: 'note'
+        },
+        fixme: {
+          type: 'textarea',
+          name: 'fixme'
         }
       }
     }
@@ -110,6 +123,12 @@ class Translation {
     for (var k in data) {
       if (!(k in ret)) {
         ret[k] = this.element(k, data[k], this.otherLanguage[k])
+      }
+
+      for (var k1 in data[k]) {
+        if (!(k1 in ret[k].def)) {
+          ret[k].def[k1] = { type: typeof data[k][k1] === 'string' ? 'text' : 'json', name: k1 }
+        }
       }
     }
 
