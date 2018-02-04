@@ -78,7 +78,7 @@ class Translation {
       order: false,
       removeable: false,
       name: this.getString(k, otherLangStr),
-      desc: k + '<br>' + (templateStr.description || ''),
+      desc: k + '<br>' + (templateStr ? templateStr.description || '' : ''),
       result_keep_order: true,
       'default': { message: '' },
       include_data: true,
@@ -122,6 +122,31 @@ class Translation {
     }
 
     callback(null, ret2)
+  }
+
+  updateOtherLanguage (lang, form) {
+    this.loadTemplate(lang, function (err, result) {
+      if (result) {
+        this.otherLanguage = result
+      } else {
+        alert(err)
+        this.otherLanguage = {}
+      }
+
+      for (var k in form.element.elements) {
+        var row = form.element.elements[k].tr
+        var td = row.cells[0]
+        var el = this.element(k, this.template[k], this.otherLanguage[k])
+
+        var f = td.getElementsByClassName('form_name')
+        if (f.length) {
+          f[0].innerHTML = el.name
+        } else {
+          td.innerHTML = el.name
+        }
+      }
+
+    }.bind(this))
   }
 
   postLoad (data, callback) {
@@ -168,6 +193,28 @@ class Translation {
 
   getLayer () {
     return null
+  }
+
+  setForm (form) {
+    var thead = document.createElement('thead')
+    form.table.insertBefore(thead, form.table.firstChild)
+    thead.innerHTML = '<tr><th>Compare language </th><th>Translation</th>\n'
+
+    if (typeof languages !== undefined) {
+      var select = document.createElement('select')
+      for (var i in languages) {
+        var option = document.createElement('option')
+        option.value = languages[i]
+        option.innerHTML = languages[i] + ': ' + lang('lang_native:' + languages[i]) + ' (' + lang('lang:' + languages[i]) + ')'
+        option.selected = languages[i] === 'en'
+        select.appendChild(option)
+      }
+      thead.firstChild.firstChild.appendChild(select)
+
+      select.onchange = function () {
+        this.updateOtherLanguage(select.value, form)
+      }.bind(this)
+    }
   }
 }
 
