@@ -1,3 +1,5 @@
+const async = require('async')
+
 function pathToUrl (pathDesc) {
   var ret = []
 
@@ -23,7 +25,7 @@ class Translation {
     }
 
     var pathDesc = JSON.parse(JSON.stringify(this.options.path))
-    pathDesc.file = 'en.json'
+    pathDesc.file = file + '.json'
 
     var req = new XMLHttpRequest()
     req.addEventListener('load', reqListener)
@@ -32,7 +34,28 @@ class Translation {
   }
 
   formDef (data, callback) {
-    this.loadTemplate(null, this._formDef2.bind(this, data, callback))
+    async.parallel(
+      [
+        function (callback) {
+          this.loadTemplate('template', function (err, result) {
+            if (err) {
+              this.template = null
+              return callback(null)
+            }
+
+            this.template = result
+            callback()
+          }.bind(this))
+        }.bind(this),
+        function (callback) {
+          this.loadTemplate('en', function (err, result) {
+            this.otherLanguage = result
+            callback(err)
+          }.bind(this))
+        }.bind(this)
+      ],
+      this._formDef2.bind(this, data, callback)
+    )
   }
 
   getString (k, langStr) {
@@ -49,13 +72,13 @@ class Translation {
     return k
   }
 
-  element (k, template) {
+  element (k, templateStr, otherLangStr) {
     return {
       type: 'form_chooser',
       order: false,
       removeable: false,
-      name: this.getString(k, template),
-      desc: k + '<br>' + (template.description || ''),
+      name: this.getString(k, otherLangStr),
+      desc: k + '<br>' + (templateStr.description || ''),
       result_keep_order: true,
       'default': { message: '' },
       include_data: true,
@@ -73,16 +96,20 @@ class Translation {
     }
   }
 
-  _formDef2 (data, callback, err, template) {
+  _formDef2 (data, callback, err) {
+    if (this.template === null) {
+      this.template = this.otherLanguage
+    }
+
     var ret = {}
 
-    for (var k in template) {
-       ret[k] = this.element(k, template[k])
+    for (var k in this.template) {
+       ret[k] = this.element(k, this.template[k], this.otherLanguage[k])
     }
 
     for (var k in data) {
       if (!(k in ret)) {
-        ret[k] = this.element(k, data[k])
+        ret[k] = this.element(k, data[k], this.otherLanguage[k])
       }
     }
 
