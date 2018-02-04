@@ -31,6 +31,10 @@ if (isset($_REQUEST['repoId'])) {
 html_export_var(array(
   'config' => $config,
   'repoId' => $_REQUEST['repoId'] ?? null,
+  'path' => array(
+    'repo' => $_REQUEST['repoId'] ?? null,
+    'file' => $_REQUEST['file'] ?? null
+  ),
 ));
 
 if (!isset($repo)) {

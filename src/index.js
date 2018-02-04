@@ -25,15 +25,15 @@ function Editor (textarea) {
   }
 }
 
-Editor.prototype.getCategoryType = function () {
-  return this.categoryType = new categoryTypes.translation()
+Editor.prototype.getCategoryType = function (options) {
+  return this.categoryType = new categoryTypes.translation(options)
 
   if (!this.data || !'type' in this.data) {
     return null
   }
 
   if (this.data.type in categoryTypes) {
-    return this.categoryType = new categoryTypes[this.data.type]()
+    return this.categoryType = new categoryTypes[this.data.type](options)
   }
 
   return null
@@ -209,25 +209,7 @@ Editor.prototype.initCategory = function () {
     }
   }
 
-  if (typeof repoId === 'undefined') {
-    let link = location.href.split(/\//)
-
-    // Gitea edit link, e.g. http://openstreetbrowser.org/dev/user/repo/_edit/master/file.json -> 'user/repo'
-    let linkp = link.indexOf('_edit')
-
-    if (linkp === -1) {
-      repoId = null
-    } else {
-      repoId = link.slice(linkp - 2, linkp).join('/')
-    }
-  }
-
-  var options = {
-    id: 'edit',
-    repositoryId: repoId
-  }
-
-  this.layer = this.categoryType.getLayer(options, this.data)
+  this.layer = this.categoryType.getLayer(this.data)
 
   if (!this.layer) {
     return
@@ -294,7 +276,32 @@ window.OpenStreetBrowserEditor = {
       return true
     }
 
-    if (textarea.editor.getCategoryType()) {
+    var options = {
+      id: 'edit'
+    }
+
+    if (typeof repoId === 'undefined') {
+      let link = location.href.split(/\//)
+      let path = {}
+
+      // Gitea edit link, e.g. http://openstreetbrowser.org/dev/user/repo/_edit/master/file.json -> 'user/repo'
+      let linkp = link.indexOf('_edit')
+
+      if (linkp === -1) {
+      } else {
+        path.repo = link.slice(linkp - 2, linkp).join('/')
+        path.branch = link[linkp + 1]
+        path.file = link.slice(linkp + 2).join('/')
+        options.repoId = path.repo
+      }
+
+      options.path = path
+    } else {
+      options.repoId = repoId
+      options.path = path
+    }
+
+    if (textarea.editor.getCategoryType(options)) {
       var initState = {}
       call_hooks('init', initState)
       call_hooks_callback('init_callback', initState, function (initState) {

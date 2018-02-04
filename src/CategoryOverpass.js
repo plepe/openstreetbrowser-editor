@@ -340,8 +340,8 @@ class CategoryOverpass extends CategoryBase {
     return true
   }
 
-  getLayer (options, data) {
-    return new OpenStreetBrowser.CategoryOverpass(options, data)
+  getLayer ( data) {
+    return new OpenStreetBrowser.CategoryOverpass(this.options, data)
   }
 }
 

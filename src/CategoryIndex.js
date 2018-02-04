@@ -71,8 +71,8 @@ class CategoryIndex extends CategoryBase {
     return false
   }
 
-  getLayer (options, data) {
-    return new OpenStreetBrowser.CategoryIndex(options, data)
+  getLayer (data) {
+    return new OpenStreetBrowser.CategoryIndex(this.options, data)
   }
 }
 

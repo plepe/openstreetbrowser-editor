@@ -1,4 +1,9 @@
 class Translation {
+  constructor (options) {
+    this.options = options
+    console.log(options)
+  }
+
   loadTemplate (file, callback) {
     function reqListener () {
       if (req.status === 200) {

@@ -1,4 +1,8 @@
 class CategoryBase {
+  constructor (options) {
+    this.options = options
+  }
+
   formDef (data) {
     var ret = {
       "name": {
