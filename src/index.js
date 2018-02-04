@@ -154,7 +154,7 @@ Editor.prototype.loadForm = function (err, formDef) {
 
     var data = JSON.parse(JSON.stringify(this.data))
     data = JSON.stringify(this.categoryType.preSave(data), null, '    ')
-    this.textarea.value = data
+    this.textarea.value = data + '\n'
 
     this.initCategory()
   }.bind(this)
