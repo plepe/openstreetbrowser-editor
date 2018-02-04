@@ -1,19 +1,33 @@
+function pathToUrl (pathDesc) {
+  var ret = []
+
+  for (var i in pathDesc) {
+    ret.push(encodeURIComponent(i) + '=' + encodeURIComponent(pathDesc[i]))
+  }
+
+  return '?' + ret.join('&')
+}
+
 class Translation {
   constructor (options) {
     this.options = options
-    console.log(options)
   }
 
   loadTemplate (file, callback) {
     function reqListener () {
       if (req.status === 200) {
         callback(null, JSON.parse(this.responseText))
+      } else {
+        callback(this.statusText, null)
       }
     }
 
+    var pathDesc = JSON.parse(JSON.stringify(this.options.path))
+    pathDesc.file = 'en.json'
+
     var req = new XMLHttpRequest()
     req.addEventListener('load', reqListener)
-    req.open('GET', 'asset.php?repo=lang&file=en.json')
+    req.open('GET', 'asset.php' + pathToUrl(pathDesc))
     req.send()
   }
 
