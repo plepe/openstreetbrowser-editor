@@ -66,7 +66,7 @@ else if (isset($_REQUEST['file']) && preg_match('/^[A-Za-z0-9_\-]*\.json$/', $_R
     $data = trim(str_replace("\r\n", "\n", $_REQUEST['data'])) . "\n";
     $error = false;
 
-    if (!preg_match('/^[A-Za-z0-9_\-]*$/', $_REQUEST['id'])) {
+    if (!preg_match('/^[A-Za-z0-9_\-]*\.json$/', $_REQUEST['id'])) {
       $error = true;
       messages_add("Invalid ID", MSG_ERROR);
     }
