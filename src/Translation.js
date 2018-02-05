@@ -18,7 +18,13 @@ class Translation {
   loadTemplate (file, callback) {
     function reqListener () {
       if (req.status === 200) {
-        callback(null, JSON.parse(this.responseText))
+        var err = null
+        try {
+          var r = JSON.parse(this.responseText)
+        } catch (err) {
+        }
+
+        callback(err, r)
       } else {
         callback(this.statusText, null)
       }
@@ -29,7 +35,7 @@ class Translation {
 
     var req = new XMLHttpRequest()
     req.addEventListener('load', reqListener)
-    req.open('GET', 'asset.php' + pathToUrl(pathDesc))
+    req.open('GET', openstreetbrowserPrefix + 'asset.php' + pathToUrl(pathDesc))
     req.send()
   }
 
