@@ -15,6 +15,9 @@ class Translation {
     this.options = options
   }
 
+  /**
+   * if file === null, load file list
+   */
   loadTemplate (file, callback) {
     function reqListener () {
       if (req.status === 200) {
@@ -31,7 +34,12 @@ class Translation {
     }
 
     var pathDesc = JSON.parse(JSON.stringify(this.options.path))
-    pathDesc.file = file + '.json'
+    if (file === null) {
+      delete pathDesc.file
+      pathDesc.list = true
+    } else {
+      pathDesc.file = file + '.json'
+    }
 
     var req = new XMLHttpRequest()
     req.addEventListener('load', reqListener)
@@ -56,6 +64,12 @@ class Translation {
         function (callback) {
           this.loadTemplate('en', function (err, result) {
             this.otherLanguage = result
+            callback(err)
+          }.bind(this))
+        }.bind(this),
+        function (callback) {
+          this.loadTemplate(null, function (err, result) {
+            this.languages = result
             callback(err)
           }.bind(this))
         }.bind(this)
@@ -225,14 +239,18 @@ class Translation {
     form.table.insertBefore(thead, form.table.firstChild)
     thead.innerHTML = '<tr><th>Compare language </th><th>Translation</th>\n'
 
-    if (typeof languages !== undefined) {
+    if (typeof this.languages !== undefined) {
       var select = document.createElement('select')
-      for (var i in languages) {
-        var option = document.createElement('option')
-        option.value = languages[i]
-        option.innerHTML = languages[i] + ': ' + lang('lang_native:' + languages[i]) + ' (' + lang('lang:' + languages[i]) + ')'
-        option.selected = languages[i] === 'en'
-        select.appendChild(option)
+      for (var i in this.languages) {
+        var m = this.languages[i].name.match(/^(.*)\.json$/)
+        if (m) {
+          var l = m[1]
+          var option = document.createElement('option')
+          option.value = l
+          option.innerHTML = l + ': ' + lang('lang_native:' + l) + ' (' + lang('lang:' + l) + ')'
+          option.selected = l === 'en'
+          select.appendChild(option)
+        }
       }
       thead.firstChild.firstChild.appendChild(select)
 
