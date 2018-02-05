@@ -51,7 +51,7 @@ if (!isset($repo)) {
   }
   $content .= "</ul>";
 }
-else if (isset($_REQUEST['file']) && preg_match('/^[A-Za-z0-9_\-]*\.json$/', $_REQUEST['file'])) {
+else if (isset($_REQUEST['file']) && preg_match('/^([A-Za-z0-9_\-]*\.json|)$/', $_REQUEST['file'])) {
   if ($_REQUEST['file'] === '') {
     $data = '';
   }
@@ -108,7 +108,7 @@ else if (isset($_REQUEST['file']) && preg_match('/^[A-Za-z0-9_\-]*\.json$/', $_R
 
   $content  = "<ul class='menu'>\n";
   $content .= "<li><a href=\".\">Back to Index</a></li>\n";
-  $content .= "<li><a href='?repoId={$repoIdHTML}&amp;file='>Create new category</a></li>";
+  $content .= "<li><a href='?repoId={$repoIdHTML}&amp;file='>Create new file</a></li>";
   $content .= "</ul>\n";
 
   $content .= "<ul>\n";

@@ -39,8 +39,8 @@ Editor.prototype.getCategoryType = function (options) {
   return null
 }
 
-Editor.prototype.setCategoryType = function (typeId) {
-  this.categoryType = categoryTypes[typeId]
+Editor.prototype.setCategoryType = function (typeId, options) {
+  this.categoryType = new categoryTypes[typeId](options)
 }
 
 Editor.prototype.chooseType = function (callback) {
@@ -252,30 +252,6 @@ window.OpenStreetBrowserEditor = {
 
     textarea.editor = new Editor(textarea)
 
-    if (textarea.value === '') {
-      var initState = {}
-      call_hooks('init', initState)
-      call_hooks_callback('init_callback', initState, function (initState) {
-	textarea.editor.chooseType(function (typeId) {
-	  if (typeId === null) {
-            if (typeof setCodeMirror !== 'undefined') {
-              setCodeMirror([textarea])
-            } else {
-              textarea.style.display = 'block'
-            }
-	  } else {
-	    textarea.editor.setCategoryType(typeId)
-            textarea.editor.categoryType.newData(function (err, data) {
-              textarea.editor.data = data
-            }.bind(this))
-	    textarea.editor.load()
-	  }
-	})
-      })
-
-      return true
-    }
-
     var options = {
       id: 'edit'
     }
@@ -300,6 +276,30 @@ window.OpenStreetBrowserEditor = {
     } else {
       options.repoId = repoId
       options.path = path
+    }
+
+    if (textarea.value === '') {
+      var initState = {}
+      call_hooks('init', initState)
+      call_hooks_callback('init_callback', initState, function (initState) {
+	textarea.editor.chooseType(function (typeId) {
+	  if (typeId === null) {
+            if (typeof setCodeMirror !== 'undefined') {
+              setCodeMirror([textarea])
+            } else {
+              textarea.style.display = 'block'
+            }
+	  } else {
+	    textarea.editor.setCategoryType(typeId, options)
+            textarea.editor.categoryType.newData(function (err, data) {
+              textarea.editor.data = data
+            }.bind(this))
+	    textarea.editor.load()
+	  }
+	})
+      })
+
+      return true
     }
 
     if (textarea.editor.getCategoryType(options)) {
