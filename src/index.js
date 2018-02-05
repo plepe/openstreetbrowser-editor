@@ -264,6 +264,15 @@ window.OpenStreetBrowserEditor = {
       let linkp = link.indexOf('_edit')
 
       if (linkp === -1) {
+        let linkp = link.indexOf('_new')
+
+        if (linkp !== -1) {
+          path.repo = link.slice(linkp - 2, linkp).join('/')
+          path.branch = link[linkp + 1]
+          path.dir = link.slice(linkp + 2).join('/')
+          path.file = ''
+          options.repoId = path.repo
+        }
       } else {
         path.repo = link.slice(linkp - 2, linkp).join('/')
         path.branch = link[linkp + 1]
