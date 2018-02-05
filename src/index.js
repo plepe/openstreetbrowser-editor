@@ -291,7 +291,8 @@ window.OpenStreetBrowserEditor = {
       } else {
         path.repo = link.slice(linkp - 2, linkp).join('/')
         path.branch = link[linkp + 1]
-        path.file = link.slice(linkp + 2).join('/')
+        path.dir = link.slice(linkp + 2, -1).join('/')
+        path.file = link[link.length - 1]
         options.repoId = path.repo
       }
 

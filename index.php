@@ -33,7 +33,8 @@ html_export_var(array(
   'repoId' => $_REQUEST['repoId'] ?? null,
   'path' => array(
     'repo' => $_REQUEST['repoId'] ?? null,
-    'file' => $_REQUEST['file'] ?? null
+    'file' => $_REQUEST['file'] ?? null,
+    'dir' => '',
   ),
 ));
 
