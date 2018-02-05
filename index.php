@@ -36,6 +36,7 @@ html_export_var(array(
     'file' => $_REQUEST['file'] ?? null,
     'dir' => '',
   ),
+  'openstreetbrowserPrefix' => $config['openstreetbrowserPrefix'] ?? '',
 ));
 
 if (!isset($repo)) {
