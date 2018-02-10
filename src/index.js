@@ -100,6 +100,11 @@ Editor.prototype.load2 = function (err, data) {
   this.formDiv = document.createElement('div')
   this.parentDiv.appendChild(this.formDiv)
 
+  this.formLoadingIndicator = document.createElement('div')
+  this.formLoadingIndicator.className = 'loading-indicator'
+  this.formLoadingIndicator.innerHTML = '<i class="fa fa-spinner fa-spin fa-fw" aria-hidden="true"></i> ' + lang('loading')
+  this.formDiv.appendChild(this.formLoadingIndicator)
+
   if (this.categoryType.hasMap()) {
     this.formDiv.setAttribute('style', 'padding-bottom: 301px;')
 
@@ -148,6 +153,8 @@ Editor.prototype.loadForm = function (err, formDef) {
   })
   this.form.show(this.formDiv)
   this.form.set_data(this.data)
+
+  this.formDiv.removeChild(this.formLoadingIndicator)
 
   this.form.onchange = function () {
     this.data = this.form.get_data()

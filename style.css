@@ -17,3 +17,6 @@ ul.menu li:before {
 ul.menu li:first-of-type:before {
   content: '';
 }
+.loading-indicator {
+  text-align: center;
+}
