@@ -130,6 +130,9 @@ class Translation {
   }
 
   _formDef2 (data, callback, err) {
+    if (!this.otherLanguage) {
+      this.otherLanguage = {}
+    }
     if (!this.template) {
       this.template = this.otherLanguage
     }
