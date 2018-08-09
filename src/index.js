@@ -146,7 +146,35 @@ Editor.prototype.load2 = function (err, data) {
   window.addEventListener('resize', this.resize.bind(this))
 }
 
+Editor.prototype.completeFormDef = function (formDef, data) {
+  for (var k in data) {
+    if (!(k in formDef)) {
+      formDef[k] = {
+        name: k,
+        type: 'text'
+      }
+    } else {
+      if (formDef[k].type === 'form_chooser') {
+        this.completeFormDef(formDef[k].def, data[k])
+      }
+    }
+  }
+}
+
 Editor.prototype.loadForm = function (err, formDef) {
+  for (var k in this.data) {
+    if (!(k in formDef)) {
+      formDef[k] = {
+        name: k,
+        type: 'json'
+      }
+    } else {
+      if (formDef[k].type === 'form_chooser') {
+        this.completeFormDef(formDef[k].def, this.data[k])
+      }
+    }
+  }
+
   this.form = new form(null, formDef, {
     type: 'form',
     order: false
