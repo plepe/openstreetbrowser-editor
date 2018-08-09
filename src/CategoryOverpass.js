@@ -233,12 +233,15 @@ class CategoryOverpass extends CategoryBase {
           "type": "textarea",
           "name": "title",
           "desc": "(string) Title to use in the popup and the list",
-          "default": "{{ localizedTag(tags, 'name') |default(localizedTag(tags, 'operator')) | default(localizedTag(tags, 'ref')) | default(trans('unnamed')) }}"
+          "default": "{{ localizedTag(tags, 'name') |default(localizedTag(tags, 'operator')) | default(localizedTag(tags, 'ref')) | default(trans('unnamed')) }}",
+          "empty_value": ""
         },
         "description": {
           "type": "textarea",
           "name": "description",
           "desc": "(string) Description which will be shown in the list next to the title and in the popup (if no <tt>popupDescription</tt> is set).",
+          "default": "",
+          "empty_value": ""
         },
         "popupDescription": {
           "type": "textarea",
@@ -277,6 +280,20 @@ class CategoryOverpass extends CategoryBase {
           "name": "listExclude",
           "desc": "(boolean) If true, object will not be shown in the list.",
           "default": "false"
+        },
+        "listTitle": {
+          "type": "textarea",
+          "name": "listTitle",
+          "desc": "(string) Override the title for the list.",
+          "default": "{{ localizedTag(tags, 'name') |default(localizedTag(tags, 'operator')) | default(localizedTag(tags, 'ref')) | default(trans('unnamed')) }}",
+          "empty_value": ""
+        },
+        "listDescription": {
+          "type": "textarea",
+          "name": "listDescription",
+          "desc": "(string) Override the description for the list.",
+          "default": "",
+          "empty_value": ""
         },
         "priority": {
           "type": "textarea",
@@ -348,6 +365,20 @@ class CategoryOverpass extends CategoryBase {
           "name": prefix + "Exclude",
           "desc": "(boolean) If true, object will not be shown in the list \"" + listId + "\".",
           "default": "false"
+        }
+        ret["feature"]["def"][prefix + "Title"] = {
+          "type": "textarea",
+          "name": prefix + "Title",
+          "desc": "(string) Override the title for the list \"" + listId + "\".",
+          "default": "{{ localizedTag(tags, 'name') |default(localizedTag(tags, 'operator')) | default(localizedTag(tags, 'ref')) | default(trans('unnamed')) }}",
+          "empty_value": ""
+        }
+        ret["feature"]["def"][prefix + "Description"] = {
+          "type": "textarea",
+          "name": prefix + "Description",
+          "desc": "(string) Override the description for the list \"" + listId + "\"",
+          "default": "",
+          "empty_value": ""
         }
       })
     }
