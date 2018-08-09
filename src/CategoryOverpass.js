@@ -1,5 +1,6 @@
 var jsonMultilineStrings = require('json-multiline-strings')
 var CategoryBase = require('./CategoryBase')
+const nameFieldDef = require('./nameFieldDef')
 var OpenStreetBrowser = require('openstreetbrowser')
 
 class CategoryOverpass extends CategoryBase {
@@ -23,6 +24,30 @@ class CategoryOverpass extends CategoryBase {
       },
       "min": 1,
       "button:add_element": "Add query at different zoom level"
+    }
+
+    ret["lists"] = {
+      "type": "hash",
+      "order": true,
+      "name": "lists",
+      "desc": "Add sub lists (e.g. stops / routes of public transportation)",
+      "key_def": {
+        "type": "text",
+        "name": "id",
+        "desc": "ID of the list"
+      },
+      "def": {
+        "type": "form",
+        "def": {
+          "prefix": {
+            "type": "text",
+            "name": "prefix",
+            "desc": "Will be used as prefix for further fields (e.g. 'listFoo' => 'listFooExclude')",
+          },
+          // find all used languages in all lists
+          "name": nameFieldDef(Object.assign.apply(this, Object.values(JSON.parse(JSON.stringify(data.lists))).map(x => x.name)))
+        }
+      }
     }
 
     var styleDef = {
