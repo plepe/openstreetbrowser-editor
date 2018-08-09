@@ -326,6 +326,32 @@ class CategoryOverpass extends CategoryBase {
     ret["feature"]["def"]["style:hover"]["color"] = "#3f3f3f"
     ret["feature"]["def"]["style:hover"]["radius"] = "12"
 
+    if (data.lists) {
+      Object.keys(data.lists).forEach(listId => {
+        let prefix = data.lists[listId].prefix
+
+        ret["feature"]["def"][prefix + "MarkerSign"] = {
+          "type": "textarea",
+          "name": prefix + "MarkerSign",
+          "desc": "(string) HTML Text which will be shown in the marker in the list \"" + listId + "\". You may use <a href='https://github.com/plepe/OpenStreetBrowser/blob/master/doc/Icons.md'>included icons</a>.",
+          "default": ""
+        }
+
+        ret["feature"]["def"][prefix + "MarkerSymbol"] = {
+          "type": "textarea",
+          "name": prefix + "MarkerSymbol",
+          "desc": "(string) A symbol which will be shown in the list \"" + listId + "\". Either a SVG similar to 'markerSymbol' or the strings 'line' or 'polygon' (show a line or a rectangle with the definition from the styles).",
+          "default": "{{ markerCircle({})|raw }}"
+        }
+        ret["feature"]["def"][prefix + "Exclude"] = {
+          "type": "textarea",
+          "name": prefix + "Exclude",
+          "desc": "(boolean) If true, object will not be shown in the list \"" + listId + "\".",
+          "default": "false"
+        }
+      })
+    }
+
     ret["members"] = {
       "type": "boolean",
       "name": "members",
