@@ -283,6 +283,16 @@ class CategoryOverpass extends CategoryBase {
       ret["feature"]["def"]["style:" + k]["name"] = "style:" + k
     }
 
+    if (data.feature) {
+      for (var k in data.feature) {
+        let m = k.match(/^style:(.*)$/)
+        if (m && !(k in ret.feature.def)) {
+          ret["feature"]["def"]["style:" + m[1]] = JSON.parse(JSON.stringify(styleDef))
+          ret["feature"]["def"]["style:" + m[1]]["name"] = k
+        }
+      }
+    }
+
     ret["feature"]["def"]["style:hover"]["desc"] = "Will be shown when hovering over object in list."
     ret["feature"]["def"]["style:hover"]["color"] = "black"
     ret["feature"]["def"]["style:hover"]["radius"] = "12"
@@ -300,6 +310,16 @@ class CategoryOverpass extends CategoryBase {
     ret["memberFeature"] = JSON.parse(JSON.stringify(ret["feature"]))
     ret["memberFeature"]["name"] = "memberFeature"
     ret["memberFeature"]["desc"] = "This codes will be evaluated for each member of a relation, if \"members\" is set to true. You can set different styles, texts, etc. All sub values will be evaluated via <a href=\"https://github.com/plepe/OpenStreetBrowser/blob/master/doc/TwigJS.md\">TwigJS markup</a>. Fields where HTML code is expected may include <a href=\"https://github.com/plepe/OpenStreetBrowser/blob/master/doc/Icons.md\">Icons</a>."
+
+    if (data.memberFeature) {
+      for (var k in data.memberFeature) {
+        let m = k.match(/^style:(.*)$/)
+        if (m && !(k in ret.memberFeature.def)) {
+          ret["memberFeature"]["def"]["style:" + m[1]] = JSON.parse(JSON.stringify(styleDef))
+          ret["memberFeature"]["def"]["style:" + m[1]]["name"] = k
+        }
+      }
+    }
 
     ret["info"] = {
       "type": "textarea",
