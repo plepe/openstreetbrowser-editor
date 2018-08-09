@@ -291,6 +291,16 @@ class CategoryOverpass extends CategoryBase {
     ret["feature"]["def"]["style:hover"]["color"] = "#3f3f3f"
     ret["feature"]["def"]["style:hover"]["radius"] = "12"
 
+    ret["members"] = {
+      "type": "boolean",
+      "name": "members",
+      "desc": "If set to true, relations won't be loaded with their full geometry, but only members within the bbox. Also, the members can be styled via \"memberFeature\""
+    }
+
+    ret["memberFeature"] = JSON.parse(JSON.stringify(ret["feature"]))
+    ret["memberFeature"]["name"] = "memberFeature"
+    ret["memberFeature"]["desc"] = "This codes will be evaluated for each member of a relation, if \"members\" is set to true. You can set different styles, texts, etc. All sub values will be evaluated via <a href=\"https://github.com/plepe/OpenStreetBrowser/blob/master/doc/TwigJS.md\">TwigJS markup</a>. Fields where HTML code is expected may include <a href=\"https://github.com/plepe/OpenStreetBrowser/blob/master/doc/Icons.md\">Icons</a>."
+
     ret["info"] = {
       "type": "textarea",
       "name": "Info (e.g. map key)",
