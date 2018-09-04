@@ -161,7 +161,7 @@ Editor.prototype.completeFormDef = function (formDef, data) {
   }
 }
 
-Editor.prototype.loadForm = function (err, formDef) {
+Editor.prototype.loadForm = function (err, formDef, rootFormType='form') {
   for (var k in this.data) {
     if (!(k in formDef)) {
       formDef[k] = {
@@ -176,7 +176,7 @@ Editor.prototype.loadForm = function (err, formDef) {
   }
 
   this.form = new form(null, formDef, {
-    type: 'form',
+    type: rootFormType,
     order: false
   })
   this.form.show(this.formDiv)

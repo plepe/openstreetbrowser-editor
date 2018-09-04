@@ -455,7 +455,7 @@ class CategoryOverpass extends CategoryBase {
       "include_data": "not_null"
     }
 
-    callback(null, ret)
+    callback(null, ret, 'form_chooser')
   }
 
   newData (callback) {
