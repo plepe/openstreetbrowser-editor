@@ -164,9 +164,11 @@ Editor.prototype.completeFormDef = function (formDef, data) {
 Editor.prototype.loadForm = function (err, formDef, rootFormType='form') {
   for (var k in this.data) {
     if (!(k in formDef)) {
-      formDef[k] = {
-        name: k,
-        type: 'json'
+      if (k !== 'type') {
+        formDef[k] = {
+          name: k,
+          type: 'json'
+        }
       }
     } else {
       if (formDef[k].type === 'form_chooser') {
