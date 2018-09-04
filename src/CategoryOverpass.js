@@ -45,7 +45,7 @@ class CategoryOverpass extends CategoryBase {
             "desc": "Will be used as prefix for further fields (e.g. 'listFoo' => 'listFooExclude')",
           },
           // find all used languages in all lists
-          "name": data.lists ? nameFieldDef(Object.assign.apply(this, Object.values(JSON.parse(JSON.stringify(data.lists))).map(x => x.name))) : null
+          "name": data.lists && Object.keys(data.lists).length ? nameFieldDef(Object.assign.apply(this, Object.values(JSON.parse(JSON.stringify(data.lists))).map(x => x.name))) : null
         }
       }
     }
