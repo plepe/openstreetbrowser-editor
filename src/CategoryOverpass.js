@@ -26,30 +26,6 @@ class CategoryOverpass extends CategoryBase {
       "button:add_element": "Add query at different zoom level"
     }
 
-    ret["lists"] = {
-      "type": "hash",
-      "order": true,
-      "name": "lists",
-      "desc": "Add sub lists (e.g. stops / routes of public transportation)",
-      "key_def": {
-        "type": "text",
-        "name": "id",
-        "desc": "ID of the list"
-      },
-      "def": {
-        "type": "form",
-        "def": {
-          "prefix": {
-            "type": "text",
-            "name": "prefix",
-            "desc": "Will be used as prefix for further fields (e.g. 'listFoo' => 'listFooExclude')",
-          },
-          // find all used languages in all lists
-          "name": data.lists && Object.keys(data.lists).length ? nameFieldDef(Object.assign.apply(this, Object.values(JSON.parse(JSON.stringify(data.lists))).map(x => x.name))) : nameFieldDef()
-        }
-      }
-    }
-
     var styleDef = {
       "type": "form_chooser",
       "order": false,
@@ -441,6 +417,30 @@ class CategoryOverpass extends CategoryBase {
       }
     }
 
+    ret["lists"] = {
+      "type": "hash",
+      "order": true,
+      "name": "Sub lists",
+      "desc": "Add sub lists (e.g. stops / routes of public transportation)",
+      "key_def": {
+        "type": "text",
+        "name": "id",
+        "desc": "ID of the list"
+      },
+      "def": {
+        "type": "form",
+        "def": {
+          "prefix": {
+            "type": "text",
+            "name": "prefix",
+            "desc": "Will be used as prefix for further fields (e.g. 'listFoo' => 'listFooExclude')",
+          },
+          // find all used languages in all lists
+          "name": data.lists && Object.keys(data.lists).length ? nameFieldDef(Object.assign.apply(this, Object.values(JSON.parse(JSON.stringify(data.lists))).map(x => x.name))) : nameFieldDef()
+        }
+      }
+    }
+
     ret["info"] = {
       "type": "textarea",
       "name": "Info (e.g. map key)",
@@ -451,7 +451,7 @@ class CategoryOverpass extends CategoryBase {
     ret["const"] = {
       "type": "json",
       "name": "const",
-      "desc": "Constants which can be accessed via <code>{{ const }}<code> in twig templates",
+      "desc": "Constants which can be accessed via <code>{{ const }}<code> in twig templates. Use JSON in this field.",
       "include_data": "not_null"
     }
 
@@ -465,7 +465,10 @@ class CategoryOverpass extends CategoryBase {
       },
       "query": {
         "16": ""
-      }
+      },
+      "feature": {
+      },
+      "info": ""
     })
   }
 
