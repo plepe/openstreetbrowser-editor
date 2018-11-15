@@ -1,5 +1,6 @@
 var jsonMultilineStrings = require('json-multiline-strings')
 var CategoryBase = require('./CategoryBase')
+const copy = require('./copy')
 
 function formDef (data) {
   var ret = CategoryBase.formDef(data)
@@ -271,13 +272,13 @@ function formDef (data) {
     }
   }
 
-  ret["feature"]["def"]["style"] = JSON.parse(JSON.stringify(styleDef))
+  ret["feature"]["def"]["style"] = copy(styleDef)
   ret["feature"]["def"]["style"]["name"] = "style"
 
   var l = [ "casing", "highlight", "left", "right", "hover", "selected" ]
   for (var i in l) {
     var k = l[i]
-    ret["feature"]["def"]["style:" + k] = JSON.parse(JSON.stringify(styleDef))
+    ret["feature"]["def"]["style:" + k] = copy(styleDef)
     ret["feature"]["def"]["style:" + k]["name"] = "style:" + k
   }
 
