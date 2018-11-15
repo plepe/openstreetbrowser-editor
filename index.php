@@ -135,6 +135,7 @@ else if (isset($_REQUEST['file']) && preg_match('/^([A-Za-z0-9_\-]*\.json|)$/', 
 <script src="node_modules/leaflet/dist/leaflet.js"></script>
 <script src="node_modules/leaflet-textpath/leaflet.textpath.js"></script>
 <script src="node_modules/leaflet-polylineoffset/leaflet.polylineoffset.js"></script>
+<script src="node_modules/leaflet-polylinedecorator/dist/leaflet.polylineDecorator.js"></script>
 <script>
 window.onload = function () {
   OpenStreetBrowserEditor.set(document.getElementById('editor'))
