@@ -24,6 +24,26 @@ function formDef (data) {
     "button:add_element": "Add query at different zoom level"
   }
 
+  ret["lists"] = {
+    "type": "hash",
+    "name": "Lists",
+    "key_def": {
+      "name": "key",
+      "type": "text"
+    },
+    "def": {
+      "type": "form",
+      "def": {
+        "prefix": {
+          "name": "prefix",
+          "type": "text"
+        },
+        "name": ret.name
+      }
+    },
+    "include_data": [ "count", ">", 0 ]
+  }
+
   var styleDef = {
     "type": "form_chooser",
     "order": false,
@@ -209,6 +229,12 @@ function formDef (data) {
         "desc": "(string) Title to use in the popup and the list",
 	"default": "{{ localizedTag(tags, 'name') |default(localizedTag(tags, 'operator')) | default(localizedTag(tags, 'ref')) | default(trans('unnamed')) }}"
       },
+      "listTitle": {
+	"type": "textarea",
+	"name": "listTitle",
+        "desc": "(string) Override title to use in the list",
+	"default": "{{ localizedTag(tags, 'name') |default(localizedTag(tags, 'operator')) | default(localizedTag(tags, 'ref')) | default(trans('unnamed')) }}"
+      },
       "description": {
 	"type": "textarea",
 	"name": "description",
@@ -272,7 +298,25 @@ function formDef (data) {
     }
   }
 
+  if (data.lists) for (let k in data.lists) {
+    let prefix = data.lists[k].prefix
+
+    ret["feature"]["def"][prefix + "Exclude"] = copy(ret["feature"]["def"]["listExclude"])
+    ret["feature"]["def"][prefix + "Exclude"].name = prefix + "Exclude"
+
+    ret["feature"]["def"][prefix + "Title"] = copy(ret["feature"]["def"]["listTitle"])
+    ret["feature"]["def"][prefix + "Title"].name = prefix + "Title"
+
+    ret["feature"]["def"][prefix + "MarkerSign"] = copy(ret["feature"]["def"]["listMarkerSign"])
+    ret["feature"]["def"][prefix + "MarkerSign"].name = prefix + "MarkerSign"
+
+    ret["feature"]["def"][prefix + "MarkerSymbol"] = copy(ret["feature"]["def"]["listMarkerSymbol"])
+    ret["feature"]["def"][prefix + "MarkerSymbol"].name = prefix + "MarkerSymbol"
+  }
+
+
   ret["feature"]["def"]["style"] = copy(styleDef)
+
   ret["feature"]["def"]["style"]["name"] = "style"
 
   var l = [ "casing", "highlight", "left", "right", "hover", "selected" ]
