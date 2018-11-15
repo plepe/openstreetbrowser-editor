@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@mapbox/maki": "^4.0.0",
+    "leaflet-polylinedecorator": "https://github.com/plepe/Leaflet.PolylineDecorator.git",
     "leaflet-polylineoffset": "^1.1.0",
     "openstreetbrowser": "https://github.com/plepe/openstreetbrowser"
   },
