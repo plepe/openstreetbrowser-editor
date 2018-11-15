@@ -24,6 +24,13 @@ function formDef (data) {
     "button:add_element": "Add query at different zoom level"
   }
 
+  ret["members"] = {
+    "type": "boolean",
+    "name": "members",
+    "desc": "Shall the query include relation members, which will be evaluated via 'memberFeature'",
+    "include_data": [ 'is', true ]
+  }
+
   ret["lists"] = {
     "type": "hash",
     "name": "Lists",
@@ -209,137 +216,141 @@ function formDef (data) {
     },
   }
 
-  ret["feature"] = {
-    "type": "form_chooser",
-    "order": false,
-    "name": "Feature evaluation",
-    "desc": "This codes will be evaluated for each map feature. You can set different styles, texts, etc. All sub values will be evaluated via <a href=\"https://github.com/plepe/OpenStreetBrowser/blob/master/doc/TwigJS.md\">TwigJS markup</a>. Fields where HTML code is expected may include <a href=\"https://github.com/plepe/OpenStreetBrowser/blob/master/doc/Icons.md\">Icons</a>.",
-    "result_keep_order": true,
-    "include_data": "not_null",
-    "button:add_element": "Add feature code",
-    "def": {
-      "pre": {
-	"type": "textarea",
-	"name": "pre",
-	"desc": "This code will be executed before any other code. You might want to set variables, e.g.: <code>{% set foo = tags.amenity %}</code>"
-      },
-      "title": {
-	"type": "textarea",
-	"name": "title",
-        "desc": "(string) Title to use in the popup and the list",
-	"default": "{{ localizedTag(tags, 'name') |default(localizedTag(tags, 'operator')) | default(localizedTag(tags, 'ref')) | default(trans('unnamed')) }}"
-      },
-      "listTitle": {
-	"type": "textarea",
-	"name": "listTitle",
-        "desc": "(string) Override title to use in the list",
-	"default": "{{ localizedTag(tags, 'name') |default(localizedTag(tags, 'operator')) | default(localizedTag(tags, 'ref')) | default(trans('unnamed')) }}"
-      },
-      "description": {
-	"type": "textarea",
-	"name": "description",
-        "desc": "(string) Description which will be shown in the list next to the title and in the popup (if no <tt>popupDescription</tt> is set).",
-      },
-      "popupDescription": {
-	"type": "textarea",
-	"name": "popupDescription",
-        "desc": "(string) Description which will be shown in the popup."
-      },
-      "body": {
-	"type": "textarea",
-	"name": "body",
-        "desc": "(string) Longer text which will be shown in the popup and in the detailed view."
-      },
-      "markerSign": {
-	"type": "textarea",
-	"name": "markerSign",
-        "desc": "(string) HTML Text which will be shown in the marker (if there is a marker). You may use <a href='https://github.com/plepe/OpenStreetBrowser/blob/master/doc/Icons.md'>included icons</a>.",
-      },
-      "listMarkerSign": {
-	"type": "textarea",
-	"name": "listMarkerSign",
-        "desc": "(string) HTML Text which will be shown in the marker in the list. You may use <a href='https://github.com/plepe/OpenStreetBrowser/blob/master/doc/Icons.md'>included icons</a>.",
-      },
-      "markerSymbol": {
-	"type": "textarea",
-	"name": "markerSymbol",
-        "desc": "(string) An DIV or SVG which will be shown as marker on the centroid of the map feature. The element should have <tt>width</tt>, <tt>height</tt> attributes. Specify <tt>anchorX</tt> and <tt>anchorY</tt> attributes for positioning, otherwise it will be centered. Specify <tt>signAnchorX</tt> and <tt>signAnchorY</tt> to specify where the sign should be located (centered around this point), default: at anchor. Specify <tt>popupAnchorX</tt> and <tt>popupAnchorY</tt> to specify where the popup should open, default: at anchor.<br/>You can use the markerXYZ functions to create an SVG, e.g. <tt>{{ markerPointer({})|raw }}</tt>.",
-	"default": "{{ markerPointer({})|raw }}"
-      },
-      "listMarkerSymbol": {
-	"type": "textarea",
-	"name": "listMarkerSymbol",
-        "desc": "(string) A symbol which will be shown in the list. Either a SVG similar to 'markerSymbol' or the strings 'line' or 'polygon' (show a line or a rectangle with the definition from the styles).",
-	"default": "{{ markerCircle({})|raw }}"
-      },
-      "listExclude": {
-	"type": "textarea",
-	"name": "listExclude",
-        "desc": "(boolean) If true, object will not be shown in the list.",
-	"default": "false"
-      },
-      "priority": {
-	"type": "textarea",
-	"name": "priority",
-        "desc": "(number) Order of map features in the list. Map features with lower value will be shown first."
-      },
-      "styles": {
-	"type": "textarea",
-	"name": "styles",
-        "desc": "(string) Comma-separated list of style-ids which should be shown for this particular map features. Defaults to all styles (except 'hover').",
-        "default": "default"
-      },
-      "preferredZoom": {
-        "type": "textarea",
-        "name": "preferredZoom",
-        "desc": "At which max. zoom level will the map zoom when showing details",
-        "default": "16"
+  let featureLevels = { 'feature': 'Feature evaluation', 'memberFeature': 'memberFeature' }
+  for (var feature in featureLevels) {
+    ret[feature] = {
+      "type": "form_chooser",
+      "order": false,
+      "name": featureLevels[feature],
+      "desc": "This codes will be evaluated for each map feature. You can set different styles, texts, etc. All sub values will be evaluated via <a href=\"https://github.com/plepe/OpenStreetBrowser/blob/master/doc/TwigJS.md\">TwigJS markup</a>. Fields where HTML code is expected may include <a href=\"https://github.com/plepe/OpenStreetBrowser/blob/master/doc/Icons.md\">Icons</a>.",
+      "result_keep_order": true,
+      "include_data": "not_null",
+      "button:add_element": "Add feature code",
+      "def": {
+        "pre": {
+          "type": "textarea",
+          "name": "pre",
+          "desc": "This code will be executed before any other code. You might want to set variables, e.g.: <code>{% set foo = tags.amenity %}</code>"
+        },
+        "title": {
+          "type": "textarea",
+          "name": "title",
+          "desc": "(string) Title to use in the popup and the list",
+          "default": "{{ localizedTag(tags, 'name') |default(localizedTag(tags, 'operator')) | default(localizedTag(tags, 'ref')) | default(trans('unnamed')) }}"
+        },
+        "listTitle": {
+          "type": "textarea",
+          "name": "listTitle",
+          "desc": "(string) Override title to use in the list",
+          "default": "{{ localizedTag(tags, 'name') |default(localizedTag(tags, 'operator')) | default(localizedTag(tags, 'ref')) | default(trans('unnamed')) }}"
+        },
+        "description": {
+          "type": "textarea",
+          "name": "description",
+          "desc": "(string) Description which will be shown in the list next to the title and in the popup (if no <tt>popupDescription</tt> is set).",
+        },
+        "popupDescription": {
+          "type": "textarea",
+          "name": "popupDescription",
+          "desc": "(string) Description which will be shown in the popup."
+        },
+        "body": {
+          "type": "textarea",
+          "name": "body",
+          "desc": "(string) Longer text which will be shown in the popup and in the detailed view."
+        },
+        "markerSign": {
+          "type": "textarea",
+          "name": "markerSign",
+          "desc": "(string) HTML Text which will be shown in the marker (if there is a marker). You may use <a href='https://github.com/plepe/OpenStreetBrowser/blob/master/doc/Icons.md'>included icons</a>.",
+        },
+        "listMarkerSign": {
+          "type": "textarea",
+          "name": "listMarkerSign",
+          "desc": "(string) HTML Text which will be shown in the marker in the list. You may use <a href='https://github.com/plepe/OpenStreetBrowser/blob/master/doc/Icons.md'>included icons</a>.",
+        },
+        "markerSymbol": {
+          "type": "textarea",
+          "name": "markerSymbol",
+          "desc": "(string) An DIV or SVG which will be shown as marker on the centroid of the map feature. The element should have <tt>width</tt>, <tt>height</tt> attributes. Specify <tt>anchorX</tt> and <tt>anchorY</tt> attributes for positioning, otherwise it will be centered. Specify <tt>signAnchorX</tt> and <tt>signAnchorY</tt> to specify where the sign should be located (centered around this point), default: at anchor. Specify <tt>popupAnchorX</tt> and <tt>popupAnchorY</tt> to specify where the popup should open, default: at anchor.<br/>You can use the markerXYZ functions to create an SVG, e.g. <tt>{{ markerPointer({})|raw }}</tt>.",
+          "default": "{{ markerPointer({})|raw }}"
+        },
+        "listMarkerSymbol": {
+          "type": "textarea",
+          "name": "listMarkerSymbol",
+          "desc": "(string) A symbol which will be shown in the list. Either a SVG similar to 'markerSymbol' or the strings 'line' or 'polygon' (show a line or a rectangle with the definition from the styles).",
+          "default": "{{ markerCircle({})|raw }}"
+        },
+        "listExclude": {
+          "type": "textarea",
+          "name": "listExclude",
+          "desc": "(boolean) If true, object will not be shown in the list.",
+          "default": "false"
+        },
+        "priority": {
+          "type": "textarea",
+          "name": "priority",
+          "desc": "(number) Order of map features in the list. Map features with lower value will be shown first."
+        },
+        "styles": {
+          "type": "textarea",
+          "name": "styles",
+          "desc": "(string) Comma-separated list of style-ids which should be shown for this particular map features. Defaults to all styles (except 'hover').",
+          "default": "default"
+        },
+        "preferredZoom": {
+          "type": "textarea",
+          "name": "preferredZoom",
+          "desc": "At which max. zoom level will the map zoom when showing details",
+          "default": "16"
+        }
       }
     }
+
+    if (data.lists) for (let k in data.lists) {
+      let prefix = data.lists[k].prefix
+
+      ret[feature]["def"][prefix + "Exclude"] = copy(ret[feature]["def"]["listExclude"])
+      ret[feature]["def"][prefix + "Exclude"].name = prefix + "Exclude"
+
+      ret[feature]["def"][prefix + "Title"] = copy(ret[feature]["def"]["listTitle"])
+      ret[feature]["def"][prefix + "Title"].name = prefix + "Title"
+
+      ret[feature]["def"][prefix + "MarkerSign"] = copy(ret[feature]["def"]["listMarkerSign"])
+      ret[feature]["def"][prefix + "MarkerSign"].name = prefix + "MarkerSign"
+
+      ret[feature]["def"][prefix + "MarkerSymbol"] = copy(ret[feature]["def"]["listMarkerSymbol"])
+      ret[feature]["def"][prefix + "MarkerSymbol"].name = prefix + "MarkerSymbol"
+    }
+
+
+    ret[feature]["def"]["style"] = copy(styleDef)
+
+    ret[feature]["def"]["style"]["name"] = "style"
+
+    var l = [ "casing", "highlight", "left", "right", "hover", "selected" ]
+    for (var i in l) {
+      var k = l[i]
+      ret[feature]["def"]["style:" + k] = copy(styleDef)
+      ret[feature]["def"]["style:" + k]["name"] = "style:" + k
+    }
+
+    Object.keys(data[feature])
+      .filter(k => k.match(/^style:/))
+      .forEach(k => {
+        ret[feature]["def"][k] = copy(styleDef)
+        ret[feature]["def"][k]["name"] = k
+    })
+
+    ret[feature]["def"]["style:hover"]["desc"] = "Will be shown when hovering over object in list."
+    ret[feature]["def"]["style:hover"]["color"] = "black"
+    ret[feature]["def"]["style:hover"]["radius"] = "12"
+
+
+    ret[feature]["def"]["style:selected"]["desc"] = "Will be shown when popup is shown and/or details."
+    ret[feature]["def"]["style:selected"]["color"] = "#3f3f3f"
+    ret[feature]["def"]["style:selected"]["radius"] = "12"
   }
-
-  if (data.lists) for (let k in data.lists) {
-    let prefix = data.lists[k].prefix
-
-    ret["feature"]["def"][prefix + "Exclude"] = copy(ret["feature"]["def"]["listExclude"])
-    ret["feature"]["def"][prefix + "Exclude"].name = prefix + "Exclude"
-
-    ret["feature"]["def"][prefix + "Title"] = copy(ret["feature"]["def"]["listTitle"])
-    ret["feature"]["def"][prefix + "Title"].name = prefix + "Title"
-
-    ret["feature"]["def"][prefix + "MarkerSign"] = copy(ret["feature"]["def"]["listMarkerSign"])
-    ret["feature"]["def"][prefix + "MarkerSign"].name = prefix + "MarkerSign"
-
-    ret["feature"]["def"][prefix + "MarkerSymbol"] = copy(ret["feature"]["def"]["listMarkerSymbol"])
-    ret["feature"]["def"][prefix + "MarkerSymbol"].name = prefix + "MarkerSymbol"
-  }
-
-
-  ret["feature"]["def"]["style"] = copy(styleDef)
-
-  ret["feature"]["def"]["style"]["name"] = "style"
-
-  var l = [ "casing", "highlight", "left", "right", "hover", "selected" ]
-  for (var i in l) {
-    var k = l[i]
-    ret["feature"]["def"]["style:" + k] = copy(styleDef)
-    ret["feature"]["def"]["style:" + k]["name"] = "style:" + k
-  }
-
-  data
-    .filter(k => k.match(/^style:/))
-    .forEach(k => {
-      ret["feature"]["def"][k] = copy(styleDef)
-      ret["feature"]["def"][k]["name"] = k
-  })
-
-  ret["feature"]["def"]["style:hover"]["desc"] = "Will be shown when hovering over object in list."
-  ret["feature"]["def"]["style:hover"]["color"] = "black"
-  ret["feature"]["def"]["style:hover"]["radius"] = "12"
-
-  ret["feature"]["def"]["style:selected"]["desc"] = "Will be shown when popup is shown and/or details."
-  ret["feature"]["def"]["style:hover"]["color"] = "#3f3f3f"
-  ret["feature"]["def"]["style:hover"]["radius"] = "12"
 
   ret["info"] = {
     "type": "textarea",
