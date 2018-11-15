@@ -326,6 +326,13 @@ function formDef (data) {
     ret["feature"]["def"]["style:" + k]["name"] = "style:" + k
   }
 
+  data
+    .filter(k => k.match(/^style:/))
+    .forEach(k => {
+      ret["feature"]["def"][k] = copy(styleDef)
+      ret["feature"]["def"][k]["name"] = k
+  })
+
   ret["feature"]["def"]["style:hover"]["desc"] = "Will be shown when hovering over object in list."
   ret["feature"]["def"]["style:hover"]["color"] = "black"
   ret["feature"]["def"]["style:hover"]["radius"] = "12"
