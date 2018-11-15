@@ -32,6 +32,12 @@ class CategoryOverpass extends CategoryBase {
       "order": false,
       "result_keep_order": true,
       "def": {
+	"pane": {
+	  "type": "textarea",
+	  "name": "pane",
+	  "desc": "(string) on which pane should the map feature be shown",
+	  "default": ""
+	},
         "stroke": {
           "type": "textarea",
           "name": "stroke",
