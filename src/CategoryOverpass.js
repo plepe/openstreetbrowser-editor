@@ -215,9 +215,71 @@ class CategoryOverpass extends CategoryBase {
           "desc": "(number) Font opacity: 0..transparent, 1..fully opaque.",
           "default": "1",
           "empty_value": ""
+        },
+        "pattern": {
+          "type": "textarea",
+          "name": "pattern",
+          "desc": "(string) false/empty: no pattern, 'arrowHead', 'dash', 'marker'",
+          "default": ""
+        },
+        "pattern-offset": {
+          "type": "textarea",
+          "name": "pattern-offset",
+          "desc": "(number) Offset of the first pattern symbol, from the start point of the line.",
+          "default": "0"
+        },
+        "pattern-endOffset": {
+          "type": "textarea",
+          "name": "pattern-endOffset",
+          "desc": "(number) Minimum offset of the last pattern symbol, from the end point of the line.",
+          "default": "0"
+        },
+        "pattern-repeat": {
+          "type": "textarea",
+          "name": "pattern-repeat",
+          "desc": "(number) Repetition interval of the pattern symbols. Defines the distance between each consecutive symbol's anchor point.",
+          "default": ""
+        },
+        "pattern-polygon": {
+          "type": "textarea",
+          "name": "pattern-polygon",
+          "desc": "(boolean) Shall path be drawn as polygon? (pattern=arrowHead only)",
+          "default": "true"
+        },
+        "pattern-pixelSize": {
+          "type": "textarea",
+          "name": "pattern-pixelSize",
+          "desc": "(number) size of pattern (pattern=arrowHead or pattern=dash only)",
+          "default": "10"
+        },
+        "pattern-headAngle": {
+          "type": "textarea",
+          "name": "pattern-headAngle",
+          "desc": "(boolean) Angle of the digits (pattern=arrowHead only)",
+          "default": "60"
+        },
+        "pattern-angleCorrection": {
+          "type": "textarea",
+          "name": "pattern-angleCorrection",
+          "desc": "(boolean) Rotate object from the polyline? (pattern=arrowHead or pattern=marker only)",
+          "default": "0"
+        },
+        "pattern-rotate": {
+          "type": "textarea",
+          "name": "pattern-rotate",
+          "desc": "(boolean) Rotate markers with the line? (pattern=marker only)",
+          "default": "false"
         }
-      },
+      }
     }
+
+    Object.keys(styleDef.def)
+      .filter(k => !k.match(/^(text|pattern-)/))
+      .forEach(k => {
+        styleDef["def"]['pattern-path-' + k] = copy(styleDef.def[k])
+        styleDef["def"]['pattern-path-' + k]["name"] = 'pattern-path-' + k
+      }
+    )
 
     ret["feature"] = {
       "type": "form_chooser",
