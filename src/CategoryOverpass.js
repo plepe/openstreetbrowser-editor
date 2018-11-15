@@ -2,6 +2,7 @@ var jsonMultilineStrings = require('json-multiline-strings')
 var CategoryBase = require('./CategoryBase')
 const nameFieldDef = require('./nameFieldDef')
 var OpenStreetBrowser = require('openstreetbrowser')
+const copy = require('./copy')
 
 class CategoryOverpass extends CategoryBase {
   formDef (data, callback) {
@@ -329,13 +330,13 @@ class CategoryOverpass extends CategoryBase {
       }
     }
 
-    ret["feature"]["def"]["style"] = JSON.parse(JSON.stringify(styleDef))
+    ret["feature"]["def"]["style"] = copy(styleDef)
     ret["feature"]["def"]["style"]["name"] = "style"
 
     var l = [ "casing", "highlight", "left", "right", "hover", "selected" ]
     for (var i in l) {
       var k = l[i]
-      ret["feature"]["def"]["style:" + k] = JSON.parse(JSON.stringify(styleDef))
+      ret["feature"]["def"]["style:" + k] = copy(styleDef)
       ret["feature"]["def"]["style:" + k]["name"] = "style:" + k
     }
 
@@ -343,7 +344,7 @@ class CategoryOverpass extends CategoryBase {
       for (var k in data.feature) {
         let m = k.match(/^style:(.*)$/)
         if (m && !(k in ret.feature.def)) {
-          ret["feature"]["def"]["style:" + m[1]] = JSON.parse(JSON.stringify(styleDef))
+          ret["feature"]["def"]["style:" + m[1]] = copy(styleDef)
           ret["feature"]["def"]["style:" + m[1]]["name"] = k
         }
       }
@@ -403,7 +404,7 @@ class CategoryOverpass extends CategoryBase {
       "desc": "If set to true, relations won't be loaded with their full geometry, but only members within the bbox. Also, the members can be styled via \"memberFeature\""
     }
 
-    ret["memberFeature"] = JSON.parse(JSON.stringify(ret["feature"]))
+    ret["memberFeature"] = copy(ret["feature"])
     ret["memberFeature"]["name"] = "memberFeature"
     ret["memberFeature"]["desc"] = "This codes will be evaluated for each member of a relation, if \"members\" is set to true. You can set different styles, texts, etc. All sub values will be evaluated via <a href=\"https://github.com/plepe/OpenStreetBrowser/blob/master/doc/TwigJS.md\">TwigJS markup</a>. Fields where HTML code is expected may include <a href=\"https://github.com/plepe/OpenStreetBrowser/blob/master/doc/Icons.md\">Icons</a>."
 
@@ -411,7 +412,7 @@ class CategoryOverpass extends CategoryBase {
       for (var k in data.memberFeature) {
         let m = k.match(/^style:(.*)$/)
         if (m && !(k in ret.memberFeature.def)) {
-          ret["memberFeature"]["def"]["style:" + m[1]] = JSON.parse(JSON.stringify(styleDef))
+          ret["memberFeature"]["def"]["style:" + m[1]] = copy(styleDef)
           ret["memberFeature"]["def"]["style:" + m[1]]["name"] = k
         }
       }
@@ -436,7 +437,7 @@ class CategoryOverpass extends CategoryBase {
             "desc": "Will be used as prefix for further fields (e.g. 'listFoo' => 'listFooExclude')",
           },
           // find all used languages in all lists
-          "name": data.lists && Object.keys(data.lists).length ? nameFieldDef(Object.assign.apply(this, Object.values(JSON.parse(JSON.stringify(data.lists))).map(x => x.name))) : nameFieldDef()
+          "name": data.lists && Object.keys(data.lists).length ? nameFieldDef(Object.assign.apply(this, Object.values(copy(data.lists)).map(x => x.name))) : nameFieldDef()
         }
       }
     }
