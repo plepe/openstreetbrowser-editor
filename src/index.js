@@ -26,7 +26,7 @@ function Editor (textarea) {
 }
 
 Editor.prototype.getCategoryType = function (options) {
-  return this.categoryType = new categoryTypes.translation(options)
+  //return this.categoryType = new categoryTypes.translation(options)
 
   if (!this.data || !'type' in this.data) {
     return null
