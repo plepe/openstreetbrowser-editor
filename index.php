@@ -131,7 +131,8 @@ else if (isset($_REQUEST['file']) && preg_match('/^([A-Za-z0-9_\-]*\.json|)$/', 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="node_modules/leaflet/dist/leaflet.css" />
-<link rel="stylesheet" href="node_modules/font-awesome/css/font-awesome.min.css" />
+<link rel="stylesheet" href="node_modules/@fortawesome/fontawesome-free/css/all.min.css" />
+<link rel="stylesheet" href="node_modules/@fortawesome/fontawesome-free/css/v4-shims.min.css" />
 <script src="node_modules/leaflet/dist/leaflet.js"></script>
 <script src="node_modules/leaflet-textpath/leaflet.textpath.js"></script>
 <script src="node_modules/leaflet-polylineoffset/leaflet.polylineoffset.js"></script>
