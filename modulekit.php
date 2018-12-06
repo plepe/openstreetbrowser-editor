@@ -6,6 +6,7 @@ $depend = array(
   "messages",
   "hooks",
   "page",
+  'openstreetmap-tag-translations',
 );
 
 $include = array(
