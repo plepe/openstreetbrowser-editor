@@ -37,7 +37,7 @@ if (array_key_exists('list', $_REQUEST)) {
 }
 else {
   $tmpfile = tempnam('/tmp', 'osb-asset-');
-  $contents = $repo->file_get_contents("{$_REQUEST['dir']}/{$_REQUEST['file']}");
+  $contents = $repo->file_get_contents($_REQUEST['file']);
 
   if ($contents === false) {
     Header("HTTP/1.1 401 Permission denied");
@@ -46,6 +46,7 @@ else {
 
   file_put_contents($tmpfile, $contents);
   $mime_type = mime_content_type($tmpfile);
+  unlink($tmpfile);
 }
 
 Header("Content-Type: {$mime_type}; charset=utf-8");
