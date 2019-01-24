@@ -562,8 +562,8 @@ class CategoryOverpass extends CategoryBase {
     return true
   }
 
-  getLayer (data, callback) {
-    callback(null, new OpenStreetBrowser.CategoryOverpass(this.options, data))
+  getLayer (data, repository, callback) {
+    callback(null, new OpenStreetBrowser.CategoryOverpass(this.options, data, repository))
   }
 }
 

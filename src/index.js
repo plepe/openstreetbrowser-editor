@@ -1,4 +1,5 @@
 var OverpassFrontend = require('overpass-frontend')
+const OpenStreetBrowser = require('openstreetbrowser')
 
 var categoryTypes = {
   index: require('./CategoryIndex'),
@@ -139,16 +140,20 @@ Editor.prototype.load2 = function (err, data) {
     }
   }
 
-  this.initCategory(
+  this.initRepository(
     (err) => {
-      if (err) {
-        return alert(err)
-      }
+      this.initCategory(
+        (err) => {
+          if (err) {
+            return alert(err)
+          }
 
-      this.resize()
+          this.resize()
 
-      window.addEventListener('scroll', this.resize.bind(this))
-      window.addEventListener('resize', this.resize.bind(this))
+          window.addEventListener('scroll', this.resize.bind(this))
+          window.addEventListener('resize', this.resize.bind(this))
+        }
+      )
     }
   )
 }
@@ -245,6 +250,11 @@ Editor.prototype.resize = function () {
 }
 
 
+Editor.prototype.initRepository = function (callback) {
+  this.repository = new OpenStreetBrowser.Repository(this.options.path.repo, {})
+  callback(null)
+}
+
 Editor.prototype.initCategory = function (callback) {
   if (this.layer) {
     this.layer.close()
@@ -253,7 +263,7 @@ Editor.prototype.initCategory = function (callback) {
     }
   }
 
-  this.categoryType.getLayer(this.data,
+  this.categoryType.getLayer(this.data, this.repository,
     (err, layer) => {
       if (err) {
         return callback(err)
