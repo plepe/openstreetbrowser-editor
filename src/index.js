@@ -84,7 +84,8 @@ Editor.prototype.chooseType = function (callback) {
   }
 }
 
-Editor.prototype.load = function () {
+Editor.prototype.load = function (options) {
+  this.options = options
   this.categoryType.postLoad(this.data, this.load2.bind(this))
 }
 
@@ -358,7 +359,7 @@ window.OpenStreetBrowserEditor = {
             textarea.editor.categoryType.newData(function (err, data) {
               textarea.editor.data = data
             }.bind(this))
-	    textarea.editor.load()
+	    textarea.editor.load(options)
 	  }
 	})
       })
@@ -370,7 +371,7 @@ window.OpenStreetBrowserEditor = {
       var initState = {}
       call_hooks('init', initState)
       call_hooks_callback('init_callback', initState, function (initState) {
-	textarea.editor.load()
+	textarea.editor.load(options)
       })
       return true
     } else {
