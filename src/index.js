@@ -1,4 +1,6 @@
-var OverpassFrontend = require('overpass-frontend')
+const async = require('async')
+
+const OverpassFrontend = require('overpass-frontend')
 const OpenStreetBrowser = require('openstreetbrowser')
 
 var categoryTypes = {
@@ -251,8 +253,60 @@ Editor.prototype.resize = function () {
 
 
 Editor.prototype.initRepository = function (callback) {
+  let langEn, langLocal
+
   this.repository = new OpenStreetBrowser.Repository(this.options.path.repo, {})
-  callback(null)
+
+  async.parallel([
+    (done) => {
+      this.repository.loadAsset('lang/en.json',
+        {},
+        (err, result) => {
+          // ignore error
+          if (!err) {
+            langEn = JSON.parse(result)
+          }
+
+          done()
+        }
+      )
+    },
+    (done) => {
+      if (ui_lang === 'en') {
+        return done()
+      }
+
+      this.repository.loadAsset('lang/' + ui_lang + '.json',
+        {},
+        (err, result) => {
+          // ignore error
+          if (!err) {
+            langLocal = JSON.parse(result)
+          }
+
+          done()
+        }
+      )
+    },
+  ],
+    (err) => {
+      if (!langLocal) {
+        if (langEn) {
+          this.repository.lang = langEn
+        }
+      } else {
+        this.repository.lang = langEn
+
+        for (var k in langLocal) {
+          if (langLocal[k]) {
+            this.repository.lang[k] = langLocal[k]
+          }
+        }
+      }
+
+      callback(err)
+    }
+  )
 }
 
 Editor.prototype.initCategory = function (callback) {
