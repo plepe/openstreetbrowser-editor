@@ -138,12 +138,18 @@ Editor.prototype.load2 = function (err, data) {
     }
   }
 
-  this.initCategory()
+  this.initCategory(
+    (err) => {
+      if (err) {
+        return alert(err)
+      }
 
-  this.resize()
+      this.resize()
 
-  window.addEventListener('scroll', this.resize.bind(this))
-  window.addEventListener('resize', this.resize.bind(this))
+      window.addEventListener('scroll', this.resize.bind(this))
+      window.addEventListener('resize', this.resize.bind(this))
+    }
+  )
 }
 
 Editor.prototype.completeFormDef = function (formDef, data) {
@@ -193,7 +199,7 @@ Editor.prototype.loadForm = function (err, formDef, rootFormType='form') {
     data = JSON.stringify(this.categoryType.preSave(data), null, '    ')
     this.textarea.value = data + '\n'
 
-    this.initCategory()
+    this.initCategory(() => {})
   }.bind(this)
 
   if ('setForm' in this.categoryType) {
@@ -238,7 +244,7 @@ Editor.prototype.resize = function () {
 }
 
 
-Editor.prototype.initCategory = function () {
+Editor.prototype.initCategory = function (callback) {
   if (this.layer) {
     this.layer.close()
     if (this.listDiv) {
@@ -246,23 +252,35 @@ Editor.prototype.initCategory = function () {
     }
   }
 
-  this.layer = this.categoryType.getLayer(this.data)
+  this.categoryType.getLayer(this.data,
+    (err, layer) => {
+      if (err) {
+        return callback(err)
+      }
 
-  if (!this.layer) {
-    return
-  }
+      this.layer = layer
 
-  this.layer.load(function () {
-    if (this.categoryType.hasMap()) {
-      this.layer.setMap(this.map)
+      this.layer.load(
+        (err) => {
+          if (err) {
+            return callback(err)
+          }
+
+          if (this.categoryType.hasMap()) {
+            this.layer.setMap(this.map)
+          }
+
+          this.layer.open()
+
+          if (this.listDiv) {
+            this.layer.setParentDom(this.listDiv)
+          }
+
+          callback(null)
+        }
+      )
     }
-
-    this.layer.open()
-
-    if (this.listDiv) {
-      this.layer.setParentDom(this.listDiv)
-    }
-  }.bind(this))
+  )
 }
 
 Editor.prototype.reload = function () {

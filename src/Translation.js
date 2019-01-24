@@ -233,8 +233,8 @@ class Translation {
     return false
   }
 
-  getLayer () {
-    return null
+  getLayer (data, callback) {
+    callback(null, null)
   }
 
   setForm (form) {
