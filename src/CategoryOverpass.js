@@ -510,6 +510,152 @@ class CategoryOverpass extends CategoryBase {
       }
     }
 
+    ret["filter"] = {
+      "type": "hash",
+      "order": true,
+      "name": "Filter",
+      "desc": "Add filters",
+      "key_def": {
+        "type": "text",
+        "name": "id",
+        "desc": "ID of the filter"
+      },
+      "def": {
+        "type": "form",
+        "def": {
+          "name": {
+            "name": "Name",
+            "type": "textarea",
+            "desc": "You can use <a href=\"https://github.com/plepe/OpenStreetBrowser/blob/master/doc/TwigJS.md\">TwigJS markup</a> in this field.",
+            "req": true
+          },
+          "type": {
+            "name": "Type",
+            "type": "select",
+            "desc": "Type of UI element",
+            "placeholder": "text",
+            "values": [
+              "select"
+            ],
+            "include_data": "not_null"
+          },
+          "show_default": {
+            "name": "Show default",
+            "type": "select",
+            "desc": "Shall this filter always be present",
+            "placeholder": lang('no'),
+            "values": {
+              "true": lang('yes')
+            },
+            "include_data": "not_null"
+          },
+          "key": {
+            "name": "Key(s)",
+            "type": "array",
+            "desc": "Which key(s) to query. Defaults to the id of this filter. You can use wildcards too, e.g. \"name:*\" to query all localized name tags. Can be overruled by specifying a custom query.",
+            "include_data": "not_null",
+            "index_type": "array",
+            "order": false,
+            "count": { "default": 1 },
+            "def": {
+              "type": "text"
+            }
+          },
+          "op": {
+            "name": "Operator",
+            "type": "select",
+            "placeholder": "= - Exact match",
+            "values": {
+              "!=": "!= - any value but this",
+              "~": "~ - Regular expression, case sensitive",
+              "~i": "~i - Regular expression, case insensitive",
+              "!~": "!~ - Regular expression, negated, case sensitive",
+              "!~i": "!~i - Regular expression, negated, case insensitive",
+              "has": "has - Match element of multi value tag",
+              "strsearch": "strsearch - Query string parts (e.g. \"kai cafe\" would match \"Kaiser Café\")",
+              "has_key_value": "has_key_value - Object has a tag with that key"
+            },
+            "include_data": "not_null"
+          },
+          "query": {
+            "name": "query",
+            "type": "textarea",
+            "desc": "<a href=\"https://github.com/plepe/OpenStreetBrowser/blob/master/doc/TwigJS.md\">TwigJS template</a> which builds a query from the selected value (if the value has not a query defined), e.g. <tt>nwr[amenity={{ value }}]</tt>. If not defined the query will be built from <tt>key</tt> (or the filter ID), Operator and the selected value.",
+            "include_data": "not_null"
+          },
+          "valueName": {
+            "name": "valueName",
+            "type": "textarea",
+            "desc": "if the values do not have names, use this <a href=\"https://github.com/plepe/OpenStreetBrowser/blob/master/doc/TwigJS.md\">TwigJS template</a> to create a each name. Use <tt>{{ value }}</tt> for the current value.",
+            "include_data": "not_null",
+            "show_depend": [ 'check', 'type', [ 'is', 'select' ] ]
+          },
+          "_valuesType": {
+            "type": "select",
+            "name": "type of values option",
+            "values": {
+              'array': 'Array',
+              'hash': 'Hash',
+              'options': 'HTML options'
+            },
+            "show_depend": [ 'check', 'type', [ 'is', 'select' ] ]
+          },
+          "values": {
+            "type": "switch",
+            "switch": "_valuesType",
+            "show_depend": [ 'check', 'type', [ 'is', 'select' ] ],
+            "include_data": "not_null",
+            "def": {
+              "options": {
+                "type": "textarea",
+                "name": "values",
+                "desc": "Specify available values as list of HTML options:<pre>&lt;option\n  value=\"restaurant\"\n  query=\"nwr[amenity=restaurant]\"\n&gt;\n{{ tagTrans('amenity', 'restaurant') }}\n&lt;/option&gt;</pre><tt>query</tt> and text content are optional (see valueName and query)",
+                "include_data": "not_null"
+              },
+              "array": {
+                "type": "array",
+                "name": "values",
+                "desc": "Specify available values",
+                "count": { "default": 3 },
+                "order": true,
+                "index_type": "array",
+                "def": {
+                  "type": "text"
+                }
+              },
+              "hash": {
+                "type": "hash",
+                "order": true,
+                "name": "values",
+                "desc": "Specify available values",
+                "key_def": {
+                  "type": "text",
+                  "name": "value",
+                },
+                "def": {
+                  "type": "form",
+                  "def": {
+                    "name": {
+                      "type": "textarea",
+                      "name": "name",
+                      "desc": "If empty, name will be generated via the valueName option",
+                      "include_data": "not_null"
+                    },
+                    "query": {
+                      "type": "textarea",
+                      "name": "query",
+                      "desc": "If empty, query will be generated via the filters' query option",
+                      "include_data": "not_null"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
     ret["info"] = {
       "type": "textarea",
       "name": "Info (e.g. map key)",
@@ -542,7 +688,26 @@ class CategoryOverpass extends CategoryBase {
   }
 
   postLoad (data, callback) {
-    var result = jsonMultilineStrings.join(data, { exclude: [ [ 'const' ] ] })
+    var result = jsonMultilineStrings.join(data, { exclude: [ [ 'const' ], [ 'filter' ] ] })
+
+    if (result.filter) {
+      for (var k in result.filter) {
+        if ('key' in result.filter[k] && typeof result.filter[k].key === 'string') {
+          result.filter[k].key = [ result.filter[k].key ]
+        }
+
+        if ('values' in result.filter[k]) {
+          if (typeof result.filter[k].values === 'string') {
+            result.filter[k]._valuesType = 'options'
+          } else if (Array.isArray(result.filter[k].values)) {
+            result.filter[k]._valuesType = 'array'
+          } else {
+            result.filter[k]._valuesType = 'hash'
+          }
+        }
+      }
+    }
+
     callback(null, result)
   }
 
@@ -555,7 +720,17 @@ class CategoryOverpass extends CategoryBase {
       ret[k] = data[k]
     }
 
-    return jsonMultilineStrings.split(ret, { exclude: [ [ 'const' ] ] })
+    if (ret.filter) {
+      for (var k in ret.filter) {
+        delete ret.filter[k]._valuesType
+
+        if ('key' in ret.filter[k] && ret.filter[k].key.length === 1) {
+          ret.filter[k].key = ret.filter[k].key[0]
+        }
+      }
+    }
+
+    return jsonMultilineStrings.split(ret, { exclude: [ [ 'const' ], [ 'filter' ] ] })
   }
 
   hasMap () {
