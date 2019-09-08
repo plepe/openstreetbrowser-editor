@@ -535,7 +535,9 @@ class CategoryOverpass extends CategoryBase {
             "desc": "Type of UI element",
             "placeholder": "text",
             "values": [
-              "select"
+              "select",
+              "radio",
+              "autocomplete"
             ],
             "include_data": "not_null"
           },
@@ -588,7 +590,7 @@ class CategoryOverpass extends CategoryBase {
             "type": "textarea",
             "desc": "if the values do not have names, use this <a href=\"https://github.com/plepe/OpenStreetBrowser/blob/master/doc/TwigJS.md\">TwigJS template</a> to create a each name. Use <tt>{{ value }}</tt> for the current value.",
             "include_data": "not_null",
-            "show_depend": [ 'check', 'type', [ 'is', 'select' ] ]
+            "show_depend": [ 'check', 'type', [ 'not', [ 'is', null ] ] ]
           },
           "_valuesType": {
             "type": "select",
@@ -598,12 +600,12 @@ class CategoryOverpass extends CategoryBase {
               'hash': 'Hash',
               'options': 'HTML options'
             },
-            "show_depend": [ 'check', 'type', [ 'is', 'select' ] ]
+            "show_depend": [ 'check', 'type', [ 'not', [ 'is', null ] ] ]
           },
           "values": {
             "type": "switch",
             "switch": "_valuesType",
-            "show_depend": [ 'check', 'type', [ 'is', 'select' ] ],
+            "show_depend": [ 'check', 'type', [ 'not', [ 'is', null ] ] ],
             "include_data": "not_null",
             "def": {
               "options": {
