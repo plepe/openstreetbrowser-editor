@@ -537,6 +537,7 @@ class CategoryOverpass extends CategoryBase {
             "values": [
               "select",
               "radio",
+              "checkbox",
               "autocomplete"
             ],
             "include_data": "not_null"
