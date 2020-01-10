@@ -1,4 +1,5 @@
 var OverpassFrontend = require('overpass-frontend')
+const mapMetersPerPixel = require('openstreetbrowser/src/map-getMetersPerPixel')
 
 var categoryTypes = {
   index: require('./CategoryIndex'),
@@ -125,6 +126,7 @@ Editor.prototype.load2 = function (err, data) {
 
   if (this.categoryType.hasMap()) {
     this.map = L.map(this.mapDiv)
+    this.map.getMetersPerPixel = mapMetersPerPixel.bind(this.map)
     global.map = this.map // TODO: remove this
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
