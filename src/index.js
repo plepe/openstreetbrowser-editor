@@ -129,6 +129,9 @@ Editor.prototype.load2 = function (err, data) {
     this.map.getMetersPerPixel = mapMetersPerPixel.bind(this.map)
     global.map = this.map // TODO: remove this
 
+    map.createPane('casing')
+    map.getPane('casing').style.zIndex = 399
+
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(this.map)
