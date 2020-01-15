@@ -6,8 +6,9 @@
   "author": "Stephan Bösch-Plepelits <skunk@xover.mud.at>",
   "license": "GPL-3.0",
   "scripts": {
-    "build": "npm run build-lang ; browserify -g browserify-css src/index.js -o dist/app.js",
+    "build": "npm run build-locales && npm run build-lang ; browserify -g browserify-css src/index.js -o dist/app.js",
     "build-lang": "lib/modulekit/lang/bin/build_dist",
+    "build-locales": "for i in `ls node_modules/openstreetbrowser/locales/` ; do browserify node_modules/openstreetbrowser/locales/$i -o dist/locale-$i ; done",
     "watch": "npm run build-lang ; watchify --debug -g browserify-css src/index.js -o dist/app.js -v",
     "prepublish": "npm run build"
   },
