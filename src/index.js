@@ -1,5 +1,7 @@
 var OverpassFrontend = require('overpass-frontend')
 const mapMetersPerPixel = require('openstreetbrowser/src/map-getMetersPerPixel')
+const { lang } = require('../lib/modulekit/lang/inc/lang')
+global.lang = lang
 
 var categoryTypes = {
   index: require('./CategoryIndex'),

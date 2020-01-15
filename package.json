@@ -18,7 +18,9 @@
     "async": "^2.6.0",
     "leaflet-polylinedecorator": "https://github.com/plepe/Leaflet.PolylineDecorator.git",
     "leaflet-polylineoffset": "^1.1.0",
-    "openstreetbrowser": "https://github.com/plepe/openstreetbrowser"
+    "modulekit-hooks": "^0.1.0",
+    "openstreetbrowser": "https://github.com/plepe/openstreetbrowser",
+    "sprintf-js": "^1.1.2"
   },
   "devDependencies": {
     "browserify": "^14.5.0",
