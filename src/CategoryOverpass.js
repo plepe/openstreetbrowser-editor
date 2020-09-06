@@ -552,6 +552,12 @@ class CategoryOverpass extends CategoryBase {
             },
             "include_data": "not_null"
           },
+          "placeholder": {
+            "name": "Placeholder",
+            "type": "textarea",
+            "desc": "You can use <a href=\"https://github.com/plepe/OpenStreetBrowser/blob/master/doc/TwigJS.md\">TwigJS markup</a> in this field.",
+            "include_data": "not_null"
+          },
           "key": {
             "name": "Key(s)",
             "type": "array",
@@ -649,11 +655,23 @@ class CategoryOverpass extends CategoryBase {
                       "name": "query",
                       "desc": "If empty, query will be generated via the filters' query option",
                       "include_data": "not_null"
+                    },
+                    "weight": {
+                      "type": "integer",
+                      "name": "weight",
+                      "desc": "Force order of options (values with equal weight will be sorted naturally after translating).",
+                      "include_data": "not_null"
                     }
                   }
                 }
               }
             }
+          },
+          "emptyQuery": {
+            "name": "Default Overpass Query",
+            "type": "textarea",
+            "desc": "Filter Overpass result by this query if the value is empty.",
+            "include_data": "not_null"
           }
         }
       }
