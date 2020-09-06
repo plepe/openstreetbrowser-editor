@@ -53,7 +53,7 @@ Editor.prototype.chooseType = function (callback) {
   this.parentDiv.setAttribute('style', 'position: relative; border: 1px solid black;')
   this.textarea.parentNode.insertBefore(this.parentDiv, this.textarea)
 
-  this.parentDiv.appendChild(document.createTextNode(lang('editor:choose')))
+  this.parentDiv.appendChild(document.createTextNode(global.lang('editor:choose')))
 
   var ul = document.createElement('ul')
   this.parentDiv.appendChild(ul)
@@ -68,7 +68,7 @@ Editor.prototype.chooseType = function (callback) {
     callback(null)
     return false
   }.bind(this)
-  a.appendChild(document.createTextNode(lang('editor:default')))
+  a.appendChild(document.createTextNode(global.lang('editor:default')))
   li.appendChild(a)
 
   for (var k in categoryTypes) {
@@ -82,7 +82,7 @@ Editor.prototype.chooseType = function (callback) {
       callback(type)
       return false
     }.bind(this, k)
-    a.appendChild(document.createTextNode(lang('editor:' + k)))
+    a.appendChild(document.createTextNode(global.lang('editor:' + k)))
     li.appendChild(a)
   }
 }
@@ -105,7 +105,7 @@ Editor.prototype.load2 = function (err, data) {
 
   this.formLoadingIndicator = document.createElement('div')
   this.formLoadingIndicator.className = 'loading-indicator'
-  this.formLoadingIndicator.innerHTML = '<i class="fa fa-spinner fa-spin fa-fw" aria-hidden="true"></i> ' + lang('loading')
+  this.formLoadingIndicator.innerHTML = '<i class="fa fa-spinner fa-spin fa-fw" aria-hidden="true"></i> ' + global.lang('loading')
   this.formDiv.appendChild(this.formLoadingIndicator)
 
   if (this.categoryType.hasMap()) {
