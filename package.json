@@ -13,10 +13,10 @@
     "prepublish": "npm run build"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-free": "^5.5.0",
+    "@fortawesome/fontawesome-free": "^5.14.0",
     "@mapbox/maki": "^5.0.0",
     "async": "^2.6.0",
-    "leaflet-polylinedecorator": "https://github.com/plepe/Leaflet.PolylineDecorator.git",
+    "leaflet-polylinedecorator": "git+https://github.com/plepe/Leaflet.PolylineDecorator.git",
     "leaflet-polylineoffset": "^1.1.0",
     "modulekit-hooks": "^0.1.0",
     "openstreetbrowser": "https://github.com/plepe/openstreetbrowser",
@@ -24,10 +24,10 @@
   },
   "devDependencies": {
     "browserify": "^14.5.0",
-    "browserify-css": "^0.14.0",
+    "browserify-css": "^0.15.0",
     "font-awesome": "^4.7.0",
-    "leaflet": "^1.2.0",
-    "leaflet-textpath": "https://github.com/makinacorpus/Leaflet.TextPath#leaflet0.8-dev",
+    "leaflet": "^1.7.1",
+    "leaflet-textpath": "git+https://github.com/makinacorpus/Leaflet.TextPath.git#leaflet0.8-dev",
     "watchify": "^3.9.0"
   }
 }
