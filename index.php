@@ -126,7 +126,6 @@ else if (isset($_REQUEST['file']) && preg_match('/^([A-Za-z0-9_\-]*\.json|)$/', 
 <html>
 <head>
 <?php print modulekit_to_javascript(); /* pass modulekit configuration to JavaScript */ ?>
-<?php print modulekit_include_js(); /* prints all js-includes */ ?>
 <?php print modulekit_include_css(); /* prints all css-includes */ ?>
 <?php print_add_html_headers(); ?>
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -139,6 +138,7 @@ else if (isset($_REQUEST['file']) && preg_match('/^([A-Za-z0-9_\-]*\.json|)$/', 
 <script src="node_modules/leaflet-polylineoffset/leaflet.polylineoffset.js"></script>
 <script src="node_modules/leaflet-polylinedecorator/dist/leaflet.polylineDecorator.js"></script>
 <script src="dist/locale-<?=$ui_lang?>.js?<?=$modulekit['version']?>"></script>
+<script src="dist/app.js?<?=$modulekit['version']?>"></script>
 <script>
 window.onload = function () {
   OpenStreetBrowserEditor.set(document.getElementById('editor'))
