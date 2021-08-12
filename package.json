@@ -13,14 +13,14 @@
     "prepublish": "npm run build"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-free": "^5.14.0",
+    "@fortawesome/fontawesome-free": "^5.15.4",
     "@mapbox/maki": "^5.0.0",
     "async": "^2.6.0",
     "leaflet-polylinedecorator": "git+https://github.com/plepe/Leaflet.PolylineDecorator.git",
     "leaflet-polylineoffset": "^1.1.0",
     "modulekit-form": "git+https://github.com/plepe/modulekit-form.git#browserify",
-    "modulekit-hooks": "^0.1.0",
-    "openstreetbrowser": "https://github.com/plepe/openstreetbrowser",
+    "modulekit-hooks": "^0.1.1",
+    "openstreetbrowser": "git+https://github.com/plepe/openstreetbrowser.git",
     "sprintf-js": "^1.1.2"
   },
   "devDependencies": {
